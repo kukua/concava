@@ -18,6 +18,7 @@ module.exports = function (el, cb) {
 		var value = el.getAttributeValue(attr.name)
 
 		attr.metadatas.forEach(function (meta) {
+			if (meta.name === 'calibrate') return
 			var fn = validators[meta.name]
 			if (typeof fn !== 'function') {
 				console.error('No validator for meta', meta)
