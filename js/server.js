@@ -1,7 +1,6 @@
 var connect = require('connect')
 var http = require('http')
 var app = connect()
-var port = 3000
 var getRawBody = require('raw-body')
 var ContextElement = require('./contextElement')
 var ContextBrokerClient = require('./contextBrokerClient')
@@ -9,9 +8,14 @@ var convert = require('./convert')
 var calibrate = require('./calibrate')
 var validate = require('./validate')
 
+// Configuration
+var debug = true
+var port = 3000
+var contextBrokerUrl = 'http://context_broker:1026/v1'
+
 // Connect to ContextBroker
 var client = new ContextBrokerClient({
-	url: 'http://context_broker:1026/v1',
+	url: contextBrokerUrl,
 	timeout: 5000,
 })
 
@@ -90,11 +94,13 @@ app.use(function (req, res, next) {
 })
 
 // Debug: dump ContextElement
-app.use(function (req, res, next) {
-	var el = req.contextElement
-	console.log(el.getData(), el.getMapping())
-	next()
-})
+if (debug) {
+	app.use(function (req, res, next) {
+		var el = req.contextElement
+		console.log(el.getData(), el.getMapping())
+		next()
+	})
+}
 
 // Send to Context Broker
 app.use(function (req, res, next) {
