@@ -17,6 +17,7 @@
   "dependencies": {
     "binary": "^0.3.0",
     "connect": "^3.4.0",
+    "object-assign": "^4.0.1",
     "raw-body": "^2.1.4"
   }
 }

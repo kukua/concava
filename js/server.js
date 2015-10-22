@@ -3,7 +3,10 @@ var http = require('http')
 var app = connect()
 var port = 3000
 var getRawBody = require('raw-body')
-var binary = require('binary')
+var ContextElement = require('./contextElement')
+var convert = require('./convert')
+var calibrate = require('./calibrate')
+var validate = require('./validate')
 
 // Define method for determining metadata by payload ID
 function getMetadataByPayloadId (id, cb) {
@@ -12,18 +15,25 @@ function getMetadataByPayloadId (id, cb) {
 			name: 'attr1',
 			type: 'integer',
 			length: 4,
+			metadatas: [
+				{
+					name: 'min',
+					type: 'integer',
+					value: 100,
+				},
+				{
+					name: 'max',
+					type: 'integer',
+					value: 20000,
+				},
+				{
+					name: 'calibrate',
+					type: 'function',
+					value: 'function (a) { return a - 58.3; }',
+				},
+			],
 		},
 	])
-}
-
-// Define ContextElement class
-function ContextElement (data, metadata) {
-	this.data = data
-	this.metadata = metadata
-}
-
-ContextElement.prototype.getValue = function (name) {
-	return this.data[name]
 }
 
 // Verify request method
@@ -42,27 +52,32 @@ app.use(function (req, res, next) {
 	}, function (err, buffer) {
 		if (err) return next(err)
 
-		req.payload = { buffer: buffer }
+		req.payload = buffer
 		next()
 	})
 })
 
-// Verify that payload is given
+// Verify given payload
 app.use(function (req, res, next) {
-	if (req.payload.buffer.length) return next()
+	if (req.payload.length) return next()
 
 	res.writeHead(204)
 	res.end('No binary payload provided.')
 })
 
+// Create ContextElement
+app.use(function (req, res, next) {
+	try {
+		req.contextElement = new ContextElement(req.payload)
+		next()
+	} catch (err) {
+		next(err)
+	}
+})
+
 // Determine payload ID
 app.use(function (req, res, next) {
-	var parser = binary.parse(req.payload.buffer)
-
-	req.payload.parser = parser
-	req.payload.id = parser.word64bu('id').vars.id
-
-	if (req.payload.id) return next()
+	if (req.contextElement.getPayloadId()) return next()
 
 	res.writeHead(400)
 	res.end('Could not determine payload ID.')
@@ -70,59 +85,35 @@ app.use(function (req, res, next) {
 
 // Determine payload metadata
 app.use(function (req, res, next) {
-	getMetadataByPayloadId(req.payload.id, function (err, metadata) {
+	var el = req.contextElement
+
+	getMetadataByPayloadId(el.getPayloadId(), function (err, metadata) {
 		if (err) return next(err)
 
-		req.payload.metadata = metadata
+		el.setMetadata(metadata)
 		next()
 	})
 })
 
-// Parse payload
+// Convert
 app.use(function (req, res, next) {
-	var parser = req.payload.parser
-	var metadata = req.payload.metadata
-
-	for (var i in metadata) {
-		var attr = metadata[i]
-		var size = null
-		var bigEndian = true
-		var signed = false
-
-		if (attr.type === 'integer') {
-			size = attr.length * 8
-			signed = true
-		} else {
-			return next('Unsupported data type ' + attr.type)
-		}
-
-		var method = 'word' + size + (bigEndian ? 'b' : 'l') + (signed ? 's' : 'u')
-
-		if (typeof parser[method] !== 'function') {
-			return next('Unsuported binary parser method ' + method)
-		}
-
-		parser[method](attr.name)
-	}
-
-	req.payload.data = parser.vars
-
-	next()
+	convert(req.contextElement, next)
 })
 
-// Create ContextElement
+// Calibrate
 app.use(function (req, res, next) {
-	try {
-		req.contextElement = new ContextElement(req.payload.data, req.payload.metadata)
-		next()
-	} catch (e) {
-		next(e)
-	}
+	calibrate(req.contextElement, next)
+})
+
+// Validate
+app.use(function (req, res, next) {
+	validate(req.contextElement, next)
 })
 
 // Debug: dump ContextElement
 app.use(function (req, res, next) {
-	console.log(req.contextElement)
+	var el = req.contextElement
+	console.log(el.getData())
 	next()
 })
 
@@ -133,8 +124,10 @@ app.use(function (req, res, next) {
 
 // Error handler
 app.use(function (err, req, res, next) {
+	console.error(err, err.stack)
+	if (err instanceof Error) err = err.toString()
 	res.writeHead(500)
-	res.end(err || undefined)
+	res.end(err || '')
 	next()
 })
 
