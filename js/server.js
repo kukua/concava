@@ -24,7 +24,7 @@ function getMetadataByPayloadId (id, cb) {
 				{
 					name: 'max',
 					type: 'integer',
-					value: 20000,
+					value: 1300,
 				},
 				{
 					name: 'calibrate',

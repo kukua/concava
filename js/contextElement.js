@@ -32,6 +32,10 @@ objectAssign(ContextElement.prototype, {
 	getData: function () {
 		return this._data
 	},
+	setAttributeValue: function (name, val) {
+		var data = this.getData()
+		data[name] = val
+	},
 	getAttributeValue: function (name) {
 		return this.getData()[name]
 	},
