@@ -42,11 +42,11 @@ objectAssign(ContextElement.prototype, {
 	getPayloadId: function () {
 		return this.getAttributeValue('id')
 	},
-	setMetadata: function (metadata) {
-		this._metadata = metadata
+	setMapping: function (mapping) {
+		this._mapping = mapping
 	},
-	getMetadata: function () {
-		return this._metadata
+	getMapping: function () {
+		return this._mapping
 	},
 })
 

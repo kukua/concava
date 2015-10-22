@@ -11,39 +11,9 @@ var validate = require('./validate')
 
 // Connect to ContextBroker
 var client = new ContextBrokerClient({
-	url: 'http://context_broker:1026',
+	url: 'http://context_broker:1026/v1',
 	timeout: 5000,
 })
-
-client.insertContextElement()
-
-// Define method for determining metadata by payload ID
-function getMetadataByPayloadId (id, cb) {
-	cb(null, [
-		{
-			name: 'attr1',
-			type: 'integer',
-			length: 4,
-			metadatas: [
-				{
-					name: 'min',
-					type: 'integer',
-					value: 100,
-				},
-				{
-					name: 'max',
-					type: 'integer',
-					value: 1300,
-				},
-				{
-					name: 'calibrate',
-					type: 'function',
-					value: 'function (a) { return a - 58.3; }',
-				},
-			],
-		},
-	])
-}
 
 // Verify request method
 app.use(function (req, res, next) {
@@ -92,14 +62,14 @@ app.use(function (req, res, next) {
 	res.end('Could not determine payload ID.')
 })
 
-// Determine payload metadata
+// Determine payload mapping
 app.use(function (req, res, next) {
 	var el = req.contextElement
 
-	getMetadataByPayloadId(el.getPayloadId(), function (err, metadata) {
+	client.getPayloadMappingById(el.getPayloadId(), function (err, mapping) {
 		if (err) return next(err)
 
-		el.setMetadata(metadata)
+		el.setMapping(mapping)
 		next()
 	})
 })
@@ -122,7 +92,7 @@ app.use(function (req, res, next) {
 // Debug: dump ContextElement
 app.use(function (req, res, next) {
 	var el = req.contextElement
-	console.log(el.getData())
+	console.log(el.getData(), el.getMapping())
 	next()
 })
 

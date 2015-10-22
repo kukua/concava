@@ -3,10 +3,10 @@ var ContextElement = require('./contextElement')
 module.exports = function (el, cb) {
 	if ( ! (el instanceof ContextElement)) return cb('Given element is not a ContextElement.')
 
-	var metadata = el.getMetadata()
+	var attributes = el.getMapping().attributes
 
-	for (var i in metadata) {
-		var attr = metadata[i]
+	for (var i in attributes) {
+		var attr = attributes[i]
 
 		if ( ! Array.isArray(attr.metadatas)) continue
 
