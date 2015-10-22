@@ -23,10 +23,30 @@ objectAssign(ContextBrokerClient.prototype, {
 			cb(null, sanitize(data))
 		}, cb)
 	},
-	insertContextElement: function (el) {
+	insertContextElement: function (el, cb) {
 		if ( ! (el instanceof ContextElement)) return cb('Given element is not a ContextElement.')
 
-		console.log('insertContextElement')
+		var data = el.getData()
+		var attributes = []
+
+		for (var name in data) {
+			if (name === 'id') continue
+			attributes.push({
+				name: name,
+				type: el.getAttributeType(name),
+				value: data[name],
+			})
+		}
+
+		var context = {
+			id: el.getPayloadId() + '-' + new Date().getTime(),
+			type: 'SensorData',
+			attributes: attributes,
+		}
+
+		this.getClient().updateContext(context).then(function () {
+			cb()
+		}, cb)
 	},
 })
 

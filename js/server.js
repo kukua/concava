@@ -96,6 +96,11 @@ app.use(function (req, res, next) {
 	next()
 })
 
+// Send to Context Broker
+app.use(function (req, res, next) {
+	client.insertContextElement(req.contextElement, next)
+})
+
 // Return response
 app.use(function (req, res, next) {
 	res.end()

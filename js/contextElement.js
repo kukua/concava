@@ -48,6 +48,10 @@ objectAssign(ContextElement.prototype, {
 	getMapping: function () {
 		return this._mapping
 	},
+	getAttributeType: function (name) {
+		var attr = this.getMapping().attributes.filter(function (attr) { return attr.name === name })[0]
+		return attr ? attr.type : null
+	},
 })
 
 module.exports = ContextElement
