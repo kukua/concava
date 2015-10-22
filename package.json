@@ -1,0 +1,22 @@
+{
+  "name": "concava",
+  "version": "0.1.0",
+  "description": "Convert, calibrate, and validate weather data before sending it to the Orion Context Broker.",
+  "private": true,
+  "main": "js/server.js",
+  "scripts": {
+    "start": "node js/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Maurits van Mastrigt <maurits@nerdieworks.nl>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kukua/concava.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "binary": "^0.3.0",
+    "connect": "^3.4.0",
+    "raw-body": "^2.1.4"
+  }
+}
