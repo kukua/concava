@@ -5,18 +5,6 @@ var port = 3000
 var getRawBody = require('raw-body')
 var binary = require('binary')
 
-// Define method for authentication mocking
-function getUserByToken (token, cb) {
-	if (token === 'test') {
-		var user = {
-			id: 1,
-		}
-		return cb(null, user)
-	}
-
-	cb('No user for token.')
-}
-
 // Define method for determining metadata by payload ID
 function getMetadataByPayloadId (id, cb) {
 	cb(null, [
@@ -44,20 +32,6 @@ app.use(function (req, res, next) {
 
 	res.writeHead(404)
 	res.end('Not found.')
-})
-
-// Authenticate request
-app.use(function (req, res, next) {
-	getUserByToken(req.headers['x-auth-token'], function (err, user) {
-		if (err)  {
-			res.writeHead(401)
-			res.end('Invalid X-Auth-Token.')
-			return
-		}
-
-		req.user = user
-		next()
-	})
 })
 
 // Parse payload into buffer
