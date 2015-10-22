@@ -13,9 +13,9 @@ module.exports = function (el, cb) {
 		var value = el.getAttributeValue(attr.name)
 
 		attr.metadatas.forEach(function (meta) {
-			if (meta.name === 'min' && meta.type === 'integer') {
+			if (meta.name === 'min' && meta.type === 'number') {
 				value = Math.max(value, meta.value)
-			} else if (meta.name === 'min' && meta.type === 'integer') {
+			} else if (meta.name === 'min' && meta.type === 'number') {
 				value = Math.min(value, meta.value)
 			}
 		})
