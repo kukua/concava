@@ -4,9 +4,18 @@ var app = connect()
 var port = 3000
 var getRawBody = require('raw-body')
 var ContextElement = require('./contextElement')
+var ContextBrokerClient = require('./contextBrokerClient')
 var convert = require('./convert')
 var calibrate = require('./calibrate')
 var validate = require('./validate')
+
+// Connect to ContextBroker
+var client = new ContextBrokerClient({
+	url: 'http://context_broker:1026',
+	timeout: 5000,
+})
+
+client.insertContextElement()
 
 // Define method for determining metadata by payload ID
 function getMetadataByPayloadId (id, cb) {

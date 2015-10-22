@@ -4,7 +4,7 @@ var binary = require('binary')
 function ContextElement (buffer) {
 	this.setBuffer(buffer)
 	this.setBufferParser(this.createBufferParser())
-	this.setData(this.getBufferParser().vars)
+	this.setData(this.getBufferParser().vars) // By reference
 }
 
 objectAssign(ContextElement.prototype, {

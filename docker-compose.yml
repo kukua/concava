@@ -1,4 +1,4 @@
-contextBroker:
+context_broker:
     image: jonadev95/contextbroker-docker
     ports:
         - "1026:1026"
@@ -10,5 +10,5 @@ server:
     volumes:
         - ./:/src
     links:
-        - contextBroker
+        - context_broker
     command: /src/start-server.sh
