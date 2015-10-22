@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ ! -d /src/node_modules ]; then
+if [ ! -d ./node_modules ]; then
 	npm install
 fi
 

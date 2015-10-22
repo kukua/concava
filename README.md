@@ -12,6 +12,7 @@
 - [ ] Add documentation
 - [ ] Replace `fiware-orion-client` with other library? It messes up attribute/metadata `type` values
 - [ ] Change length (`value`) of integer type attributes to bit values (instead of bytes)? See `js/convert.js:16`
+- [ ] Add support for GZIP compression?
 
 ## Notes
 
