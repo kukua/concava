@@ -27,7 +27,7 @@
 						{
 							"name": "calibrate",
 							"type": "function",
-							"value": "function%28a%29%7Breturna%2D58.3%7D"
+							"value": "function%28a%29%7Breturn%20a%2D58.3%7D"
 						}
 					]
 				}
