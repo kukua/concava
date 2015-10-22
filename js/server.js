@@ -11,13 +11,14 @@ var validate = require('./validate')
 // Configuration
 var debug = true
 var port = 3000
-var contextBrokerUrl = 'http://context_broker:1026/v1'
+var contextBroker = {
+	url: 'http://context_broker:1026/v1',
+	timeout: 5000,
+}
+var payloadMaxSize = '1mb'
 
 // Connect to ContextBroker
-var client = new ContextBrokerClient({
-	url: contextBrokerUrl,
-	timeout: 5000,
-})
+var client = new ContextBrokerClient(contextBroker)
 
 // Verify request method
 app.use(function (req, res, next) {
@@ -31,7 +32,7 @@ app.use(function (req, res, next) {
 app.use(function (req, res, next) {
 	getRawBody(req, {
 		length: req.headers['content-length'],
-		limit: '1mb',
+		limit: payloadMaxSize,
 	}, function (err, buffer) {
 		if (err) return next(err)
 

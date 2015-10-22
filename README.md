@@ -2,6 +2,17 @@
 
 > Convert, calibrate, and validate weather data before sending it to the Orion Context Broker.
 
+## Checklist
+
+- [ ] Add other conversion types (now only integers are supported)
+- [ ] Add validators
+- [ ] Pass along X-Auth-Token to Context Broker after PEP is added
+- [ ] Add tests
+- [ ] Allow easy configuration
+- [ ] Add documentation
+- [ ] Replace `fiware-orion-client` with other library? It messes up attribute/metadata `type` values
+- [ ] Change length (`value`) of integer type attributes to bit values (instead of bytes)? See `js/convert.js:16`
+
 ## Notes
 
 - Run `node test/createExamplePayload.js > test/payload.data`
