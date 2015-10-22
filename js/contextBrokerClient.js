@@ -27,21 +27,14 @@ objectAssign(ContextBrokerClient.prototype, {
 		if ( ! (el instanceof ContextElement)) return cb('Given element is not a ContextElement.')
 
 		var data = el.getData()
-		var attributes = []
-
-		for (var name in data) {
-			if (name === 'id') continue
-			attributes.push({
-				name: name,
-				type: el.getAttributeType(name),
-				value: data[name],
-			})
-		}
-
 		var context = {
 			id: el.getPayloadId() + '-' + new Date().getTime(),
 			type: 'SensorData',
-			attributes: attributes,
+		}
+
+		for (var name in data) {
+			if (name === 'id') continue
+			context[name] = data[name]
 		}
 
 		this.getClient().updateContext(context).then(function () {
