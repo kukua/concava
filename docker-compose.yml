@@ -1,0 +1,14 @@
+contextBroker:
+    image: jonadev95/contextbroker-docker
+    ports:
+        - "1026:1026"
+server:
+    image: node:4.2.1
+    working_dir: /src
+    ports:
+        - "3000:3000"
+    volumes:
+        - ./:/src
+    links:
+        - contextBroker
+    command: /src/start-server.sh
