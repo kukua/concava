@@ -36,7 +36,6 @@ objectAssign(ContextBrokerClient.prototype, {
 		}
 
 		for (var name in data) {
-			if (name === 'id') continue
 			context[name] = data[name]
 		}
 

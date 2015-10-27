@@ -1,10 +1,8 @@
 var objectAssign = require('object-assign')
-var binary = require('binary')
 
 function ContextElement (buffer) {
 	this.setBuffer(buffer)
-	this.setBufferParser(this.createBufferParser())
-	this.setData(this.getBufferParser().vars) // By reference
+	this.setData({})
 }
 
 objectAssign(ContextElement.prototype, {
@@ -14,17 +12,6 @@ objectAssign(ContextElement.prototype, {
 	},
 	getBuffer: function () {
 		return this._buffer
-	},
-	createBufferParser: function () {
-		var parser = binary.parse(this.getBuffer())
-		parser.word64bu('id')
-		return parser
-	},
-	setBufferParser: function (parser) {
-		this._parser = parser
-	},
-	getBufferParser: function () {
-		return this._parser
 	},
 	setData: function (data) {
 		this._data = data
@@ -40,7 +27,7 @@ objectAssign(ContextElement.prototype, {
 		return this.getData()[name]
 	},
 	getPayloadId: function () {
-		return this.getAttributeValue('id')
+		return parseInt(this.getBuffer().toString('hex', 0, 8), 16)
 	},
 	setMapping: function (mapping) {
 		this._mapping = mapping
