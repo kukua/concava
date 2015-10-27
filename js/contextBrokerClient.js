@@ -2,6 +2,8 @@ var objectAssign = require('object-assign')
 var ContextElement = require('./contextElement')
 var request = require('request')
 
+require('array.prototype.find')
+
 function ContextBrokerClient (config) {
 	if (config) this.setConfig(config)
 }
@@ -46,7 +48,16 @@ objectAssign(ContextBrokerClient.prototype, {
 			],
 		}, function (err, data) {
 			if (err) return cb(err)
-			cb(null, data.contextResponses[0].contextElement)
+
+			var mapping = data.contextResponses[0].contextElement
+			var findIndex = function (a) { return a.name === 'index' }
+
+			mapping.attributes.sort(function (a, b) {
+				return parseInt(a.metadatas.find(findIndex).value) -
+					parseInt(b.metadatas.find(findIndex).value)
+			})
+
+			cb(null, mapping)
 		})
 	},
 	insertContextElement: function (el, cb) {
