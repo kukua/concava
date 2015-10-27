@@ -31,13 +31,16 @@ objectAssign(ContextBrokerClient.prototype, {
 			id: el.getPayloadId() + '-' + new Date().getTime(),
 			type: 'SensorData',
 		}
+		var options = {
+			updateAction: 'APPEND_STRICT',
+		}
 
 		for (var name in data) {
 			if (name === 'id') continue
 			context[name] = data[name]
 		}
 
-		this.getClient().updateContext(context).then(function () {
+		this.getClient().updateContext(context, options).then(function () {
 			cb()
 		}, cb)
 	},
