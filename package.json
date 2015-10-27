@@ -16,9 +16,9 @@
   "license": "MIT",
   "dependencies": {
     "connect": "^3.4.0",
-    "fiware-orion-client": "^0.5.4",
     "object-assign": "^4.0.1",
     "raw-body": "^2.1.4",
+    "request": "^2.65.0",
     "vm2": "^0.2.3"
   }
 }

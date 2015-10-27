@@ -1,7 +1,7 @@
 var objectAssign = require('object-assign')
 
 function ContextElement (buffer) {
-	this.setBuffer(buffer)
+	if (buffer) this.setBuffer(buffer)
 	this.setData({})
 }
 
