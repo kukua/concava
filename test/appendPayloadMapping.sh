@@ -15,6 +15,10 @@
 					"value": 4,
 					"metadatas": [
 						{
+							"name": "index",
+							"value": 0
+						},
+						{
 							"name": "min",
 							"type": "integer",
 							"value": 100
