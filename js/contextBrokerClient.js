@@ -31,7 +31,7 @@ objectAssign(ContextBrokerClient.prototype, {
 
 			if (data.errorCode) {
 				err = data.errorCode
-				return cb(err.reasonPhrase + ' (' + err.code + '): ' + err.details)
+				return cb('[ContextBroker] ' + err.reasonPhrase + ' (' + err.code + '): ' + err.details)
 			}
 
 			cb(null, data)
@@ -65,6 +65,7 @@ objectAssign(ContextBrokerClient.prototype, {
 
 		var data = el.getData()
 		var attributes = []
+		var timestamp = new Date().getTime()
 
 		for (var name in data) {
 			attributes.push({
@@ -73,11 +74,13 @@ objectAssign(ContextBrokerClient.prototype, {
 			})
 		}
 
+		attributes.push({ name: 'timestamp', value: '' + timestamp })
+
 		this._request('updateContext', {
 			contextElements: [
 				{
 					type: 'SensorData',
-					id: el.getPayloadId() + '-' + new Date().getTime(),
+					id: el.getPayloadId() + '-' + timestamp,
 					attributes: attributes,
 				},
 			],
