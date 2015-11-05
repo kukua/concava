@@ -16,7 +16,7 @@ var buffer, data
 var debug = true
 var port = 3000
 var contextBroker = {
-	url: 'http://context_broker:1026/v1',
+	url: 'http://concava:1026/v1',
 	timeout: 5000,
 }
 var payloadMaxSize = '512kb'

@@ -2,25 +2,33 @@
 
 > Convert, calibrate, and validate weather data before sending it to the Orion Context Broker.
 
-## Checklist
+## Dependencies
 
-- [x] Add other conversion types (now only integers are supported)
-- [x] Replace `fiware-orion-client` with other library? It messes up attribute/metadata `type` values
-- [x] ~~Change length (`value`) of integer type attributes to bit values (instead of bytes)? See `js/convert.js:16`~~
-- [ ] Allow easy configuration (by environment variables?)
-- [ ] Add validators
-- [ ] Add documentation
-- [ ] Add unit tests
-- [ ] Pass along X-Auth-Token to Context Broker after PEP is added
-- [x] Fix inaccurate LoRa connector example payload ID (`F03D291000001180`, http://www.danvk.org/hex2dec.html)
-- [ ] Add support for GZIP compression?
-- [ ] Cache attributes/metadatas by payloadId?
+- [Docker](http://docs.docker.com/)
+- [Docker Machine](https://docs.docker.com/machine/)
+- [Docker Compose](http://docs.docker.com/compose/)
+- [HTTPie](https://github.com/jkbrzt/httpie) (optional)
+
+## How to use
+
+```bash
+# Mac OSX example (on Linux you can skip the docker-machine steps):
+docker-machine create -d virtualbox concava
+eval $(docker-machine env concava) # Must be run in every terminal tab
+
+docker-compose up -d
+# A local ConCaVa server instance can be started with: $ npm start
+
+# Prepare
+# > Add '<container ip> concava' to your hosts file
+./test/appendSensorMetadata.sh
+
+# Test with:
+http POST 'http://concava:3000/' 'X-Auth-Token: test' < test/payload.data
+docker-compose logs server
+```
 
 ## Notes
 
-- Run `node test/createExamplePayload.js > test/payload.data`
-- Use [HTTPie](https://github.com/jkbrzt/httpie) for HTTP requests
-- `http POST 'http://localhost:3000/' 'X-Auth-Token: test' < test/payload.data`
-- `docker exec -it concava_context_broker_1 mongo orion`
-- http://www.binaryconvert.com/convert_unsigned_int.html
-- Running server locally (with CB in Docker) requires adding `<docker machine IP> context_broker` to hosts file
+- Create example payload: `node test/createExamplePayload.js > test/payload.data`
+- Access to underlying MongoDB: `docker exec -it concava_context_broker_1 mongo orion`

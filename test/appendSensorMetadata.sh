@@ -1,6 +1,6 @@
 #!/bin/sh
 
-(curl context_broker:1026/v1/updateContext -s -S --header 'Content-Type: application/json' \
+(curl concava:1026/v1/updateContext -s -S --header 'Content-Type: application/json' \
     --header 'Accept: application/json' -d @- | python -mjson.tool) <<EOF
 {
 	"contextElements": [
