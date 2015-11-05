@@ -80,13 +80,18 @@ objectAssign(ContextBrokerClient.prototype, {
 			}
 		})
 	},
-	insertSensorData: function (data, cb) {
+	insertSensorData: function (data, fallbackDate, cb) {
 		if ( ! (data instanceof SensorData)) return cb('Invalid SensorData given.')
 
 		var values = data.getData()
 		var attributes = []
-		var timestamp = new Date().getTime()
 
+		// Determine timestamp
+		var timestamp = values.timestamp
+		if ( ! timestamp) timestamp = fallbackDate
+		timestamp = (new Date(timestamp).getTime() || Date.now())
+
+		// Format attributes
 		for (var name in values) {
 			attributes.push({
 				name: name,
@@ -94,8 +99,10 @@ objectAssign(ContextBrokerClient.prototype, {
 			})
 		}
 
+		// Append timestamp as attribute
 		attributes.push({ name: 'timestamp', value: '' + timestamp })
 
+		// Insert sensor data
 		this._request('updateContext', {
 			contextElements: [
 				{

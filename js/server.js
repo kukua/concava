@@ -24,6 +24,12 @@ var payloadMaxSize = '512kb'
 // Connect to Orion Context Broker
 var client = new ContextBrokerClient(contextBroker)
 
+// Add timestamp to request
+app.use(function (req, res, next) {
+	req.start = new Date()
+	next()
+})
+
 // Verify request method
 app.use(function (req, res, next) {
 	if (req.method === 'POST') return next()
@@ -115,7 +121,7 @@ if (debug) {
 
 // Store sensor data
 app.use(function (req, res, next) {
-	client.insertSensorData(data, next)
+	client.insertSensorData(data, req.start, next)
 })
 
 // Return response
