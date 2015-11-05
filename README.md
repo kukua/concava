@@ -21,14 +21,14 @@ docker-compose up -d
 
 # Prepare
 # > Add '<container ip> concava' to your hosts file
-./test/appendSensorMetadata.sh
+./tools/appendSensorMetadata.sh
 
 # Test with:
-http POST 'http://concava:3000/' 'X-Auth-Token: test' < test/payload.data
+http POST 'http://concava:3000/' 'X-Auth-Token: test' < tools/payload.data
 docker-compose logs server
 ```
 
 ## Notes
 
-- Create example payload: `node test/createExamplePayload.js > test/payload.data`
+- Create example payload: `node tools/createExamplePayload.js > tools/payload.data`
 - Access to underlying MongoDB: `docker exec -it concava_context_broker_1 mongo orion`
