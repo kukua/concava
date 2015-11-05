@@ -5,8 +5,8 @@ var getRawBody = require('raw-body')
 var SensorData = require('./SensorData')
 var ContextBrokerClient = require('./ContextBrokerClient')
 var Converter = require('./Converter')
+var Calibrator = require('./Calibrator')
 var defaultConvertTypes = require('./defaultConvertTypes')
-var calibrate = require('./calibrate')
 var validate = require('./validate')
 
 var buffer, data
@@ -23,6 +23,7 @@ var payloadMaxSize = '512kb'
 // Setup classes
 var client = new ContextBrokerClient(contextBroker)
 var converter = new Converter(defaultConvertTypes)
+var calibrator = new Calibrator()
 
 // Verify request method
 app.use(function (req, res, next) {
@@ -88,7 +89,7 @@ app.use(function (req, res, next) {
 
 // Calibrate
 app.use(function (req, res, next) {
-	calibrate(data, next)
+	calibrator.calibrate(data, next)
 })
 
 // Validate
