@@ -4,7 +4,7 @@ var convert = require('../js/convert')
 
 var elem = new ContextElement(fs.readFileSync(__dirname + '/payload.data'))
 
-console.log(elem.getBuffer(), elem.getPayloadId())
+console.log(elem.getBuffer(), elem.getDeviceId())
 
 elem.setMapping({
 	attributes: [

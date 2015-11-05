@@ -26,8 +26,8 @@ objectAssign(ContextElement.prototype, {
 	getAttributeValue: function (name) {
 		return this.getData()[name]
 	},
-	getPayloadId: function () {
-		return parseInt(this.getBuffer().toString('hex', 0, 8), 16)
+	getDeviceId: function () {
+		return this.getBuffer().toString('hex', 0, 8)
 	},
 	setMapping: function (mapping) {
 		this._mapping = mapping

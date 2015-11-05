@@ -80,7 +80,7 @@ objectAssign(ContextBrokerClient.prototype, {
 			contextElements: [
 				{
 					type: 'SensorData',
-					id: el.getPayloadId() + '-' + timestamp,
+					id: el.getDeviceId() + '-' + timestamp,
 					attributes: attributes,
 				},
 			],

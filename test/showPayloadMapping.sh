@@ -7,7 +7,7 @@
         {
             "type": "PayloadMapping",
             "isPattern": "false",
-            "id": "${1:-1}"
+            "id": "${1:-0000000000000001}"
         }
     ]
 }

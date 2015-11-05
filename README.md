@@ -12,7 +12,7 @@
 - [ ] Add documentation
 - [ ] Add unit tests
 - [ ] Pass along X-Auth-Token to Context Broker after PEP is added
-- [ ] Fix inaccurate LoRa connector example payload ID (`F03D291000001180`, http://www.danvk.org/hex2dec.html)
+- [x] Fix inaccurate LoRa connector example payload ID (`F03D291000001180`, http://www.danvk.org/hex2dec.html)
 - [ ] Add support for GZIP compression?
 - [ ] Cache attributes/metadatas by payloadId?
 

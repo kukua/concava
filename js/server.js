@@ -61,7 +61,7 @@ app.use(function (req, res, next) {
 
 // Determine payload ID
 app.use(function (req, res, next) {
-	if (req.contextElement.getPayloadId()) return next()
+	if (req.contextElement.getDeviceId()) return next()
 
 	res.writeHead(400)
 	res.end('Could not determine payload ID.')
@@ -71,7 +71,7 @@ app.use(function (req, res, next) {
 app.use(function (req, res, next) {
 	var el = req.contextElement
 
-	client.getPayloadMappingById(el.getPayloadId(), function (err, mapping) {
+	client.getPayloadMappingById(el.getDeviceId(), function (err, mapping) {
 		if (err) return next(err)
 
 		el.setMapping(mapping)
@@ -98,7 +98,7 @@ app.use(function (req, res, next) {
 if (debug) {
 	app.use(function (req, res, next) {
 		var el = req.contextElement
-		console.log(el.getData(), el.getMapping())
+		console.log(el.getDeviceId(), el.getData(), el.getMapping())
 		next()
 	})
 }

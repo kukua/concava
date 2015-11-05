@@ -7,7 +7,7 @@
 		{
 			"type": "PayloadMapping",
 			"isPattern": "false",
-			"id": "1",
+			"id": "0000000000000001",
 			"attributes": [
 				{
 					"name": "attr1",
