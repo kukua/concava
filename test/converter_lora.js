@@ -1,7 +1,7 @@
-var ContextElement = require('../js/contextElement')
+var SensorData = require('../js/SensorData')
 var convert = require('../js/convert')
 
-var elem = new ContextElement(new Buffer('f03d29100000118032332e31342c2032332e32302c20313031342c2035352e3538', 'hex'))
+var elem = new SensorData(new Buffer('f03d29100000118032332e31342c2032332e32302c20313031342c2035352e3538', 'hex'))
 
 console.log(elem.getDeviceId())
 

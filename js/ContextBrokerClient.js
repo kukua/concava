@@ -1,5 +1,5 @@
 var objectAssign = require('object-assign')
-var ContextElement = require('./contextElement')
+var SensorData = require('./SensorData')
 var request = require('request')
 
 require('array.prototype.find')
@@ -31,7 +31,7 @@ objectAssign(ContextBrokerClient.prototype, {
 
 			if (data.errorCode) {
 				err = data.errorCode
-				return cb('[ContextBroker] ' + err.reasonPhrase + ' (' + err.code + '): ' + err.details)
+				return cb('[ContextBrokerClient] ' + err.reasonPhrase + ' (' + err.code + '): ' + err.details)
 			}
 
 			cb(null, data)
@@ -60,8 +60,8 @@ objectAssign(ContextBrokerClient.prototype, {
 			cb(null, mapping)
 		})
 	},
-	insertContextElement: function (el, cb) {
-		if ( ! (el instanceof ContextElement)) return cb('Given element is not a ContextElement.')
+	insertSensorData: function (el, cb) {
+		if ( ! (el instanceof SensorData)) return cb('Invalid SensorData given.')
 
 		var data = el.getData()
 		var attributes = []

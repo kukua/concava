@@ -1,4 +1,4 @@
-var ContextElement = require('./contextElement')
+var SensorData = require('./SensorData')
 
 var ignores = ['index', 'calibrate']
 var validators = {
@@ -7,7 +7,7 @@ var validators = {
 }
 
 module.exports = function (el, cb) {
-	if ( ! (el instanceof ContextElement)) return cb('Given element is not a ContextElement.')
+	if ( ! (el instanceof SensorData)) return cb('Invalid SensorData given.')
 
 	var attributes = el.getMapping().attributes
 

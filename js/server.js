@@ -2,13 +2,13 @@ var connect = require('connect')
 var http = require('http')
 var app = connect()
 var getRawBody = require('raw-body')
-var ContextElement = require('./contextElement')
-var ContextBrokerClient = require('./contextBrokerClient')
+var SensorData = require('./SensorData')
+var ContextBrokerClient = require('./ContextBrokerClient')
 var convert = require('./convert')
 var calibrate = require('./calibrate')
 var validate = require('./validate')
 
-var buffer, contextElement
+var buffer, data
 
 // Configuration
 var debug = true
@@ -51,10 +51,10 @@ app.use(function (req, res, next) {
 	res.end('No binary payload provided.')
 })
 
-// Create ContextElement
+// Create SensorData instance
 app.use(function (req, res, next) {
 	try {
-		contextElement = new ContextElement(buffer)
+		data = new SensorData(buffer)
 		next()
 	} catch (err) {
 		next(err)
@@ -63,7 +63,7 @@ app.use(function (req, res, next) {
 
 // Determine payload ID
 app.use(function (req, res, next) {
-	if (contextElement.getDeviceId()) return next()
+	if (data.getDeviceId()) return next()
 
 	res.writeHead(400)
 	res.end('Could not determine payload ID.')
@@ -71,36 +71,36 @@ app.use(function (req, res, next) {
 
 // Determine payload mapping
 app.use(function (req, res, next) {
-	client.getPayloadMappingById(contextElement.getDeviceId(), function (err, mapping) {
+	client.getPayloadMappingById(data.getDeviceId(), function (err, mapping) {
 		if (err) return next(err)
 
-		contextElement.setMapping(mapping)
+		data.setMapping(mapping)
 		next()
 	})
 })
 
 // Convert
 app.use(function (req, res, next) {
-	convert(contextElement, next)
+	convert(data, next)
 })
 
 // Calibrate
 app.use(function (req, res, next) {
-	calibrate(contextElement, next)
+	calibrate(data, next)
 })
 
 // Validate
 app.use(function (req, res, next) {
-	validate(contextElement, next)
+	validate(data, next)
 })
 
-// Debug: dump ContextElement
+// Debug: dump SensorData
 if (debug) {
 	app.use(function (req, res, next) {
 		console.log(
-			contextElement.getDeviceId(),
-			contextElement.getData(),
-			contextElement.getMapping()
+			data.getDeviceId(),
+			data.getData(),
+			data.getMapping()
 		)
 		next()
 	})
@@ -108,7 +108,7 @@ if (debug) {
 
 // Send to Context Broker
 app.use(function (req, res, next) {
-	client.insertContextElement(contextElement, next)
+	client.insertSensorData(data, next)
 })
 
 // Return response

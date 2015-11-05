@@ -1,4 +1,4 @@
-var ContextElement = require('./contextElement')
+var SensorData = require('./SensorData')
 
 var converters = {
 	integer: function (name, length) {
@@ -37,7 +37,7 @@ var converters = {
 }
 
 module.exports = function (el, cb) {
-	if ( ! (el instanceof ContextElement)) return cb('Given element is not a ContextElement instance.')
+	if ( ! (el instanceof SensorData)) return cb('Invalid SensorData given.')
 
 	var attributes = el.getMapping().attributes
 	var context = {

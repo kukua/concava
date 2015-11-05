@@ -1,11 +1,11 @@
 var objectAssign = require('object-assign')
 
-function ContextElement (buffer) {
+function SensorData (buffer) {
 	if (buffer) this.setBuffer(buffer)
 	this.setData({})
 }
 
-objectAssign(ContextElement.prototype, {
+objectAssign(SensorData.prototype, {
 	setBuffer: function (buffer) {
 		if ( ! Buffer.isBuffer(buffer)) throw new Error('Given buffer is not a Buffer instance.')
 		this._buffer = buffer
@@ -41,4 +41,4 @@ objectAssign(ContextElement.prototype, {
 	},
 })
 
-module.exports = ContextElement
+module.exports = SensorData

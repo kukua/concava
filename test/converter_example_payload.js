@@ -1,8 +1,8 @@
 var fs = require('fs')
-var ContextElement = require('../js/contextElement')
+var SensorData = require('../js/SensorData')
 var convert = require('../js/convert')
 
-var elem = new ContextElement(fs.readFileSync(__dirname + '/payload.data'))
+var elem = new SensorData(fs.readFileSync(__dirname + '/payload.data'))
 
 console.log(elem.getBuffer(), elem.getDeviceId())
 
