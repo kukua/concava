@@ -7,8 +7,8 @@ var ContextBrokerClient = require('./ContextBrokerClient')
 var Converter = require('./Converter')
 var Calibrator = require('./Calibrator')
 var Validator = require('./Validator')
-var defaultConvertTypes = require('./defaultConvertTypes')
-var defaultValidateTypes = require('./defaultValidateTypes')
+var convertTypes = require('./types/convert')
+var validateTypes = require('./types/validate')
 
 var buffer, data
 
@@ -21,11 +21,8 @@ var contextBroker = {
 }
 var payloadMaxSize = '512kb'
 
-// Setup classes
+// Connect to Orion Context Broker
 var client = new ContextBrokerClient(contextBroker)
-var converter = new Converter(defaultConvertTypes)
-var calibrator = new Calibrator()
-var validator = new Validator(defaultValidateTypes)
 
 // Verify request method
 app.use(function (req, res, next) {
@@ -86,16 +83,22 @@ app.use(function (req, res, next) {
 
 // Convert
 app.use(function (req, res, next) {
+	var converter = new Converter(convertTypes)
+
 	converter.convert(data, next)
 })
 
 // Calibrate
 app.use(function (req, res, next) {
+	var calibrator = new Calibrator()
+
 	calibrator.calibrate(data, next)
 })
 
 // Validate
 app.use(function (req, res, next) {
+	var validator = new Validator(validateTypes)
+
 	validator.validate(data, next)
 })
 
