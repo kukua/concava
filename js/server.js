@@ -8,6 +8,8 @@ var convert = require('./convert')
 var calibrate = require('./calibrate')
 var validate = require('./validate')
 
+var buffer, contextElement
+
 // Configuration
 var debug = true
 var port = 3000
@@ -33,17 +35,17 @@ app.use(function (req, res, next) {
 	getRawBody(req, {
 		length: req.headers['content-length'],
 		limit: payloadMaxSize,
-	}, function (err, buffer) {
+	}, function (err, buf) {
 		if (err) return next(err)
 
-		req.payload = buffer
+		buffer = buf
 		next()
 	})
 })
 
 // Verify given payload
 app.use(function (req, res, next) {
-	if (req.payload.length) return next()
+	if (buffer.length) return next()
 
 	res.writeHead(204)
 	res.end('No binary payload provided.')
@@ -52,7 +54,7 @@ app.use(function (req, res, next) {
 // Create ContextElement
 app.use(function (req, res, next) {
 	try {
-		req.contextElement = new ContextElement(req.payload)
+		contextElement = new ContextElement(buffer)
 		next()
 	} catch (err) {
 		next(err)
@@ -61,7 +63,7 @@ app.use(function (req, res, next) {
 
 // Determine payload ID
 app.use(function (req, res, next) {
-	if (req.contextElement.getDeviceId()) return next()
+	if (contextElement.getDeviceId()) return next()
 
 	res.writeHead(400)
 	res.end('Could not determine payload ID.')
@@ -69,43 +71,44 @@ app.use(function (req, res, next) {
 
 // Determine payload mapping
 app.use(function (req, res, next) {
-	var el = req.contextElement
-
-	client.getPayloadMappingById(el.getDeviceId(), function (err, mapping) {
+	client.getPayloadMappingById(contextElement.getDeviceId(), function (err, mapping) {
 		if (err) return next(err)
 
-		el.setMapping(mapping)
+		contextElement.setMapping(mapping)
 		next()
 	})
 })
 
 // Convert
 app.use(function (req, res, next) {
-	convert(req.contextElement, next)
+	convert(contextElement, next)
 })
 
 // Calibrate
 app.use(function (req, res, next) {
-	calibrate(req.contextElement, next)
+	calibrate(contextElement, next)
 })
 
 // Validate
 app.use(function (req, res, next) {
-	validate(req.contextElement, next)
+	validate(contextElement, next)
 })
 
 // Debug: dump ContextElement
 if (debug) {
 	app.use(function (req, res, next) {
-		var el = req.contextElement
-		console.log(el.getDeviceId(), el.getData(), el.getMapping())
+		console.log(
+			contextElement.getDeviceId(),
+			contextElement.getData(),
+			contextElement.getMapping()
+		)
 		next()
 	})
 }
 
 // Send to Context Broker
 app.use(function (req, res, next) {
-	client.insertContextElement(req.contextElement, next)
+	client.insertContextElement(contextElement, next)
 })
 
 // Return response
