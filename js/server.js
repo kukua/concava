@@ -15,7 +15,7 @@ var contextBroker = {
 	url: 'http://context_broker:1026/v1',
 	timeout: 5000,
 }
-var payloadMaxSize = '1mb'
+var payloadMaxSize = '512kb'
 
 // Connect to ContextBroker
 var client = new ContextBrokerClient(contextBroker)
