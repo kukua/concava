@@ -6,8 +6,9 @@ var SensorData = require('./SensorData')
 var ContextBrokerClient = require('./ContextBrokerClient')
 var Converter = require('./Converter')
 var Calibrator = require('./Calibrator')
+var Validator = require('./Validator')
 var defaultConvertTypes = require('./defaultConvertTypes')
-var validate = require('./validate')
+var defaultValidateTypes = require('./defaultValidateTypes')
 
 var buffer, data
 
@@ -24,6 +25,7 @@ var payloadMaxSize = '512kb'
 var client = new ContextBrokerClient(contextBroker)
 var converter = new Converter(defaultConvertTypes)
 var calibrator = new Calibrator()
+var validator = new Validator(defaultValidateTypes)
 
 // Verify request method
 app.use(function (req, res, next) {
@@ -94,7 +96,7 @@ app.use(function (req, res, next) {
 
 // Validate
 app.use(function (req, res, next) {
-	validate(data, next)
+	validator.validate(data, next)
 })
 
 // Debug: dump sensor data
