@@ -10,8 +10,6 @@ var Validator = require('./Validator')
 var convertTypes = require('./types/convert')
 var validateTypes = require('./types/validate')
 
-var buffer, data
-
 // Configuration
 var debug = true
 var port = 3000
@@ -43,17 +41,17 @@ app.use(function (req, res, next) {
 	getRawBody(req, {
 		length: req.headers['content-length'],
 		limit: payloadMaxSize,
-	}, function (err, buf) {
+	}, function (err, buffer) {
 		if (err) return next(err)
 
-		buffer = buf
+		req.buffer = buffer
 		next()
 	})
 })
 
 // Verify given payload
 app.use(function (req, res, next) {
-	if (buffer.length) return next()
+	if (req.buffer.length) return next()
 
 	res.writeHead(204)
 	res.end('No binary payload provided.')
@@ -62,7 +60,7 @@ app.use(function (req, res, next) {
 // Create SensorData instance
 app.use(function (req, res, next) {
 	try {
-		data = new SensorData(buffer)
+		req.data = new SensorData(req.buffer)
 		next()
 	} catch (err) {
 		next(err)
@@ -71,7 +69,7 @@ app.use(function (req, res, next) {
 
 // Validate device ID
 app.use(function (req, res, next) {
-	if (data.getDeviceId()) return next()
+	if (req.data.getDeviceId()) return next()
 
 	res.writeHead(400)
 	res.end('Could not determine payload ID.')
@@ -79,10 +77,10 @@ app.use(function (req, res, next) {
 
 // Retrieve sensor metadata
 app.use(function (req, res, next) {
-	client.getSensorMetadata(data.getDeviceId(), function (err, metadata) {
+	client.getSensorMetadata(req.data.getDeviceId(), function (err, metadata) {
 		if (err) return next(err)
 
-		data.setMetadata(metadata)
+		req.data.setMetadata(metadata)
 		next()
 	})
 })
@@ -91,29 +89,29 @@ app.use(function (req, res, next) {
 app.use(function (req, res, next) {
 	var converter = new Converter(convertTypes)
 
-	converter.convert(data, next)
+	converter.convert(req.data, next)
 })
 
 // Calibrate
 app.use(function (req, res, next) {
 	var calibrator = new Calibrator()
 
-	calibrator.calibrate(data, next)
+	calibrator.calibrate(req.data, next)
 })
 
 // Validate
 app.use(function (req, res, next) {
 	var validator = new Validator(validateTypes)
 
-	validator.validate(data, next)
+	validator.validate(req.data, next)
 })
 
 // Debug: dump sensor data
 if (debug) {
 	app.use(function (req, res, next) {
 		console.log(
-			data.getDeviceId(),
-			data.getData()
+			req.data.getDeviceId(),
+			req.data.getData()
 		)
 		next()
 	})
@@ -121,7 +119,7 @@ if (debug) {
 
 // Store sensor data
 app.use(function (req, res, next) {
-	client.insertSensorData(data, req.start, next)
+	client.insertSensorData(req.data, req.start, next)
 })
 
 // Return response
