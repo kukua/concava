@@ -4,7 +4,8 @@ var app = connect()
 var getRawBody = require('raw-body')
 var SensorData = require('./SensorData')
 var ContextBrokerClient = require('./ContextBrokerClient')
-var convert = require('./convert')
+var Converter = require('./Converter')
+var defaultConvertTypes = require('./defaultConvertTypes')
 var calibrate = require('./calibrate')
 var validate = require('./validate')
 
@@ -19,8 +20,9 @@ var contextBroker = {
 }
 var payloadMaxSize = '512kb'
 
-// Connect to Orion Context Broker
+// Setup classes
 var client = new ContextBrokerClient(contextBroker)
+var converter = new Converter(defaultConvertTypes)
 
 // Verify request method
 app.use(function (req, res, next) {
@@ -81,7 +83,7 @@ app.use(function (req, res, next) {
 
 // Convert
 app.use(function (req, res, next) {
-	convert(data, next)
+	converter.convert(data, next)
 })
 
 // Calibrate
