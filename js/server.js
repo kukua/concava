@@ -19,7 +19,7 @@ var contextBroker = {
 }
 var payloadMaxSize = '512kb'
 
-// Connect to ContextBroker
+// Connect to Orion Context Broker
 var client = new ContextBrokerClient(contextBroker)
 
 // Verify request method
@@ -61,7 +61,7 @@ app.use(function (req, res, next) {
 	}
 })
 
-// Determine payload ID
+// Validate device ID
 app.use(function (req, res, next) {
 	if (data.getDeviceId()) return next()
 
@@ -69,12 +69,12 @@ app.use(function (req, res, next) {
 	res.end('Could not determine payload ID.')
 })
 
-// Determine payload mapping
+// Retrieve sensor metadata
 app.use(function (req, res, next) {
-	client.getPayloadMappingById(data.getDeviceId(), function (err, mapping) {
+	client.getSensorMetadata(data.getDeviceId(), function (err, metadata) {
 		if (err) return next(err)
 
-		data.setMapping(mapping)
+		data.setMetadata(metadata)
 		next()
 	})
 })
@@ -94,19 +94,18 @@ app.use(function (req, res, next) {
 	validate(data, next)
 })
 
-// Debug: dump SensorData
+// Debug: dump sensor data
 if (debug) {
 	app.use(function (req, res, next) {
 		console.log(
 			data.getDeviceId(),
-			data.getData(),
-			data.getMapping()
+			data.getData()
 		)
 		next()
 	})
 }
 
-// Send to Context Broker
+// Store sensor data
 app.use(function (req, res, next) {
 	client.insertSensorData(data, next)
 })

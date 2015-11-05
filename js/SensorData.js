@@ -13,31 +13,27 @@ objectAssign(SensorData.prototype, {
 	getBuffer: function () {
 		return this._buffer
 	},
+	getDeviceId: function () {
+		return this.getBuffer().toString('hex', 0, 8).toUpperCase()
+	},
 	setData: function (data) {
 		this._data = data
 	},
 	getData: function () {
 		return this._data
 	},
-	setAttributeValue: function (name, val) {
+	setValue: function (name, val) {
 		var data = this.getData()
 		data[name] = val
 	},
-	getAttributeValue: function (name) {
+	getValue: function (name) {
 		return this.getData()[name]
 	},
-	getDeviceId: function () {
-		return this.getBuffer().toString('hex', 0, 8)
+	setMetadata: function (metadata) {
+		this._metadata = metadata
 	},
-	setMapping: function (mapping) {
-		this._mapping = mapping
-	},
-	getMapping: function () {
-		return this._mapping
-	},
-	getAttributeType: function (name) {
-		var attr = this.getMapping().attributes.filter(function (attr) { return attr.name === name })[0]
-		return attr ? attr.type : null
+	getMetadata: function () {
+		return this._metadata
 	},
 })
 

@@ -1,5 +1,6 @@
 var objectAssign = require('object-assign')
 var SensorData = require('./SensorData')
+var SensorMetadata = require('./SensorMetadata')
 var request = require('request')
 
 require('array.prototype.find')
@@ -37,11 +38,11 @@ objectAssign(ContextBrokerClient.prototype, {
 			cb(null, data)
 		})
 	},
-	getPayloadMappingById: function (id, cb) {
+	getSensorMetadata: function (id, cb) {
 		this._request('queryContext', {
 			entities: [
 				{
-					type: 'PayloadMapping',
+					type: 'SensorMetadata',
 					isPattern: 'false',
 					id: '' + id,
 				},
@@ -49,28 +50,47 @@ objectAssign(ContextBrokerClient.prototype, {
 		}, function (err, data) {
 			if (err) return cb(err)
 
-			var mapping = data.contextResponses[0].contextElement
-			var findIndex = function (a) { return a.name === 'index' }
+			try {
+				var attributes = data.contextResponses[0].contextElement.attributes
 
-			mapping.attributes.sort(function (a, b) {
-				return parseInt(a.metadatas.find(findIndex).value) -
-					parseInt(b.metadatas.find(findIndex).value)
-			})
+				attributes.forEach(function (attr) {
+					var index = 0
 
-			cb(null, mapping)
+					attr.properties = []
+
+					if (attr.metadatas) {
+						attr.metadatas.forEach(function (prop) {
+							if (prop.name === 'index') {
+								index = parseInt(prop.value)
+							} else {
+								attr.properties.push(prop)
+							}
+						})
+					}
+
+					attr.index = index
+					delete attr.metadatas
+				})
+
+				attributes.sort(function (a, b) { return a.index - b.index })
+
+				cb(null, new SensorMetadata(attributes))
+			} catch (err) {
+				cb(err)
+			}
 		})
 	},
-	insertSensorData: function (el, cb) {
-		if ( ! (el instanceof SensorData)) return cb('Invalid SensorData given.')
+	insertSensorData: function (data, cb) {
+		if ( ! (data instanceof SensorData)) return cb('Invalid SensorData given.')
 
-		var data = el.getData()
+		var values = data.getData()
 		var attributes = []
 		var timestamp = new Date().getTime()
 
-		for (var name in data) {
+		for (var name in values) {
 			attributes.push({
 				name: name,
-				value: data[name],
+				value: values[name],
 			})
 		}
 
@@ -80,7 +100,7 @@ objectAssign(ContextBrokerClient.prototype, {
 			contextElements: [
 				{
 					type: 'SensorData',
-					id: el.getDeviceId() + '-' + timestamp,
+					id: data.getDeviceId() + '-' + timestamp,
 					attributes: attributes,
 				},
 			],

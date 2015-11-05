@@ -5,7 +5,7 @@
 {
     "entities": [
         {
-            "type": "PayloadMapping",
+            "type": "SensorMetadata",
             "isPattern": "false",
             "id": "${1:-0000000000000001}"
         }

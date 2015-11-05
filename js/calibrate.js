@@ -1,29 +1,25 @@
 var SensorData = require('./SensorData')
 var VM = require('vm2').VM
 
-module.exports = function (el, cb) {
-	if ( ! (el instanceof SensorData)) return cb('Invalid SensorData given.')
+module.exports = function (data, cb) {
+	if ( ! (data instanceof SensorData)) return cb('Invalid SensorData given.')
 
-	var attributes = el.getMapping().attributes
+	var meta = data.getMetadata()
 
-	for (var i in attributes) {
-		var attr = attributes[i]
-
-		if ( ! Array.isArray(attr.metadatas)) continue
-
-		attr.metadatas.forEach(function (meta) {
-			if (meta.name !== 'calibrate') return
+	meta.getAttributes().forEach(function (attr) {
+		attr.getProperties().forEach(function (prop) {
+			if (prop.name !== 'calibrate') return
 
 			var vm = new VM({
 				timeout: 1000,
 				sandbox: {
-					val: el.getAttributeValue(attr.name)
+					val: data.getValue(attr.getName())
 				},
 			})
-			var value = vm.run('(' + decodeURI(meta.value) + ')(val)')
-			el.setAttributeValue(attr.name, value)
+			var value = vm.run('(' + decodeURI(prop.value) + ')(val)')
+			data.setValue(attr.getName(), value)
 		})
-	}
+	})
 
 	cb()
 }

@@ -5,7 +5,7 @@
 {
 	"contextElements": [
 		{
-			"type": "PayloadMapping",
+			"type": "SensorMetadata",
 			"isPattern": "false",
 			"id": "0000000000000001",
 			"attributes": [
