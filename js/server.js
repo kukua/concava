@@ -10,12 +10,6 @@ var Validator = require('./Validator')
 var convertTypes = require('./types/convert')
 var validateTypes = require('./types/validate')
 
-function sendAuthResponse (res, body) {
-	res.setHeader('WWW-Authenticate', 'Token')
-	res.writeHead(401)
-	res.end(body || '')
-}
-
 // Configuration
 var debug = true
 var port = 3000
@@ -52,12 +46,18 @@ app.use(function (req, res, next) {
 
 // Validate authentication header
 app.use(function (req, res, next) {
-	if ( ! req.headers['authorization']) return sendAuthResponse(res, 'Missing Authorization header.')
+	if ( ! req.headers['authorization']) {
+		var err = new Error('Missing Authorization header.')
+		err.statusCode = 401
+		return next(err)
+	}
 
 	var token = req.headers['authorization'].replace('Token ', '')
 
 	if ( ! token || ! token.match(/^[a-zA-Z0-9]{32}$/)) {
-		return sendAuthResponse(res, 'Invalid token.')
+		var err = new Error('Invalid token.')
+		err.statusCode = 401
+		return next(err)
 	}
 
 	req.authToken = token
@@ -113,7 +113,6 @@ app.use(function (req, res, next) {
 // Retrieve sensor metadata
 app.use(function (req, res, next) {
 	req.client.getSensorMetadata(req.data.getDeviceId(), function (err, metadata) {
-		if (err && err.statusCode === 401) return sendAuthResponse(res, 'Unauthorized token.')
 		if (err) return next(err)
 
 		req.data.setMetadata(metadata)
@@ -167,10 +166,18 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
 	console.error(err)
 	if (err.stack) console.error(err.stack)
-	if (err instanceof Error) err = err.toString()
-	res.writeHead(500)
-	res.end(err || '')
-	next()
+
+	var statusCode = (err.statusCode || 500)
+	if (statusCode === 401) res.setHeader('WWW-Authenticate', 'Token')
+	res.writeHead(statusCode)
+
+	if (err instanceof Error) err = err.toString().replace(/^Error: /, '')
+
+	if (statusCode === 500) {
+		res.end('An internal server error occured.')
+	} else {
+		res.end(err || '')
+	}
 })
 
 // Start server

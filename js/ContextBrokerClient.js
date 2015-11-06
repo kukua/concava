@@ -3,10 +3,8 @@ var SensorData = require('./SensorData')
 var SensorMetadata = require('./SensorMetadata')
 var request = require('request')
 
-require('array.prototype.find')
-
 function ContextBrokerClient (config) {
-	if (config) this.setConfig(config)
+	this.setConfig(config || {})
 }
 
 objectAssign(ContextBrokerClient.prototype, {
@@ -17,15 +15,21 @@ objectAssign(ContextBrokerClient.prototype, {
 		return this._config
 	},
 	setAuthToken: function (token) {
-		this._config.authToken = token
+		this.getConfig().authToken = token
 	},
 	getAuthToken: function () {
-		return this._config.authToken
+		return this.getConfig().authToken
 	},
 	_request: function (url, data, cb) {
 		data = JSON.stringify(data)
-		request.post(this._config.url + '/' + url, {
-			timeout: this._config.timeout || 3000,
+
+		var codeResponses = {
+			401: 'Invalid token.',
+			503: 'Context Broker unavailable.',
+		}
+
+		request.post(this.getConfig().url + '/' + url, {
+			timeout: this.getConfig().timeout || 3000,
 			headers: {
 				'X-Auth-Token': this.getAuthToken(),
 				'Content-Type': 'application/json',
@@ -34,9 +38,11 @@ objectAssign(ContextBrokerClient.prototype, {
 			body: data,
 		}, function (err, httpResponse, data) {
 			if (err) return cb(err)
-			if (httpResponse.statusCode === 401) {
-				err = new Error('Invalid X-Auth-Token.')
-				err.statusCode = 401
+
+			var code = httpResponse.statusCode
+			if (codeResponses[code]) {
+				err = new Error(codeResponses[code])
+				err.statusCode = code
 				return cb(err)
 			}
 
