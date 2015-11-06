@@ -1,4 +1,5 @@
 var objectAssign = require('object-assign')
+var SensorMetadata = require('./SensorMetadata')
 
 function SensorData (buffer) {
 	if (buffer) this.setBuffer(buffer)
@@ -7,7 +8,8 @@ function SensorData (buffer) {
 
 objectAssign(SensorData.prototype, {
 	setBuffer: function (buffer) {
-		if ( ! Buffer.isBuffer(buffer)) throw new Error('Given buffer is not a Buffer instance.')
+		if ( ! Buffer.isBuffer(buffer)) throw new Error('Invalid Buffer given.')
+		if (buffer.length < 8) throw new Error('Buffer contains less than 8 bytes.')
 		this._buffer = buffer
 	},
 	getBuffer: function () {
@@ -30,6 +32,7 @@ objectAssign(SensorData.prototype, {
 		return this.getData()[name]
 	},
 	setMetadata: function (metadata) {
+		if ( ! (metadata instanceof SensorMetadata)) throw new Error('Invalid SensorMetadata given.')
 		this._metadata = metadata
 	},
 	getMetadata: function () {

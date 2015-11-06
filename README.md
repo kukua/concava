@@ -30,6 +30,12 @@ http POST 'http://concava:3000/' \
 docker-compose logs server
 ```
 
+## Tests
+
+```bash
+npm test
+```
+
 ## Notes
 
 - Create example payload: `node tools/createExamplePayload.js > tools/payload.data`

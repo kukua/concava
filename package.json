@@ -6,7 +6,7 @@
   "main": "js/server.js",
   "scripts": {
     "start": "node --harmony js/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/jasmine"
   },
   "author": "Maurits van Mastrigt <maurits@nerdieworks.nl>",
   "repository": {
@@ -21,5 +21,9 @@
     "raw-body": "^2.1.4",
     "request": "^2.65.0",
     "vm2": "^0.2.3"
+  },
+  "devDependencies": {
+    "jasmine": "^2.3.2",
+    "jasmine-es6": "0.0.18"
   }
 }
