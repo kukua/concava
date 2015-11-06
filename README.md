@@ -38,5 +38,6 @@ npm test
 
 ## Notes
 
+- In this setup the Context Broker is __externally accessible via port 1026__!
 - Create example payload: `node tools/createExamplePayload.js > tools/payload.data`
 - Access to underlying MongoDB: `docker exec -it concava_context_broker mongo orion`
