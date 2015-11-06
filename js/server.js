@@ -14,13 +14,10 @@ var validateTypes = require('./types/validate')
 var debug = true
 var port = 3000
 var contextBroker = {
-	url: 'http://concava:1026/v1',
+	url: 'http://concava:9001/v1',
 	timeout: 5000,
 }
 var payloadMaxSize = '512kb'
-
-// Connect to Orion Context Broker
-var client = new ContextBrokerClient(contextBroker)
 
 // Add timestamp to request
 app.use(function (req, res, next) {
@@ -34,6 +31,21 @@ app.use(function (req, res, next) {
 
 	res.writeHead(404)
 	res.end('Not found.')
+})
+
+// Check for X-Auth-Token
+app.use(function (req, res, next) {
+	if (req.headers['x-auth-token']) return next()
+
+	res.writeHead(401)
+	res.end('Missing X-Auth-Token header.')
+})
+
+// Setup client
+app.use(function (req, res, next) {
+	req.client = new ContextBrokerClient(contextBroker)
+	req.client.setAuthToken(req.headers['x-auth-token'])
+	next()
 })
 
 // Parse payload into buffer
@@ -77,7 +89,14 @@ app.use(function (req, res, next) {
 
 // Retrieve sensor metadata
 app.use(function (req, res, next) {
-	client.getSensorMetadata(req.data.getDeviceId(), function (err, metadata) {
+	req.client.getSensorMetadata(req.data.getDeviceId(), function (err, metadata) {
+		if (err && err.statusCode === 401) {
+			console.log('Unauthorized request with token:', req.client.getAuthToken())
+			res.writeHead(401)
+			res.end('Invalid X-Auth-Token.')
+			return
+		}
+
 		if (err) return next(err)
 
 		req.data.setMetadata(metadata)
@@ -119,7 +138,7 @@ if (debug) {
 
 // Store sensor data
 app.use(function (req, res, next) {
-	client.insertSensorData(req.data, req.start, next)
+	req.client.insertSensorData(req.data, req.start, next)
 })
 
 // Return response
@@ -129,7 +148,8 @@ app.use(function (req, res, next) {
 
 // Error handler
 app.use(function (err, req, res, next) {
-	console.error(err, err.stack)
+	console.error(err)
+	if (err.stack) console.error(err.stack)
 	if (err instanceof Error) err = err.toString()
 	res.writeHead(500)
 	res.end(err || '')

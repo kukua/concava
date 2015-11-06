@@ -16,23 +16,35 @@ objectAssign(ContextBrokerClient.prototype, {
 	getConfig: function () {
 		return this._config
 	},
+	setAuthToken: function (token) {
+		this._config.authToken = token
+	},
+	getAuthToken: function () {
+		return this._config.authToken
+	},
 	_request: function (url, data, cb) {
 		data = JSON.stringify(data)
 		request.post(this._config.url + '/' + url, {
 			timeout: this._config.timeout || 3000,
 			headers: {
+				'X-Auth-Token': this.getAuthToken(),
 				'Content-Type': 'application/json',
 				'Accept': 'application/json',
 			},
 			body: data,
 		}, function (err, httpResponse, data) {
 			if (err) return cb(err)
+			if (httpResponse.statusCode === 401) {
+				err = new Error('Invalid X-Auth-Token.')
+				err.statusCode = 401
+				return cb(err)
+			}
 
 			data = JSON.parse(data)
 
 			if (data.errorCode) {
 				err = data.errorCode
-				return cb('[ContextBrokerClient] ' + err.reasonPhrase + ' (' + err.code + '): ' + err.details)
+				return cb(err.reasonPhrase + ' (' + err.code + '): ' + err.details)
 			}
 
 			cb(null, data)
