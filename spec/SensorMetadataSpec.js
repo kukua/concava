@@ -3,6 +3,7 @@ import SensorAttribute from '../js/SensorAttribute'
 
 describe('SensorMetadata', () => {
 	var metadata
+
 	beforeEach((done) => {
 		metadata = new SensorMetadata
 		done()
@@ -26,6 +27,9 @@ describe('SensorMetadata', () => {
 	})
 	it('can get an attribute', () => {
 		expect(typeof metadata.getAttribute).toBe('function')
+		expect(metadata.getAttribute('a')).toBe(undefined)
+		expect(metadata.getAttribute('b')).toBe(undefined)
+		expect(metadata.getAttribute('c')).toBe(undefined)
 		metadata.setAttributes(attributes)
 		expect(metadata.getAttribute('a')).toBe(attributes[0])
 		expect(metadata.getAttribute('b')).toBe(attributes[1])
@@ -34,6 +38,9 @@ describe('SensorMetadata', () => {
 	})
 	it('can get an attribute type', () => {
 		expect(typeof metadata.getAttribute).toBe('function')
+		expect(metadata.getAttributeType('a')).toBe(undefined)
+		expect(metadata.getAttributeType('b')).toBe(undefined)
+		expect(metadata.getAttributeType('c')).toBe(undefined)
 		metadata.setAttributes(attributes)
 		expect(metadata.getAttributeType('a')).toBe(attributes[0].getType())
 		expect(metadata.getAttributeType('b')).toBe(attributes[1].getType())

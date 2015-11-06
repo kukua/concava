@@ -11,8 +11,8 @@ describe('SensorData', () => {
 			invalid: 'Invalid SensorMetadata given.',
 		},
 	}
-
 	var data
+
 	beforeEach((done) => {
 		data = new SensorData
 		done()
@@ -27,6 +27,7 @@ describe('SensorData', () => {
 		expect(typeof data.setBuffer).toBe('function')
 		expect(typeof data.getBuffer).toBe('function')
 		var buffer = new Buffer([ 0, 1, 2, 3, 4, 5, 6, 7 ])
+		expect(data.getBuffer()).toBe(undefined)
 		data.setBuffer(buffer)
 		expect(data.getBuffer()).toBe(buffer)
 	})
@@ -34,6 +35,7 @@ describe('SensorData', () => {
 		expect(typeof data.getDeviceId).toBe('function')
 		var id = 'ABCDEF0123456789'
 		var buffer = new Buffer(id, 'hex')
+		expect(data.getDeviceId()).toBe(undefined)
 		data.setBuffer(buffer)
 		expect(data.getDeviceId()).toBe(id)
 	})
@@ -51,6 +53,8 @@ describe('SensorData', () => {
 		expect(typeof data.setValue).toBe('function')
 		expect(typeof data.getValue).toBe('function')
 		var values = { a: 1, b: 2 }
+		data.setValue('a', undefined)
+		data.setValue('b', undefined)
 		data.setData(values)
 		expect(data.getData()).toBe(values)
 		data.setValue('a', 10)
@@ -65,6 +69,7 @@ describe('SensorData', () => {
 		expect(typeof data.setMetadata).toBe('function')
 		expect(typeof data.getMetadata).toBe('function')
 		var metadata = new SensorMetadata()
+		expect(data.getMetadata()).toBe(undefined)
 		data.setMetadata(metadata)
 		expect(data.getMetadata()).toBe(metadata)
 	})
