@@ -10,6 +10,12 @@ var Validator = require('./Validator')
 var convertTypes = require('./types/convert')
 var validateTypes = require('./types/validate')
 
+function sendAuthResponse (res, body) {
+	res.setHeader('WWW-Authenticate', 'Token')
+	res.writeHead(401)
+	res.end(body || '')
+}
+
 // Configuration
 var debug = true
 var port = 3000
@@ -25,26 +31,43 @@ app.use(function (req, res, next) {
 	next()
 })
 
-// Verify request method
+// Verify request
 app.use(function (req, res, next) {
-	if (req.method === 'POST') return next()
+	if (req.url === '/' && (req.method === 'HEAD' || req.method === 'POST')) {
+		res.setHeader('Allow', 'HEAD, POST')
+		res.setHeader('Accept', 'application/octet-stream')
+
+		if (req.method === 'HEAD') return res.end('')
+		if (req.headers['content-type'] !== 'application/octet-stream') {
+			res.writeHead(400)
+			res.end('Invalid content type.')
+			return
+		}
+		if (req.method === 'POST') return next()
+	}
 
 	res.writeHead(404)
 	res.end('Not found.')
 })
 
-// Check for X-Auth-Token
+// Validate authentication header
 app.use(function (req, res, next) {
-	if (req.headers['x-auth-token']) return next()
+	if ( ! req.headers['authorization']) return sendAuthResponse(res, 'Missing Authorization header.')
 
-	res.writeHead(401)
-	res.end('Missing X-Auth-Token header.')
+	var token = req.headers['authorization'].replace('Token ', '')
+
+	if ( ! token || ! token.match(/^[a-zA-Z0-9]{32}$/)) {
+		return sendAuthResponse(res, 'Invalid token.')
+	}
+
+	req.authToken = token
+	next()
 })
 
 // Setup client
 app.use(function (req, res, next) {
 	req.client = new ContextBrokerClient(contextBroker)
-	req.client.setAuthToken(req.headers['x-auth-token'])
+	req.client.setAuthToken(req.authToken)
 	next()
 })
 
@@ -90,13 +113,7 @@ app.use(function (req, res, next) {
 // Retrieve sensor metadata
 app.use(function (req, res, next) {
 	req.client.getSensorMetadata(req.data.getDeviceId(), function (err, metadata) {
-		if (err && err.statusCode === 401) {
-			console.log('Unauthorized request with token:', req.client.getAuthToken())
-			res.writeHead(401)
-			res.end('Invalid X-Auth-Token.')
-			return
-		}
-
+		if (err && err.statusCode === 401) return sendAuthResponse(res, 'Unauthorized token.')
 		if (err) return next(err)
 
 		req.data.setMetadata(metadata)

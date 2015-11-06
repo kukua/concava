@@ -24,7 +24,9 @@ docker-compose up -d
 ./tools/appendSensorMetadata.sh
 
 # Test with:
-http POST 'http://concava:3000/' 'X-Auth-Token: test' < tools/payload.data
+http POST 'http://concava:3000/' \
+	'Authorization: Token <token from keyrock-auth>' 'Content-Type: application/octet-stream' \
+	< tools/payload.data
 docker-compose logs server
 ```
 
