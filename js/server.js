@@ -27,7 +27,7 @@ app.use(function (req, res, next) {
 
 // Verify request
 app.use(function (req, res, next) {
-	if (req.url === '/' && (req.method === 'HEAD' || req.method === 'POST')) {
+	if (req.url === '/v1/sensorData' && (req.method === 'HEAD' || req.method === 'POST')) {
 		res.setHeader('Allow', 'HEAD, POST')
 		res.setHeader('Accept', 'application/octet-stream')
 
