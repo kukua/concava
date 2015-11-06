@@ -1,8 +1,10 @@
 context_broker:
+    container_name: concava_context_broker
     image: jonadev95/contextbroker-docker
-    ports:
-        - "1026:1026"
+#    ports:
+#        - "1026:1026"
 server:
+    container_name: concava_server
     image: node:4.2.1
     working_dir: /src
     ports:
