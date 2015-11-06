@@ -18,7 +18,7 @@ objectAssign(SensorData.prototype, {
 	getDeviceId: function () {
 		var buffer = this.getBuffer()
 		if ( ! buffer) return
-		return buffer.toString('hex', 0, 8).toUpperCase()
+		return buffer.toString('hex', 0, 8).toLowerCase()
 	},
 	setData: function (data) {
 		this._data = data

@@ -37,7 +37,8 @@ describe('SensorData', () => {
 		var buffer = new Buffer(id, 'hex')
 		expect(data.getDeviceId()).toBe(undefined)
 		data.setBuffer(buffer)
-		expect(data.getDeviceId()).toBe(id)
+		expect(data.getDeviceId()).not.toBe(id)
+		expect(data.getDeviceId()).toBe(id.toLowerCase())
 	})
 	it('can set/get a data object', () => {
 		expect(typeof data.setData).toBe('function')
