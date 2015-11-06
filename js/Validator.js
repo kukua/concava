@@ -1,36 +1,32 @@
-var objectAssign = require('object-assign')
-var SensorData = require('./SensorData')
+import SensorData from './SensorData'
 
-function Validator (types) {
-	this.setTypes(types || {})
-}
-
-objectAssign(Validator.prototype, {
-	setTypes: function (types) {
+export default class Validator {
+	constructor (types) {
+		this.setTypes(types || {})
+	}
+	setTypes (types) {
 		this._types = types
-	},
-	getTypes: function () {
+	}
+	getTypes () {
 		return this._types
-	},
-	setType: function (name, type) {
+	}
+	setType (name, type) {
 		this._types[name] = type
-	},
-	getType: function (name) {
+	}
+	getType (name) {
 		return this._types[name]
-	},
-	validate: function (data, cb) {
+	}
+	validate (data, cb) {
 		if ( ! (data instanceof SensorData)) return cb('Invalid SensorData given.')
 
-		var self = this
-
-		data.getMetadata().getAttributes().forEach(function (attr) {
+		data.getMetadata().getAttributes().forEach((attr) => {
 			var value = data.getValue(attr.getName())
 			var dirty = false
 
-			attr.getProperties().forEach(function (prop) {
+			attr.getProperties().forEach((prop) => {
 				if (prop.name === 'calibrate') return
 
-				var fn = self.getType(prop.name)
+				var fn = this.getType(prop.name)
 
 				if (typeof fn !== 'function') {
 					console.error('No validator for property', prop)
@@ -47,7 +43,5 @@ objectAssign(Validator.prototype, {
 		})
 
 		cb()
-	},
-})
-
-module.exports = Validator
+	}
+}

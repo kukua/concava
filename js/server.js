@@ -1,14 +1,14 @@
-var connect = require('connect')
-var http = require('http')
+import connect from 'connect'
+import http from 'http'
+import getRawBody from 'raw-body'
+import SensorData from './SensorData'
+import ContextBrokerClient from './ContextBrokerClient'
+import Converter from './Converter'
+import Calibrator from './Calibrator'
+import Validator from './Validator'
+import convertTypes from './types/convert'
+import validateTypes from './types/validate'
 var app = connect()
-var getRawBody = require('raw-body')
-var SensorData = require('./SensorData')
-var ContextBrokerClient = require('./ContextBrokerClient')
-var Converter = require('./Converter')
-var Calibrator = require('./Calibrator')
-var Validator = require('./Validator')
-var convertTypes = require('./types/convert')
-var validateTypes = require('./types/validate')
 
 // Configuration
 var debug = true

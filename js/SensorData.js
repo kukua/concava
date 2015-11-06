@@ -1,45 +1,41 @@
-var objectAssign = require('object-assign')
-var SensorMetadata = require('./SensorMetadata')
+import SensorMetadata from './SensorMetadata'
 
-function SensorData (buffer) {
-	if (buffer) this.setBuffer(buffer)
-	this.setData({})
-}
-
-objectAssign(SensorData.prototype, {
-	setBuffer: function (buffer) {
+export default class SensorData {
+	constructor (buffer) {
+		if (buffer) this.setBuffer(buffer)
+		this.setData({})
+	}
+	setBuffer (buffer) {
 		if ( ! Buffer.isBuffer(buffer)) throw new Error('Invalid Buffer given.')
 		if (buffer.length < 8) throw new Error('Buffer contains less than 8 bytes.')
 		this._buffer = buffer
-	},
-	getBuffer: function () {
+	}
+	getBuffer () {
 		return this._buffer
-	},
-	getDeviceId: function () {
+	}
+	getDeviceId () {
 		var buffer = this.getBuffer()
 		if ( ! buffer) return
 		return buffer.toString('hex', 0, 8).toLowerCase()
-	},
-	setData: function (data) {
+	}
+	setData (data) {
 		this._data = data
-	},
-	getData: function () {
+	}
+	getData () {
 		return this._data
-	},
-	setValue: function (name, val) {
+	}
+	setValue (name, val) {
 		var data = this.getData()
 		data[name] = val
-	},
-	getValue: function (name) {
+	}
+	getValue (name) {
 		return this.getData()[name]
-	},
-	setMetadata: function (metadata) {
+	}
+	setMetadata (metadata) {
 		if ( ! (metadata instanceof SensorMetadata)) throw new Error('Invalid SensorMetadata given.')
 		this._metadata = metadata
-	},
-	getMetadata: function () {
+	}
+	getMetadata () {
 		return this._metadata
-	},
-})
-
-module.exports = SensorData
+	}
+}

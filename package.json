@@ -5,7 +5,7 @@
   "private": true,
   "main": "js/server.js",
   "scripts": {
-    "start": "node --harmony js/server.js",
+    "start": "babel-node js/server.js",
     "test": "./node_modules/.bin/jasmine"
   },
   "author": "Maurits van Mastrigt <maurits@nerdieworks.nl>",
@@ -16,13 +16,11 @@
   "license": "MIT",
   "dependencies": {
     "connect": "^3.4.0",
-    "object-assign": "^4.0.1",
     "raw-body": "^2.1.4",
     "request": "^2.65.0",
     "vm2": "^0.2.3"
   },
   "devDependencies": {
-    "jasmine": "^2.3.2",
     "jasmine-es6": "0.0.18"
   }
 }

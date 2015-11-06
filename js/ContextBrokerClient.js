@@ -1,26 +1,24 @@
-var objectAssign = require('object-assign')
-var SensorData = require('./SensorData')
-var SensorMetadata = require('./SensorMetadata')
-var request = require('request')
+import request from 'request'
+import SensorData from './SensorData'
+import SensorMetadata from './SensorMetadata'
 
-function ContextBrokerClient (config) {
-	this.setConfig(config || {})
-}
-
-objectAssign(ContextBrokerClient.prototype, {
-	setConfig: function (config) {
+export default class ContextBrokerClient {
+	constructor (config) {
+		this.setConfig(config || {})
+	}
+	setConfig (config) {
 		this._config = config
-	},
-	getConfig: function () {
+	}
+	getConfig () {
 		return this._config
-	},
-	setAuthToken: function (token) {
+	}
+	setAuthToken (token) {
 		this.getConfig().authToken = token
-	},
-	getAuthToken: function () {
+	}
+	getAuthToken () {
 		return this.getConfig().authToken
-	},
-	_request: function (url, data, cb) {
+	}
+	_request (url, data, cb) {
 		data = JSON.stringify(data)
 
 		var codeResponses = {
@@ -55,8 +53,8 @@ objectAssign(ContextBrokerClient.prototype, {
 
 			cb(null, data)
 		})
-	},
-	getSensorMetadata: function (id, cb) {
+	}
+	getSensorMetadata (id, cb) {
 		this._request('queryContext', {
 			entities: [
 				{
@@ -97,8 +95,8 @@ objectAssign(ContextBrokerClient.prototype, {
 				cb(err)
 			}
 		})
-	},
-	insertSensorData: function (data, fallbackDate, cb) {
+	}
+	insertSensorData (data, fallbackDate, cb) {
 		if ( ! (data instanceof SensorData)) return cb('Invalid SensorData given.')
 
 		var values = data.getData()
@@ -134,7 +132,5 @@ objectAssign(ContextBrokerClient.prototype, {
 			if (err) return cb(err)
 			cb(null, data.contextResponses[0].contextElement.id)
 		})
-	},
-})
-
-module.exports = ContextBrokerClient
+	}
+}

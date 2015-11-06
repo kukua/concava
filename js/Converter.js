@@ -1,24 +1,22 @@
-var objectAssign = require('object-assign')
-var SensorData = require('./SensorData')
+import SensorData from './SensorData'
 
-function Converter (types) {
-	this.setTypes(types || {})
-}
-
-objectAssign(Converter.prototype, {
-	setTypes: function (types) {
+export default class Converter {
+	constructor (types) {
+		this.setTypes(types || {})
+	}
+	setTypes (types) {
 		this._types = types
-	},
-	getTypes: function () {
+	}
+	getTypes () {
 		return this._types
-	},
-	setType: function (name, type) {
+	}
+	setType (name, type) {
 		this._types[name] = type
-	},
-	getType: function (name) {
+	}
+	getType (name) {
 		return this._types[name]
-	},
-	convert: function (data, cb) {
+	}
+	convert (data, cb) {
 		if ( ! (data instanceof SensorData)) return cb('Invalid SensorData given.')
 
 		var types = this.getTypes()
@@ -46,7 +44,5 @@ objectAssign(Converter.prototype, {
 		}
 
 		cb()
-	},
-})
-
-module.exports = Converter
+	}
+}

@@ -1,11 +1,8 @@
-var objectAssign = require('object-assign')
-var SensorData = require('./SensorData')
-var VM = require('vm2').VM
+import {VM} from 'vm2'
+import SensorData from './SensorData'
 
-function Calibrator () {}
-
-objectAssign(Calibrator.prototype, {
-	calibrate: function (data, cb) {
+export default class Calibrator {
+	calibrate (data, cb) {
 		if ( ! (data instanceof SensorData)) return cb('Invalid SensorData given.')
 
 		var meta = data.getMetadata()
@@ -26,7 +23,5 @@ objectAssign(Calibrator.prototype, {
 		})
 
 		cb()
-	},
-})
-
-module.exports = Calibrator
+	}
+}

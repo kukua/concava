@@ -1,28 +1,23 @@
-var objectAssign = require('object-assign')
-
-function SensorAttribute (data) {
-	this.setData(data || {})
-}
-
-objectAssign(SensorAttribute.prototype, {
-	setData: function (data) {
+export default class SensorAttribute {
+	constructor (data) {
+		this.setData(data || {})
+	}
+	setData (data) {
 		this._data = data
-	},
-	getData: function () {
+	}
+	getData () {
 		return this._data
-	},
-	getName: function () {
+	}
+	getName () {
 		return this.getData().name
-	},
-	getType: function () {
+	}
+	getType () {
 		return this.getData().type
-	},
-	getValue: function () {
+	}
+	getValue () {
 		return this.getData().value
-	},
-	getProperties: function () {
+	}
+	getProperties () {
 		return this.getData().properties || []
-	},
-})
-
-module.exports = SensorAttribute
+	}
+}
