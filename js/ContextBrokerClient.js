@@ -5,6 +5,7 @@ import SensorMetadata from './SensorMetadata'
 export default class ContextBrokerClient {
 	constructor (config) {
 		this.setConfig(config || {})
+		this._cache = {}
 	}
 	setConfig (config) {
 		this._config = config
@@ -12,13 +13,7 @@ export default class ContextBrokerClient {
 	getConfig () {
 		return this._config
 	}
-	setAuthToken (token) {
-		this.getConfig().authToken = token
-	}
-	getAuthToken () {
-		return this.getConfig().authToken
-	}
-	_request (url, data, cb) {
+	_request (authToken, url, data, cb) {
 		data = JSON.stringify(data)
 
 		var codeResponses = {
@@ -29,7 +24,7 @@ export default class ContextBrokerClient {
 		request.post(this.getConfig().url + '/' + url, {
 			timeout: this.getConfig().timeout || 3000,
 			headers: {
-				'X-Auth-Token': this.getAuthToken(),
+				'X-Auth-Token': authToken,
 				'Content-Type': 'application/json',
 				'Accept': 'application/json',
 			},
@@ -54,21 +49,37 @@ export default class ContextBrokerClient {
 			cb(null, data)
 		})
 	}
-	getSensorMetadata (id, cb) {
-		this._request('queryContext', {
+	getSensorMetadata (authToken, id, cb) {
+		id = '' + id
+
+		// Check cache
+		var cached = this._cache[id]
+		console.log(this._cache)
+		if (cached) {
+			var expireTime = (this.getConfig().cacheExpireTime || 15 * 60) * 1000
+			if (cached.timestamp > Date.now() - expireTime) {
+				return cb(null, cached.metadata)
+			} else {
+				delete this._cache[id]
+			}
+		}
+
+		// Request from Context Broker
+		this._request(authToken, 'queryContext', {
 			entities: [
 				{
 					type: 'SensorMetadata',
 					isPattern: 'false',
-					id: '' + id,
+					id: id,
 				},
 			],
-		}, function (err, data) {
+		}, (err, data) => {
 			if (err) return cb(err)
 
 			try {
 				var attributes = data.contextResponses[0].contextElement.attributes
 
+				// Since the Context Broker doesn't keep the order of metadatas, sort them by 'index' attribute
 				attributes.forEach(function (attr) {
 					var index = 0
 
@@ -90,13 +101,19 @@ export default class ContextBrokerClient {
 
 				attributes.sort(function (a, b) { return a.index - b.index })
 
-				cb(null, new SensorMetadata(attributes))
+				// Create metadata
+				var metadata = new SensorMetadata(attributes)
+
+				// Cache result
+				this._cache[id] = {metadata, timestamp: Date.now()}
+
+				cb(null, metadata)
 			} catch (err) {
 				cb(err)
 			}
 		})
 	}
-	insertSensorData (data, fallbackDate, cb) {
+	insertSensorData (authToken, data, fallbackDate, cb) {
 		if ( ! (data instanceof SensorData)) return cb('Invalid SensorData given.')
 
 		var values = data.getData()
@@ -119,7 +136,7 @@ export default class ContextBrokerClient {
 		attributes.push({ name: 'timestamp', value: '' + timestamp })
 
 		// Insert sensor data
-		this._request('updateContext', {
+		this._request(authToken, 'updateContext', {
 			contextElements: [
 				{
 					type: 'SensorData',

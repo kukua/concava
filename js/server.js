@@ -16,8 +16,12 @@ var port = 3000
 var contextBroker = {
 	url: 'http://concava:9001/v1',
 	timeout: 5000,
+	cacheExpireTime: 15 * 60, // seconds
 }
 var payloadMaxSize = '512kb'
+
+// Setup Context Broker client
+var client = new ContextBrokerClient(contextBroker)
 
 // Add timestamp to request
 app.use(function (req, res, next) {
@@ -64,13 +68,6 @@ app.use(function (req, res, next) {
 	next()
 })
 
-// Setup client
-app.use(function (req, res, next) {
-	req.client = new ContextBrokerClient(contextBroker)
-	req.client.setAuthToken(req.authToken)
-	next()
-})
-
 // Parse payload into buffer
 app.use(function (req, res, next) {
 	getRawBody(req, {
@@ -112,12 +109,16 @@ app.use(function (req, res, next) {
 
 // Retrieve sensor metadata
 app.use(function (req, res, next) {
-	req.client.getSensorMetadata(req.data.getDeviceId(), function (err, metadata) {
-		if (err) return next(err)
+	client.getSensorMetadata(
+		req.authToken,
+		req.data.getDeviceId(),
+		function (err, metadata) {
+			if (err) return next(err)
 
-		req.data.setMetadata(metadata)
-		next()
-	})
+			req.data.setMetadata(metadata)
+			next()
+		}
+	)
 })
 
 // Convert
@@ -154,7 +155,7 @@ if (debug) {
 
 // Store sensor data
 app.use(function (req, res, next) {
-	req.client.insertSensorData(req.data, req.start, next)
+	client.insertSensorData(req.authToken, req.data, req.start, next)
 })
 
 // Return response
