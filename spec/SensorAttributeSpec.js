@@ -1,4 +1,4 @@
-import SensorAttribute from '../js/SensorAttribute'
+import SensorAttribute from '../src/SensorAttribute'
 
 describe('SensorAttribute', () => {
 	var data = {

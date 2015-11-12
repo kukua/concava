@@ -1,5 +1,5 @@
-import SensorMetadata from '../js/SensorMetadata'
-import SensorAttribute from '../js/SensorAttribute'
+import SensorMetadata from '../src/SensorMetadata'
+import SensorAttribute from '../src/SensorAttribute'
 
 describe('SensorMetadata', () => {
 	var metadata

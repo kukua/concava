@@ -1,5 +1,5 @@
-import SensorData from '../js/SensorData'
-import SensorMetadata from '../js/SensorMetadata'
+import SensorData from '../src/SensorData'
+import SensorMetadata from '../src/SensorMetadata'
 
 describe('SensorData', () => {
 	var errors = {

@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "description": "Convert, calibrate, and validate weather data before sending it to the Orion Context Broker.",
   "private": true,
-  "main": "js/server.js",
   "scripts": {
-    "start": "babel-node js/server.js",
+    "start": "babel-node src/server.js",
     "test": "./node_modules/.bin/jasmine"
   },
   "author": "Maurits van Mastrigt <maurits@nerdieworks.nl>",
