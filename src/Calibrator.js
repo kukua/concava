@@ -14,10 +14,11 @@ export default class Calibrator {
 				var vm = new VM({
 					timeout: 1000,
 					sandbox: {
+						Math: Math,
 						val: data.getValue(attr.getName())
 					},
 				})
-				var value = vm.run('(' + decodeURI(prop.value) + ')(val)')
+				var value = vm.run('(' + decodeURI(prop.value.toString()) + ')(val)')
 				data.setValue(attr.getName(), value)
 			})
 		})
