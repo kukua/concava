@@ -3,15 +3,14 @@ import SensorMetadata from '../src/SensorMetadata'
 import SensorData from '../src/SensorData'
 
 describe('Calibrator', () => {
-	var cal, calibrate
+	var instance
 
 	beforeEach(() => {
-		cal = new Calibrator
-		calibrate = cal.calibrate.bind(cal)
+		instance = new Calibrator
 	})
 
 	it('should be a class', () => {
-		expect(cal).toEqual(jasmine.any(Calibrator))
+		expect(instance).toEqual(jasmine.any(Calibrator))
 	})
 
 	// Calibrate method
@@ -39,17 +38,17 @@ describe('Calibrator', () => {
 
 	it('should return new value', () => {
 		var data = createData({ fn: (val) => val * 2 })
-		calibrate(data)
+		instance.calibrate(data)
 		expect(data.getValue('val')).toBe(200)
 	})
 	it('should parse function strings', () => {
 		var data = createData({ fn: 'function (val) { return val * 2 }' })
-		calibrate(data)
+		instance.calibrate(data)
 		expect(data.getValue('val')).toBe(200)
 	})
 	it('should parse url encoded function strings', () => {
 		var data = createData({ fn: escape('function (val) { return val * 2 }') })
-		calibrate(data)
+		instance.calibrate(data)
 		expect(data.getValue('val')).toBe(200)
 	})
 	it('should sequentially process multiple calibrate attributes', () => {
@@ -63,7 +62,7 @@ describe('Calibrator', () => {
 				},
 			],
 		})
-		calibrate(data)
+		instance.calibrate(data)
 		expect(data.getValue('val')).toBe(300)
 	})
 	it('should ignore non-calibrate attributes', () => {
@@ -82,12 +81,12 @@ describe('Calibrator', () => {
 				},
 			],
 		})
-		calibrate(data)
+		instance.calibrate(data)
 		expect(data.getValue('val')).toBe(200)
 	})
 	it('should disallow access to global scope', () => {
 		var data = createData({ fn: (val) => global })
-		calibrate(data)
+		instance.calibrate(data)
 		var vars = data.getValue('val')
 		expect(vars.root).toBe(vars)
 		expect(vars.GLOBAL).toBe(vars)
@@ -102,7 +101,7 @@ describe('Calibrator', () => {
 	})
 	it('should allow use of Math library', () => {
 		var data = createData({ fn: (val) => Math.pow(val, 3) })
-		calibrate(data)
+		instance.calibrate(data)
 		expect(data.getValue('val')).toBe(1000000)
 	})
 })
