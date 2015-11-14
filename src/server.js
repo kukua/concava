@@ -125,21 +125,24 @@ app.use(function (req, res, next) {
 app.use(function (req, res, next) {
 	var converter = new Converter(convertTypes)
 
-	converter.convert(req.data, next)
+	converter.convert(req.data)
+	next()
 })
 
 // Calibrate
 app.use(function (req, res, next) {
 	var calibrator = new Calibrator()
 
-	calibrator.calibrate(req.data, next)
+	calibrator.calibrate(req.data)
+	next()
 })
 
 // Validate
 app.use(function (req, res, next) {
 	var validator = new Validator(validateTypes)
 
-	validator.validate(req.data, next)
+	validator.validate(req.data)
+	next()
 })
 
 // Debug: dump sensor data

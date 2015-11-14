@@ -10,9 +10,8 @@ describe('Validator', () => {
 		max: (current, valid) => Math.min(current, valid),
 	}
 
-	beforeEach((done) => {
+	beforeEach(() => {
 		instance = new Validator
-		done()
 	})
 
 	it('should be a class', () => {
@@ -55,7 +54,7 @@ describe('Validator', () => {
 		return data
 	}
 
-	it('should not change non-attributes', (done) => {
+	it('should not change non-attributes', () => {
 		var data = createData()
 		data.getMetadata().setAttributes([
 			{
@@ -64,13 +63,11 @@ describe('Validator', () => {
 				value: 2,
 			},
 		])
-		instance.validate(data, () => {
-			expect(data.getValue('val')).toBe(100)
-			expect(data.getValue('skip1')).toBe(undefined)
-			done()
-		})
+		instance.validate(data)
+		expect(data.getValue('val')).toBe(100)
+		expect(data.getValue('skip1')).toBe(undefined)
 	})
-	it('should ignore calibrate properties', (done) => {
+	it('should ignore calibrate properties', () => {
 		var data = createData({
 			properties: [
 				{
@@ -82,12 +79,10 @@ describe('Validator', () => {
 		})
 		var obj = {}
 		data.setValue('val', obj)
-		instance.validate(data, () => {
-			expect(data.getValue('val')).toBe(obj)
-			done()
-		})
+		instance.validate(data)
+		expect(data.getValue('val')).toBe(obj)
 	})
-	it('should only change value if changes are made (dirty check)', (done) => {
+	it('should only change value if changes are made (dirty check)', () => {
 		var data = createData({
 			properties: [
 				{
@@ -104,12 +99,10 @@ describe('Validator', () => {
 		})
 		var obj = {}
 		data.setValue('val', obj)
-		instance.validate(data, () => {
-			expect(data.getValue('val')).toBe(obj)
-			done()
-		})
+		instance.validate(data)
+		expect(data.getValue('val')).toBe(obj)
 	})
-	it('should process min validator', (done) => {
+	it('should process min validator', () => {
 		var data = createData({
 			properties: [
 				{
@@ -120,12 +113,10 @@ describe('Validator', () => {
 			],
 		})
 		instance.setType('min', types.min)
-		instance.validate(data, () => {
-			expect(data.getValue('val')).toBe(110)
-			done()
-		})
+		instance.validate(data)
+		expect(data.getValue('val')).toBe(110)
 	})
-	it('should process min validator', (done) => {
+	it('should process min validator', () => {
 		var data = createData({
 			properties: [
 				{
@@ -136,12 +127,10 @@ describe('Validator', () => {
 			],
 		})
 		instance.setType('max', types.max)
-		instance.validate(data, () => {
-			expect(data.getValue('val')).toBe(90)
-			done()
-		})
+		instance.validate(data)
+		expect(data.getValue('val')).toBe(90)
 	})
-	it('should process multiple validators (sequentially)', (done) => {
+	it('should process multiple validators (sequentially)', () => {
 		var data = createData({
 			properties: [
 				{
@@ -160,10 +149,8 @@ describe('Validator', () => {
 			plus: (current, value) => current + value,
 			times: (current, value) => current * value,
 		})
-		instance.validate(data, () => {
-			expect(data.getValue('val')).toBe(330)
-			done()
-		})
+		instance.validate(data)
+		expect(data.getValue('val')).toBe(330)
 	})
 
 	// Constructors

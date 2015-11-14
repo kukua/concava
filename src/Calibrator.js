@@ -2,8 +2,8 @@ import {VM} from 'vm2'
 import SensorData from './SensorData'
 
 export default class Calibrator {
-	calibrate (data, cb) {
-		if ( ! (data instanceof SensorData)) return cb('Invalid SensorData given.')
+	calibrate (data) {
+		if ( ! (data instanceof SensorData)) throw new Error('Invalid SensorData given.')
 
 		var meta = data.getMetadata()
 
@@ -22,7 +22,5 @@ export default class Calibrator {
 				data.setValue(attr.getName(), value)
 			})
 		})
-
-		cb()
 	}
 }

@@ -5,10 +5,9 @@ import SensorData from '../src/SensorData'
 describe('Calibrator', () => {
 	var cal, calibrate
 
-	beforeEach((done) => {
+	beforeEach(() => {
 		cal = new Calibrator
 		calibrate = cal.calibrate.bind(cal)
-		done()
 	})
 
 	it('should be a class', () => {
@@ -38,28 +37,22 @@ describe('Calibrator', () => {
 		return data
 	}
 
-	it('should return new value', (done) => {
+	it('should return new value', () => {
 		var data = createDataFor((val) => val * 2)
-		calibrate(data, () => {
-			expect(data.getValue('val')).toBe(200)
-			done()
-		})
+		calibrate(data)
+		expect(data.getValue('val')).toBe(200)
 	})
-	it('should parse function strings', (done) => {
+	it('should parse function strings', () => {
 		var data = createDataFor('function (val) { return val * 2 }')
-		calibrate(data, () => {
-			expect(data.getValue('val')).toBe(200)
-			done()
-		})
+		calibrate(data)
+		expect(data.getValue('val')).toBe(200)
 	})
-	it('should parse url encoded function strings', (done) => {
+	it('should parse url encoded function strings', () => {
 		var data = createDataFor(escape('function (val) { return val * 2 }'))
-		calibrate(data, () => {
-			expect(data.getValue('val')).toBe(200)
-			done()
-		})
+		calibrate(data)
+		expect(data.getValue('val')).toBe(200)
 	})
-	it('should sequentially process multiple calibrate attributes', (done) => {
+	it('should sequentially process multiple calibrate attributes', () => {
 		var data = createDataFor((val) => val * 2, {
 			properties: [
 				{
@@ -69,12 +62,10 @@ describe('Calibrator', () => {
 				},
 			],
 		})
-		calibrate(data, () => {
-			expect(data.getValue('val')).toBe(300)
-			done()
-		})
+		calibrate(data)
+		expect(data.getValue('val')).toBe(300)
 	})
-	it('should ignore non-calibrate attributes', (done) => {
+	it('should ignore non-calibrate attributes', () => {
 		var data = createDataFor((val) => val * 2, {
 			properties: [
 				{
@@ -89,33 +80,27 @@ describe('Calibrator', () => {
 				},
 			],
 		})
-		calibrate(data, () => {
-			expect(data.getValue('val')).toBe(200)
-			done()
-		})
+		calibrate(data)
+		expect(data.getValue('val')).toBe(200)
 	})
-	it('should disallow access to global scope', (done) => {
+	it('should disallow access to global scope', () => {
 		var data = createDataFor((val) => global)
-		calibrate(data, () => {
-			var vars = data.getValue('val')
-			expect(vars.root).toBe(vars)
-			expect(vars.GLOBAL).toBe(vars)
-			expect(vars.global).toBe(vars)
-			expect(vars.SANDBOX).toBe(true)
-			expect(typeof vars.Math.min).toBe('function')
-			expect(typeof vars.Math.max).toBe('function')
-			expect(typeof vars.Math.random).toBe('function')
-			expect(typeof vars.Math.pow).toBe('function')
-			expect(vars.val).toBe(100)
-			expect(Object.keys(vars).length).toBe(6)
-			done()
-		})
+		calibrate(data)
+		var vars = data.getValue('val')
+		expect(vars.root).toBe(vars)
+		expect(vars.GLOBAL).toBe(vars)
+		expect(vars.global).toBe(vars)
+		expect(vars.SANDBOX).toBe(true)
+		expect(typeof vars.Math.min).toBe('function')
+		expect(typeof vars.Math.max).toBe('function')
+		expect(typeof vars.Math.random).toBe('function')
+		expect(typeof vars.Math.pow).toBe('function')
+		expect(vars.val).toBe(100)
+		expect(Object.keys(vars).length).toBe(6)
 	})
-	it('should allow use of Math library', (done) => {
+	it('should allow use of Math library', () => {
 		var data = createDataFor((val) => Math.pow(val, 3))
-		calibrate(data, () => {
-			expect(data.getValue('val')).toBe(1000000)
-			done()
-		})
+		calibrate(data)
+		expect(data.getValue('val')).toBe(1000000)
 	})
 })

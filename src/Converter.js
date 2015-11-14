@@ -16,8 +16,8 @@ export default class Converter {
 	getType (name) {
 		return this._types[name]
 	}
-	convert (data, cb) {
-		if ( ! (data instanceof SensorData)) return cb('Invalid SensorData given.')
+	convert (data) {
+		if ( ! (data instanceof SensorData)) throw new Error('Invalid SensorData given.')
 
 		var types = this.getTypes()
 		var attributes = data.getMetadata().getAttributes()
@@ -33,16 +33,14 @@ export default class Converter {
 			var fn = this.getType(attr.getType())
 
 			if (typeof fn !== 'function') {
-				return cb('Unsuported converter type: ' + attr.getType())
+				throw new Error('Unsuported converter type: ' + attr.getType())
 			}
 
 			var err = fn.call(context, attr.getName(), attr.getValue())
 
 			if (err) {
-				return cb(err)
+				throw new Error(err)
 			}
 		}
-
-		cb()
 	}
 }

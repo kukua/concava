@@ -16,8 +16,8 @@ export default class Validator {
 	getType (name) {
 		return this._types[name]
 	}
-	validate (data, cb) {
-		if ( ! (data instanceof SensorData)) return cb('Invalid SensorData given.')
+	validate (data) {
+		if ( ! (data instanceof SensorData)) throw new Error('Invalid SensorData given.')
 
 		data.getMetadata().getAttributes().forEach((attr) => {
 			var value = data.getValue(attr.getName())
@@ -38,7 +38,5 @@ export default class Validator {
 				data.setValue(attr.getName(), value)
 			}
 		})
-
-		cb()
 	}
 }
