@@ -46,11 +46,6 @@ describe('Calibrator', () => {
 		instance.calibrate(data)
 		expect(data.getValue('val')).toBe(200)
 	})
-	it('should parse url encoded function strings', () => {
-		var data = createData({ fn: escape('function (val) { return val * 2 }') })
-		instance.calibrate(data)
-		expect(data.getValue('val')).toBe(200)
-	})
 	it('should sequentially process multiple calibrate attributes', () => {
 		var data = createData({
 			fn: (val) => val * 2,

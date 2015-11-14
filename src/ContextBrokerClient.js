@@ -101,6 +101,15 @@ export default class ContextBrokerClient {
 
 				attributes.sort(function (a, b) { return a.index - b.index })
 
+				// Parse calibrate functions
+				attributes.forEach(function (attr) {
+					if ( ! attr.properties) return
+					attr.properties.forEach(function (prop) {
+						if (prop.name !== 'calibrate') return
+						prop.value = decodeURI(prop.value)
+					})
+				})
+
 				// Create metadata
 				var metadata = new SensorMetadata(attributes)
 

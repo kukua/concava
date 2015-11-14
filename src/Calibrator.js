@@ -18,7 +18,7 @@ export default class Calibrator {
 						val: data.getValue(attr.getName())
 					},
 				})
-				var value = vm.run('(' + decodeURI(prop.value.toString()) + ')(val)')
+				var value = vm.run('(' + prop.value.toString() + ')(val)')
 				data.setValue(attr.getName(), value)
 			})
 		})
