@@ -28,13 +28,10 @@ export default class Validator {
 
 				var fn = this.getType(prop.name)
 
-				if (typeof fn !== 'function') {
-					console.error('No validator for property', prop)
-					return
+				if (typeof fn === 'function') {
+					value = fn(value, prop.value)
+					dirty = true
 				}
-
-				value = fn(value, prop.value)
-				dirty = true
 			})
 
 			if (dirty) {
