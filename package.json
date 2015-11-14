@@ -7,6 +7,7 @@
     "start": "babel-node src/server.js",
     "test": "babel-node spec/run.js"
   },
+  "pre-commit": ["test"],
   "author": "Maurits van Mastrigt <maurits@nerdieworks.nl>",
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "vm2": "^0.2.3"
   },
   "devDependencies": {
-    "jasmine": "^2.3.2"
+    "jasmine": "^2.3.2",
+    "pre-commit": "^1.1.2"
   }
 }
