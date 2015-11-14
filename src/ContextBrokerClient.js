@@ -54,7 +54,6 @@ export default class ContextBrokerClient {
 
 		// Check cache
 		var cached = this._cache[id]
-		console.log(this._cache)
 		if (cached) {
 			var expireTime = (this.getConfig().cacheExpireTime || 15 * 60) * 1000
 			if (cached.timestamp > Date.now() - expireTime) {
