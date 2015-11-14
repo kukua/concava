@@ -15,7 +15,7 @@ describe('Calibrator', () => {
 	})
 
 	// Calibrate method
-	function createDataFor (fn, config = {}) {
+	function createData (config = {}) {
 		var meta = new SensorMetadata([
 			{
 				name: 'val',
@@ -25,7 +25,7 @@ describe('Calibrator', () => {
 					{
 						name: 'calibrate',
 						type: 'function',
-						value: fn,
+						value: config.fn,
 					},
 					...(config.properties || []),
 				]
@@ -38,22 +38,23 @@ describe('Calibrator', () => {
 	}
 
 	it('should return new value', () => {
-		var data = createDataFor((val) => val * 2)
+		var data = createData({ fn: (val) => val * 2 })
 		calibrate(data)
 		expect(data.getValue('val')).toBe(200)
 	})
 	it('should parse function strings', () => {
-		var data = createDataFor('function (val) { return val * 2 }')
+		var data = createData({ fn: 'function (val) { return val * 2 }' })
 		calibrate(data)
 		expect(data.getValue('val')).toBe(200)
 	})
 	it('should parse url encoded function strings', () => {
-		var data = createDataFor(escape('function (val) { return val * 2 }'))
+		var data = createData({ fn: escape('function (val) { return val * 2 }') })
 		calibrate(data)
 		expect(data.getValue('val')).toBe(200)
 	})
 	it('should sequentially process multiple calibrate attributes', () => {
-		var data = createDataFor((val) => val * 2, {
+		var data = createData({
+			fn: (val) => val * 2,
 			properties: [
 				{
 					name: 'calibrate',
@@ -66,7 +67,8 @@ describe('Calibrator', () => {
 		expect(data.getValue('val')).toBe(300)
 	})
 	it('should ignore non-calibrate attributes', () => {
-		var data = createDataFor((val) => val * 2, {
+		var data = createData({
+			fn: (val) => val * 2,
 			properties: [
 				{
 					name: 'min',
@@ -84,7 +86,7 @@ describe('Calibrator', () => {
 		expect(data.getValue('val')).toBe(200)
 	})
 	it('should disallow access to global scope', () => {
-		var data = createDataFor((val) => global)
+		var data = createData({ fn: (val) => global })
 		calibrate(data)
 		var vars = data.getValue('val')
 		expect(vars.root).toBe(vars)
@@ -99,7 +101,7 @@ describe('Calibrator', () => {
 		expect(Object.keys(vars).length).toBe(6)
 	})
 	it('should allow use of Math library', () => {
-		var data = createDataFor((val) => Math.pow(val, 3))
+		var data = createData({ fn: (val) => Math.pow(val, 3) })
 		calibrate(data)
 		expect(data.getValue('val')).toBe(1000000)
 	})
