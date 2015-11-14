@@ -1,19 +1,19 @@
-module.exports = {
-	integer: function (name, length) {
+export default {
+	integer (name, length) {
 		length = parseInt(length)
 		var value = parseInt(this.buffer.toString('hex', this.pointer, this.pointer + length), 16)
 
 		this.pointer += length
 		this.data.setValue(name, value)
 	},
-	ascii: function (name, length) {
+	ascii (name, length) {
 		length = parseInt(length)
 		var value = this.buffer.toString('ascii', this.pointer, this.pointer + length)
 
 		this.pointer += length
 		this.data.setValue(name, value)
 	},
-	asciiFloat: function (name, length) {
+	asciiFloat (name, length) {
 		var err = this.getType('ascii').call(this, name, length)
 		if (err) return err
 
@@ -21,7 +21,7 @@ module.exports = {
 
 		this.data.setValue(name, value)
 	},
-	asciiInteger: function (name, length) {
+	asciiInteger (name, length) {
 		var err = this.getType('ascii').call(this, name, length)
 		if (err) return err
 
@@ -29,7 +29,7 @@ module.exports = {
 
 		this.data.setValue(name, value)
 	},
-	skip: function (name, bits) {
+	skip (name, bits) {
 		this.pointer += parseInt(bits)
 	},
 }
