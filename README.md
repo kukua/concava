@@ -19,8 +19,10 @@ docker-machine create -d virtualbox concava
 eval $(docker-machine env concava) # Must be run in every terminal tab
 
 docker-compose up -d
+
 # A local ConCaVa server instance can be started with:
 npm install -g babel-cli
+npm install
 npm start
 
 # Prepare
