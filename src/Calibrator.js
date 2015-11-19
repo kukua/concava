@@ -5,12 +5,8 @@ export default class Calibrator {
 	calibrate (data) {
 		if ( ! (data instanceof SensorData)) throw new Error('Invalid SensorData given.')
 
-		var meta = data.getMetadata()
-
-		meta.getAttributes().forEach(function (attr) {
-			attr.getProperties().forEach(function (prop) {
-				if (prop.name !== 'calibrate') return
-
+		data.getAttributes().forEach(function (attr) {
+			attr.getCalibrators().forEach(function (calibrator) {
 				var vm = new VM({
 					timeout: 1000,
 					sandbox: {
@@ -18,7 +14,9 @@ export default class Calibrator {
 						val: data.getValue(attr.getName())
 					},
 				})
-				var value = vm.run('(' + prop.value.toString() + ')(val)')
+
+				var value = vm.run('(' + calibrator.toString() + ')(val)')
+
 				data.setValue(attr.getName(), value)
 			})
 		})

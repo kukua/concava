@@ -1,4 +1,3 @@
-import SensorMetadata from './SensorMetadata'
 import {inspect} from 'util'
 
 var validDeviceId = /^[a-f0-9]{16}$/
@@ -8,6 +7,7 @@ export default class SensorData {
 		if (id) this.setDeviceId(id)
 		if (buffer) this.setBuffer(buffer)
 		this.setData({})
+		this.setAttributes([])
 	}
 	setDeviceId (id) {
 		id = id.toLowerCase()
@@ -32,19 +32,18 @@ export default class SensorData {
 	getData () {
 		return this._data
 	}
+	setAttributes (attributes) {
+		this._attributes = attributes
+	}
+	getAttributes () {
+		return this._attributes
+	}
 	setValue (name, val) {
 		var data = this.getData()
 		data[name] = val
 	}
 	getValue (name) {
 		return this.getData()[name]
-	}
-	setMetadata (metadata) {
-		if ( ! (metadata instanceof SensorMetadata)) throw new Error('Invalid SensorMetadata given.')
-		this._metadata = metadata
-	}
-	getMetadata () {
-		return this._metadata
 	}
 	toString () {
 		return this.getDeviceId() + ' ' + inspect(this.getData())

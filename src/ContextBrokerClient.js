@@ -1,6 +1,6 @@
 import request from 'request'
 import SensorData from './SensorData'
-import SensorMetadata from './SensorMetadata'
+import SensorAttribute from './SensorAttribute'
 
 export default class ContextBrokerClient {
 	constructor (config) {
@@ -49,19 +49,17 @@ export default class ContextBrokerClient {
 			cb(null, data)
 		})
 	}
-	getSensorMetadata (authToken, id, cb) {
-		id = '' + id
+	setSensorMetadata (authToken, data, cb) {
+		if ( ! (data instanceof SensorData)) return cb('Invalid SensorData given.')
+
+		var id = data.getDeviceId()
 
 		// Check cache
 		var cached = this._cache[id]
-		if (cached) {
-			// Default: 15 minutes. Use -1 to disable caching.
-			var expireTime = (this.getConfig().cacheExpireTime || 15 * 60 * 1000)
-			if (cached.timestamp > Date.now() - expireTime) {
-				return cb(null, cached.metadata)
-			} else {
-				delete this._cache[id]
-			}
+
+		if (cached && cached.timestamp > Date.now() - this.getConfig().cacheExpireTime) {
+			data.setAttributes(cached.attributes)
+			return cb()
 		}
 
 		// Request from Context Broker
@@ -73,50 +71,58 @@ export default class ContextBrokerClient {
 					id: id,
 				},
 			],
-		}, (err, data) => {
+		}, (err, result) => {
 			if (err) return cb(err)
 
-			try {
-				var attributes = data.contextResponses[0].contextElement.attributes
+			var attributes = []
 
-				// Since the Context Broker doesn't keep the order of metadatas, sort them by 'index' attribute
-				attributes.forEach(function (attr) {
+			try {
+				result = result.contextResponses[0].contextElement.attributes
+
+				// Since the Context Broker doesn't keep the order of attributes, sort them by 'index' attribute
+				result.forEach(function (item) {
 					var index = 0
 
-					attr.properties = []
-
-					if (attr.metadatas) {
-						attr.metadatas.forEach(function (prop) {
-							if (prop.name === 'index') {
-								index = parseInt(prop.value)
-							} else {
-								attr.properties.push(prop)
+					if (item.metadatas) {
+						item.metadatas.forEach(function (meta) {
+							if (meta.name === 'index') {
+								index = parseInt(meta.value)
 							}
 						})
 					}
 
-					attr.index = index
-					delete attr.metadatas
+					item.index = index
 				})
 
-				attributes.sort(function (a, b) { return a.index - b.index })
+				result.sort(function (a, b) { return a.index - b.index })
 
-				// Parse calibrate functions
-				attributes.forEach(function (attr) {
-					if ( ! attr.properties) return
-					attr.properties.forEach(function (prop) {
-						if (prop.name !== 'calibrate') return
-						prop.value = decodeURI(prop.value)
-					})
+				// Parse into sensor attributes
+				result.forEach(function (item) {
+					var attr = new SensorAttribute
+
+					attr.setName(item.name)
+					attr.addConverter(item.type, item.value)
+
+					if (item.metadatas) {
+						item.metadatas.forEach(function (meta) {
+							if (meta.name === 'index') return
+							if (meta.name === 'calibrate') {
+								attr.addCalibrator(decodeURI(meta.value))
+							} else {
+								attr.addValidator(meta.name, meta.value)
+							}
+						})
+					}
+
+					attributes.push(attr)
 				})
-
-				// Create metadata
-				var metadata = new SensorMetadata(attributes)
 
 				// Cache result
-				this._cache[id] = {metadata, timestamp: Date.now()}
+				this._cache[id] = {attributes, timestamp: Date.now()}
 
-				cb(null, metadata)
+				// Callback
+				data.setAttributes(attributes)
+				cb()
 			} catch (err) {
 				cb(err)
 			}

@@ -1,23 +1,41 @@
 export default class SensorAttribute {
-	constructor (data) {
-		this.setData(data || {})
+	constructor (name) {
+		this.setName(name)
+		this.setConverters([])
+		this.setCalibrators([])
+		this.setValidators([])
 	}
-	setData (data) {
-		this._data = data
-	}
-	getData () {
-		return this._data
+	setName (name) {
+		this._name = name
 	}
 	getName () {
-		return this.getData().name
+		return this._name
 	}
-	getType () {
-		return this.getData().type
+	setConverters (converters) {
+		this._converters = converters
 	}
-	getValue () {
-		return this.getData().value
+	getConverters () {
+		return this._converters
 	}
-	getProperties () {
-		return this.getData().properties || []
+	setCalibrators (calibrators) {
+		this._calibrators = calibrators
+	}
+	getCalibrators () {
+		return this._calibrators
+	}
+	setValidators (validators) {
+		this._validators = validators
+	}
+	getValidators () {
+		return this._validators
+	}
+	addConverter (type, value) {
+		this._converters.push({ type, value })
+	}
+	addCalibrator (fn) {
+		this._calibrators.push(fn)
+	}
+	addValidator (type, value) {
+		this._validators.push({ type, value })
 	}
 }

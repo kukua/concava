@@ -1,6 +1,6 @@
 import Validator from '../src/Validator'
-import SensorMetadata from '../src/SensorMetadata'
 import SensorData from '../src/SensorData'
+import SensorAttribute from '../src/SensorAttribute'
 
 describe('Validator', () => {
 	var instance
@@ -8,6 +8,8 @@ describe('Validator', () => {
 	var types = {
 		min: (current, valid) => Math.max(current, valid),
 		max: (current, valid) => Math.min(current, valid),
+		plus: (current, value) => current + value,
+		times: (current, value) => current * value,
 	}
 
 	beforeEach(() => {
@@ -39,116 +41,50 @@ describe('Validator', () => {
 	})
 
 	// Validate method
-	function createData (config = {}) {
-		var meta = new SensorMetadata([
-			{
-				name: 'val',
-				type: '',
-				value: null,
-				properties: (config.properties || []),
-			},
-		])
+	function createData () {
 		var data = new SensorData
-		data.setMetadata(meta)
-		data.setValue('val', (config.value !== undefined ? config.value : 100))
-		return data
+		var attr = new SensorAttribute('val')
+		data.setAttributes([attr])
+		data.setValue('val', 100)
+		return [data, attr]
 	}
 
-	it('should not change non-attributes', () => {
-		var data = createData()
-		data.getMetadata().setAttributes([
-			{
-				name: 'skip1',
-				type: 'skip',
-				value: 2,
-			},
-		])
+	it('should not set values for non-attributes', () => {
+		var [data] = createData()
+		var attr = new SensorAttribute('skip1')
+		attr.addConverter('skip', 2)
+		data.setAttributes([attr])
 		instance.validate(data)
 		expect(data.getValue('val')).toBe(100)
 		expect(data.getValue('skip1')).toBe(undefined)
 	})
-	it('should ignore calibrate properties', () => {
-		var data = createData({
-			properties: [
-				{
-					name: 'calibrate',
-					type: 'function',
-					value: (val) => val * 2,
-				},
-			],
-		})
-		var obj = {}
-		data.setValue('val', obj)
-		instance.validate(data)
-		expect(data.getValue('val')).toBe(obj)
-	})
 	it('should only change value if changes are made (dirty check)', () => {
-		var data = createData({
-			properties: [
-				{
-					name: 'calibrate',
-					type: 'function',
-					value: (val) => val * 2,
-				},
-				{
-					name: 'invalid',
-					type: '',
-					value: '',
-				},
-			],
-		})
+		var [data, attr] = createData()
+		// No validators are added
 		var obj = {}
 		data.setValue('val', obj)
 		instance.validate(data)
 		expect(data.getValue('val')).toBe(obj)
 	})
 	it('should process min validator', () => {
-		var data = createData({
-			properties: [
-				{
-					name: 'min',
-					type: 'integer',
-					value: 110,
-				},
-			],
-		})
-		instance.setType('min', types.min)
+		var [data, attr] = createData()
+		attr.addValidator('min', 110)
+		instance.setTypes(types)
 		instance.validate(data)
 		expect(data.getValue('val')).toBe(110)
 	})
-	it('should process min validator', () => {
-		var data = createData({
-			properties: [
-				{
-					name: 'max',
-					type: 'integer',
-					value: 90,
-				},
-			],
-		})
-		instance.setType('max', types.max)
+	it('should process max validator', () => {
+		var [data, attr] = createData()
+		attr.addValidator('max', 90)
+		instance.setTypes(types)
 		instance.validate(data)
 		expect(data.getValue('val')).toBe(90)
 	})
 	it('should process multiple validators (sequentially)', () => {
-		var data = createData({
-			properties: [
-				{
-					name: 'plus',
-					type: 'integer',
-					value: 10,
-				},
-				{
-					name: 'times',
-					type: 'integer',
-					value: 3,
-				},
-			],
-		})
-		instance.setTypes({
-			plus: (current, value) => current + value,
-			times: (current, value) => current * value,
-		})
+		var [data, attr] = createData()
+		attr.addValidator('plus', 10)
+		attr.addValidator('times', 3)
+		instance.setTypes(types)
 		instance.validate(data)
 		expect(data.getValue('val')).toBe(330)
 	})
@@ -158,7 +94,7 @@ describe('Validator', () => {
 		var instance = new Validator(types)
 		expect(instance.getTypes()).toBe(types)
 	})
-	it('should use empty object as attributes when no arguments are given', () => {
+	it('should use empty object as types when no arguments are given', () => {
 		var instance = new Validator()
 		expect(instance.getTypes()).toEqual({})
 	})

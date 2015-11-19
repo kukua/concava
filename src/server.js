@@ -113,18 +113,9 @@ app.use(function (req, res, next) {
 	res.end('Could not determine payload ID.')
 })
 
-// Retrieve sensor metadata
+// Set sensor metadata
 app.use(function (req, res, next) {
-	config.client.getSensorMetadata(
-		req.authToken,
-		req.data.getDeviceId(),
-		function (err, metadata) {
-			if (err) return next(err)
-
-			req.data.setMetadata(metadata)
-			next()
-		}
-	)
+	config.client.setSensorMetadata(req.authToken, req.data, next)
 })
 
 // Convert

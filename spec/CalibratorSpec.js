@@ -1,6 +1,6 @@
 import Calibrator from '../src/Calibrator'
-import SensorMetadata from '../src/SensorMetadata'
 import SensorData from '../src/SensorData'
+import SensorAttribute from '../src/SensorAttribute'
 
 describe('Calibrator', () => {
 	var instance
@@ -14,73 +14,36 @@ describe('Calibrator', () => {
 	})
 
 	// Calibrate method
-	function createData (config = {}) {
-		var meta = new SensorMetadata([
-			{
-				name: 'val',
-				type: '',
-				value: null,
-				properties: [
-					{
-						name: 'calibrate',
-						type: 'function',
-						value: config.fn,
-					},
-					...(config.properties || []),
-				]
-			},
-		])
+	function createData () {
 		var data = new SensorData
-		data.setMetadata(meta)
-		data.setValue('val', (config.value !== undefined ? config.value : 100))
-		return data
+		var attr = new SensorAttribute('val')
+		data.setAttributes([attr])
+		data.setValue('val', 100)
+		return [data, attr]
 	}
 
 	it('should return new value', () => {
-		var data = createData({ fn: (val) => val * 2 })
+		var [data, attr] = createData()
+		attr.addCalibrator((val) => val * 2)
 		instance.calibrate(data)
 		expect(data.getValue('val')).toBe(200)
 	})
 	it('should parse function strings', () => {
-		var data = createData({ fn: 'function (val) { return val * 2 }' })
+		var [data, attr] = createData()
+		attr.addCalibrator('function (val) { return val + 9000 }')
 		instance.calibrate(data)
-		expect(data.getValue('val')).toBe(200)
+		expect(data.getValue('val')).toBe(9100) // This should be over 9000
 	})
-	it('should sequentially process multiple calibrate attributes', () => {
-		var data = createData({
-			fn: (val) => val * 2,
-			properties: [
-				{
-					name: 'calibrate',
-					type: 'function',
-					value: (val) => val + 100,
-				},
-			],
-		})
+	it('should process multiple calibrators (sequentially)', () => {
+		var [data, attr] = createData()
+		attr.addCalibrator((val) => val * 2)
+		attr.addCalibrator((val) => val + 100)
 		instance.calibrate(data)
 		expect(data.getValue('val')).toBe(300)
 	})
-	it('should ignore non-calibrate attributes', () => {
-		var data = createData({
-			fn: (val) => val * 2,
-			properties: [
-				{
-					name: 'min',
-					type: 'integer',
-					value: 100,
-				},
-				{
-					name: 'index',
-					type: 'integer',
-					value: 3,
-				},
-			],
-		})
-		instance.calibrate(data)
-		expect(data.getValue('val')).toBe(200)
-	})
 	it('should disallow access to global scope', () => {
-		var data = createData({ fn: (val) => global })
+		var [data, attr] = createData()
+		attr.addCalibrator((val) => global)
 		instance.calibrate(data)
 		var vars = data.getValue('val')
 		expect(vars.root).toBe(vars)
@@ -95,7 +58,8 @@ describe('Calibrator', () => {
 		expect(Object.keys(vars).length).toBe(6)
 	})
 	it('should allow use of Math library', () => {
-		var data = createData({ fn: (val) => Math.pow(val, 3) })
+		var [data, attr] = createData()
+		attr.addCalibrator((val) => Math.pow(val, 3))
 		instance.calibrate(data)
 		expect(data.getValue('val')).toBe(1000000)
 	})

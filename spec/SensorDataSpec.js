@@ -1,16 +1,7 @@
 import SensorData from '../src/SensorData'
-import SensorMetadata from '../src/SensorMetadata'
+import SensorAttribute from '../src/SensorAttribute'
 
 describe('SensorData', () => {
-	var errors = {
-		buffer: {
-			invalid: 'Invalid Buffer given.',
-			empty: 'Empty Buffer given.',
-		},
-		metadata: {
-			invalid: 'Invalid SensorMetadata given.',
-		},
-	}
 	var data
 
 	beforeEach((done) => {
@@ -46,12 +37,21 @@ describe('SensorData', () => {
 	it('can set/get a data object', () => {
 		expect(typeof data.setData).toBe('function')
 		expect(typeof data.getData).toBe('function')
+		expect(data.getData()).toEqual({})
 		var values = { a: 1, b: 2 }
 		data.setData(values)
 		expect(data.getData()).toBe(values)
 		var values2 = { c: 'OVER', d: 9000 }
 		data.setData(values2)
 		expect(data.getData()).toBe(values2)
+	})
+	it('can set/get attributes', () => {
+		expect(typeof data.setAttributes).toBe('function')
+		expect(typeof data.getAttributes).toBe('function')
+		expect(data.getAttributes()).toEqual([])
+		var attributes = [new SensorAttribute]
+		data.setAttributes(attributes)
+		expect(data.getAttributes()).toBe(attributes)
 	})
 	it('can set/get individual data values', () => {
 		expect(typeof data.setValue).toBe('function')
@@ -69,37 +69,24 @@ describe('SensorData', () => {
 		data.setValue('c', instance)
 		expect(data.getValue('c')).toBe(instance)
 	})
-	it('can set/get a metadata instance', () => {
-		expect(typeof data.setMetadata).toBe('function')
-		expect(typeof data.getMetadata).toBe('function')
-		var metadata = new SensorMetadata()
-		expect(data.getMetadata()).toBe(undefined)
-		data.setMetadata(metadata)
-		expect(data.getMetadata()).toBe(metadata)
-	})
 
 	// Errors
+	var errors = {
+		invalidBuffer: 'Invalid Buffer given.',
+		emptyBuffer: 'Empty Buffer given.',
+	}
 	it('errors on invalid buffer', () => {
-		expect(() => { data.setBuffer(undefined) }).toThrowError(errors.buffer.invalid)
+		expect(() => { data.setBuffer(undefined) }).toThrowError(errors.invalidBuffer)
 		expect(data.getBuffer()).toBe(undefined)
-		expect(() => { data.setBuffer(3) }).toThrowError(errors.buffer.invalid)
+		expect(() => { data.setBuffer(3) }).toThrowError(errors.invalidBuffer)
 		expect(data.getBuffer()).toBe(undefined)
-		expect(() => { data.setBuffer({}) }).toThrowError(errors.buffer.invalid)
+		expect(() => { data.setBuffer({}) }).toThrowError(errors.invalidBuffer)
 		expect(data.getBuffer()).toBe(undefined)
-		expect(() => { data.setBuffer({}) }).toThrowError(errors.buffer.invalid)
+		expect(() => { data.setBuffer({}) }).toThrowError(errors.invalidBuffer)
 		expect(data.getBuffer()).toBe(undefined)
 
-		expect(() => { data.setBuffer(new Buffer('', 'hex')) }).toThrowError(errors.buffer.empty)
+		expect(() => { data.setBuffer(new Buffer('', 'hex')) }).toThrowError(errors.emptyBuffer)
 		expect(data.getBuffer()).toBe(undefined)
-	})
-	it('errors on invalid metadata', () => {
-		var err = 'Invalid SensorMetadata given.'
-		expect(() => { data.setMetadata(undefined) }).toThrowError(err)
-		expect(data.getMetadata()).toBe(undefined)
-		expect(() => { data.setMetadata(3) }).toThrowError(err)
-		expect(data.getMetadata()).toBe(undefined)
-		expect(() => { data.setMetadata({}) }).toThrowError(err)
-		expect(data.getMetadata()).toBe(undefined)
 	})
 
 	// Constructors
@@ -112,9 +99,5 @@ describe('SensorData', () => {
 		var buffer = new Buffer('ABCDEF0123456789')
 		var data = new SensorData(undefined, buffer)
 		expect(data.getBuffer()).toBe(buffer)
-	})
-	it('should set data to empty object', () => {
-		var data = new SensorData
-		expect(data.getData()).toEqual({})
 	})
 })

@@ -1,16 +1,6 @@
 import SensorAttribute from '../src/SensorAttribute'
 
 describe('SensorAttribute', () => {
-	var data = {
-		name: 'a',
-		type: 'string',
-		value: 'hello',
-		properties: [
-			{ type: 'min' },
-			{ type: 'max' },
-			{ type: 'calibrate' },
-		],
-	}
 	var attr
 
 	beforeEach((done) => {
@@ -23,44 +13,81 @@ describe('SensorAttribute', () => {
 	})
 
 	// Setters/getters
-	it('can set/get a data object', () => {
-		expect(typeof attr.setData).toBe('function')
-		expect(typeof attr.getData).toBe('function')
-		attr.setData(data)
-		expect(attr.getData()).toBe(data)
-	})
-	it('can get the name', () => {
+	it('can set/get the name', () => {
+		expect(typeof attr.setName).toBe('function')
 		expect(typeof attr.getName).toBe('function')
 		expect(attr.getName()).toBe(undefined)
-		attr.setData(data)
-		expect(attr.getName()).toBe(data.name)
+		var name = 'test'
+		attr.setName(name)
+		expect(attr.getName()).toBe(name)
 	})
-	it('can get the type', () => {
-		expect(typeof attr.getType).toBe('function')
-		expect(attr.getType()).toBe(undefined)
-		attr.setData(data)
-		expect(attr.getType()).toBe(data.type)
+	it('can set/get a converters array', () => {
+		expect(typeof attr.setConverters).toBe('function')
+		expect(typeof attr.getConverters).toBe('function')
+		expect(attr.getConverters()).toEqual([])
+		var converters = [{type: 'a', value: 1}]
+		attr.setConverters(converters)
+		expect(attr.getConverters()).toBe(converters)
 	})
-	it('can get the value', () => {
-		expect(typeof attr.getValue).toBe('function')
-		expect(attr.getValue()).toBe(undefined)
-		attr.setData(data)
-		expect(attr.getValue()).toBe(data.value)
+	it('can set/get a calibrators array', () => {
+		expect(typeof attr.setCalibrators).toBe('function')
+		expect(typeof attr.getCalibrators).toBe('function')
+		expect(attr.getCalibrators()).toEqual([])
+		var calibrators = [(val) => val * 2]
+		attr.setCalibrators(calibrators)
+		expect(attr.getCalibrators()).toBe(calibrators)
 	})
-	it('can get the properties', () => {
-		expect(typeof attr.getProperties).toBe('function')
-		expect(attr.getProperties()).toEqual([])
-		attr.setData(data)
-		expect(attr.getProperties()).toBe(data.properties)
+	it('can set/get a validators array', () => {
+		expect(typeof attr.setValidators).toBe('function')
+		expect(typeof attr.getValidators).toBe('function')
+		expect(attr.getValidators()).toEqual([])
+		var validators = [{type: 'b', value: 2}]
+		attr.setValidators(validators)
+		expect(attr.getValidators()).toBe(validators)
+	})
+	it('can add a single converter', () => {
+		expect(typeof attr.addConverter).toBe('function')
+		expect(attr.getConverters()).toEqual([])
+		var type, value, list
+
+		type = 'a'
+		value = 1
+		attr.addConverter(type, value)
+		list = attr.getConverters()
+		expect(list.length).toBe(1)
+		expect(list[0].type).toBe(type)
+		expect(list[0].value).toBe(value)
+
+		type = 'b'
+		value = 2
+		attr.addConverter(type, value)
+		list = attr.getConverters()
+		expect(list.length).toBe(2)
+		expect(list[1].type).toBe(type)
+		expect(list[1].value).toBe(value)
+	})
+	it('can add a single calibrator', () => {
+		expect(typeof attr.addCalibrator).toBe('function')
+		expect(attr.getCalibrators()).toEqual([])
+		var fn, list
+
+		fn = (val) => val * 2
+		attr.addCalibrator(fn)
+		list = attr.getCalibrators()
+		expect(list.length).toBe(1)
+		expect(list[0]).toBe(fn)
+
+		fn = (val) => val * 3
+		attr.addCalibrator(fn)
+		list = attr.getCalibrators()
+		expect(list.length).toBe(2)
+		expect(list[1]).toBe(fn)
 	})
 
 	// Constructors
-	it('should use first constructor param as data', () => {
-		var attr = new SensorAttribute(data)
-		expect(attr.getData()).toBe(data)
-	})
-	it('should use empty object as data when no arguments are given', () => {
-		var attr = new SensorAttribute()
-		expect(attr.getData()).toEqual({})
+	it('should use first constructor param as name', () => {
+		expect(attr.getName()).toBe(undefined)
+		attr = new SensorAttribute('test')
+		expect(attr.getName()).toBe('test')
 	})
 })

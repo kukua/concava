@@ -19,19 +19,17 @@ export default class Validator {
 	validate (data) {
 		if ( ! (data instanceof SensorData)) throw new Error('Invalid SensorData given.')
 
-		data.getMetadata().getAttributes().forEach((attr) => {
+		data.getAttributes().forEach((attr) => {
 			var value = data.getValue(attr.getName())
 			var dirty = false
 
-			attr.getProperties().forEach((prop) => {
-				if (prop.name === 'calibrate') return
+			attr.getValidators().forEach((validator) => {
+				var fn = this.getType(validator.type)
 
-				var fn = this.getType(prop.name)
+				if (typeof fn !== 'function') return
 
-				if (typeof fn === 'function') {
-					value = fn(value, prop.value)
-					dirty = true
-				}
+				value = fn(value, validator.value)
+				dirty = true
 			})
 
 			if (dirty) {

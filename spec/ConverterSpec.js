@@ -1,6 +1,6 @@
 import Converter from '../src/Converter'
-import SensorMetadata from '../src/SensorMetadata'
 import SensorData from '../src/SensorData'
+import SensorAttribute from '../src/SensorAttribute'
 
 describe('Converter', () => {
 	var instance
@@ -70,53 +70,31 @@ describe('Converter', () => {
 	})
 
 	// Convert method
-	function createData (config = {}) {
-		var meta = new SensorMetadata(config.attributes || [
-			{
-				name: 'val',
-				type: '',
-				value: null,
-				properties: (config.properties || []),
-			},
-		])
+	function createData () {
 		var data = new SensorData
-		data.setMetadata(meta)
-		data.setValue('val', (config.value !== undefined ? config.value : 100))
-		return data
+		var attr = new SensorAttribute('val')
+		data.setAttributes([attr])
+		data.setValue('val', 100)
+		return [data, attr]
 	}
+
 	it('should apply converter', () => {
-		var data = createData({
-			attributes: [
-				{
-					name: 'test1',
-					type: 'integer',
-					value: 4,
-				},
-			],
-		})
+		var [data, attr] = createData()
+		attr.addConverter('integer', 4)
 		data.setBuffer(new Buffer('00000539', 'hex'))
 		instance.setTypes(types)
 		instance.convert(data)
-		expect(data.getValue('test1')).toBe(1337)
+		expect(data.getValue('val')).toBe(1337)
 	})
 	it('should have context variables', () => {
-		var data = createData({
-			attributes: [
-				{
-					name: 'test1',
-					type: 'contextTester',
-					value: 4,
-				},
-			],
-		})
+		var [data, attr] = createData()
+		attr.addConverter('test', 0)
 		data.setBuffer(new Buffer('00000539', 'hex'))
-		instance.setTypes({
-			contextTester (name, value) {
-				this.data.setValue(name, this)
-			}
+		instance.setType('test', function (name, value) {
+			this.data.setValue(name, this)
 		})
 		instance.convert(data)
-		var context = data.getValue('test1')
+		var context = data.getValue('val')
 		expect(typeof context).toBe('object')
 		expect(Object.keys(context).length).toBe(4)
 		expect(context.data).toEqual(jasmine.any(SensorData))
@@ -125,108 +103,80 @@ describe('Converter', () => {
 		expect(typeof context.getType).toBe('function')
 	})
 	it('should have pointer that starts at first byte', () => {
-		var data = createData({
-			attributes: [
-				{
-					name: 'test1',
-					type: 'pointerTester',
-					value: 4,
-				},
-			],
-		})
+		var [data, attr] = createData()
+		attr.addConverter('test', 0)
 		data.setBuffer(new Buffer('00000539', 'hex'))
-		instance.setTypes({
-			pointerTester (name, value) {
-				this.data.setValue(name, this.pointer)
-			}
+		instance.setType('test', function (name, value) {
+			this.data.setValue(name, this.pointer)
 		})
 		instance.convert(data)
-		expect(data.getValue('test1')).toBe(0)
+		expect(data.getValue('val')).toBe(0)
 	})
 	it('should pass name and value into converter function', () => {
-		var data = createData({
-			attributes: [
-				{
-					name: 'test1',
-					type: 'fnTester',
-					value: 4,
-				},
-			],
-		})
+		var [data, attr] = createData()
+		attr.addConverter('test', 4)
 		data.setBuffer(new Buffer('00000539', 'hex'))
-		instance.setTypes({
-			fnTester (...args) {
-				this.data.setValue(args[0], args)
-			}
+		instance.setType('test', function (...args) {
+			this.data.setValue(args[0], args)
 		})
 		instance.convert(data)
-		var args = data.getValue('test1')
+		var args = data.getValue('val')
 		expect(Array.isArray(args)).toBe(true)
 		expect(args.length).toBe(2)
-		expect(args[0]).toBe('test1')
+		expect(args[0]).toBe('val')
 		expect(args[1]).toBe(4)
 	})
 	it('should allow chaining converters', () => {
-		var data = createData({
-			attributes: [
-				{
-					name: 'test1',
-					type: 'asciiFloat',
-					value: 5,
-				},
-			],
-		})
+		var [data, attr] = createData()
+		attr.addConverter('asciiFloat', 5)
 		data.setBuffer(new Buffer('32332e3134', 'hex'))
 		instance.setTypes(types)
 		instance.convert(data)
-		expect(data.getValue('test1')).toBe(23.14)
+		expect(data.getValue('val')).toBe(23.14)
 	})
 	it('should convert buffer into multiple values', () => {
-		var data = createData({
-			attributes: [
-				{
-					"name": "temp1",
-					"type": "asciiFloat",
-					"value": 5,
-				},
-				{
-					"name": "skip1",
-					"type": "skip",
-					"value": 2,
-				},
-				{
-					"name": "temp2",
-					"type": "asciiFloat",
-					"value": 5,
-				},
-				{
-					"name": "skip2",
-					"type": "skip",
-					"value": 2,
-				},
-				{
-					"name": "humidity",
-					"type": "asciiInteger",
-					"value": 4,
-				},
-				{
-					"name": "skip3",
-					"type": "skip",
-					"value": 2,
-				},
-				{
-					"name": "pressure",
-					"type": "asciiFloat",
-					"value": 5,
-				},
-			],
-		})
+		var data = new SensorData
+		var attributes = []
+		var attr
+
+		attr = new SensorAttribute('temp1')
+		attr.addConverter('asciiFloat', 5)
+		attributes.push(attr)
+
+		attr = new SensorAttribute('skip1')
+		attr.addConverter('skip', 2)
+		attributes.push(attr)
+
+		attr = new SensorAttribute('temp2')
+		attr.addConverter('asciiFloat', 5)
+		attributes.push(attr)
+
+		attr = new SensorAttribute('skip2')
+		attr.addConverter('skip', 2)
+		attributes.push(attr)
+
+		attr = new SensorAttribute('humidity')
+		attr.addConverter('asciiInteger', 4)
+		attributes.push(attr)
+
+		attr = new SensorAttribute('skip3')
+		attr.addConverter('skip', 2)
+		attributes.push(attr)
+
+		attr = new SensorAttribute('pressure')
+		attr.addConverter('asciiFloat', 5)
+		attributes.push(attr)
+
 		data.setBuffer(new Buffer('32332e31332c2032332e32302c20313031342c2035352e3439', 'hex'))
+		data.setAttributes(attributes)
 		instance.setTypes(types)
 		instance.convert(data)
 		expect(data.getValue('temp1')).toBe(23.13)
+		expect(data.getValue('skip1')).toBe(undefined)
 		expect(data.getValue('temp2')).toBe(23.2)
+		expect(data.getValue('skip2')).toBe(undefined)
 		expect(data.getValue('humidity')).toBe(1014)
+		expect(data.getValue('skip3')).toBe(undefined)
 		expect(data.getValue('pressure')).toBe(55.49)
 	})
 

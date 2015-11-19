@@ -20,7 +20,7 @@ export default class Converter {
 		if ( ! (data instanceof SensorData)) throw new Error('Invalid SensorData given.')
 
 		var types = this.getTypes()
-		var attributes = data.getMetadata().getAttributes()
+		var attributes = data.getAttributes()
 		var context = {
 			data: data,
 			buffer: data.getBuffer(),
@@ -28,19 +28,16 @@ export default class Converter {
 			getType: this.getType.bind(this),
 		}
 
-		for (var i = 0; i < attributes.length; i += 1) {
-			var attr = attributes[i]
-			var fn = this.getType(attr.getType())
+		attributes.forEach((attr) => {
+			attr.getConverters().forEach((converter) => {
+				var fn = this.getType(converter.type)
 
-			if (typeof fn !== 'function') {
-				throw new Error('Unsuported converter type: ' + attr.getType())
-			}
+				if (typeof fn !== 'function') throw new Error('Unsuported converter type: ' + converter.type)
 
-			var err = fn.call(context, attr.getName(), attr.getValue())
+				var err = fn.call(context, attr.getName(), converter.value)
 
-			if (err) {
-				throw new Error(err)
-			}
-		}
+				if (err) throw new Error(err)
+			})
+		})
 	}
 }
