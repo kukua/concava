@@ -26,9 +26,12 @@ describe('SensorData', () => {
 	it('can set/get the device id', () => {
 		expect(typeof data.setDeviceId).toBe('function')
 		expect(typeof data.getDeviceId).toBe('function')
-		var id = 'ABCDEF0123456789'
 		expect(data.getDeviceId()).toBe(undefined)
-		data.setDeviceId(id)
+		var invalidId = '123!'
+		expect(data.setDeviceId(invalidId)).toBe(false)
+		expect(data.getDeviceId()).toBe(undefined)
+		var id = 'ABCDEF0123456789'
+		expect(data.setDeviceId(id)).toBe(true)
 		expect(data.getDeviceId()).not.toBe(id)
 		expect(data.getDeviceId()).toBe(id.toLowerCase())
 	})

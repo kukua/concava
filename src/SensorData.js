@@ -1,5 +1,7 @@
 import SensorMetadata from './SensorMetadata'
 
+var validDeviceId = /^[a-f0-9]{16}$/
+
 export default class SensorData {
 	constructor (id, buffer) {
 		if (id) this.setDeviceId(id)
@@ -7,7 +9,10 @@ export default class SensorData {
 		this.setData({})
 	}
 	setDeviceId (id) {
+		id = id.toLowerCase()
+		if ( ! id.match(validDeviceId)) return false
 		this._id = id.toLowerCase()
+		return true
 	}
 	getDeviceId () {
 		return this._id

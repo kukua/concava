@@ -92,10 +92,8 @@ app.use(function (req, res, next) {
 })
 
 // Validate device ID
-var validDeviceId = /^[a-f0-9]{16}$/
-
 app.use(function (req, res, next) {
-	if (req.data.getDeviceId().match(validDeviceId)) return next()
+	if (req.data.getDeviceId()) return next()
 
 	res.writeHead(400)
 	res.end('Could not determine payload ID.')
