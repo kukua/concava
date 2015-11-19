@@ -16,7 +16,7 @@ var port = 3000
 var contextBroker = {
 	url: 'http://concava:9001/v1',
 	timeout: 5000,
-	cacheExpireTime: 15 * 60, // seconds
+	cacheExpireTime: 15 * 60 * 1000, // 15 minutes
 }
 var payloadMaxSize = '512kb'
 

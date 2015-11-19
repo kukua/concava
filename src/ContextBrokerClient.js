@@ -55,7 +55,8 @@ export default class ContextBrokerClient {
 		// Check cache
 		var cached = this._cache[id]
 		if (cached) {
-			var expireTime = (this.getConfig().cacheExpireTime || 15 * 60) * 1000
+			// Default: 15 minutes. Use -1 to disable caching.
+			var expireTime = (this.getConfig().cacheExpireTime || 15 * 60 * 1000)
 			if (cached.timestamp > Date.now() - expireTime) {
 				return cb(null, cached.metadata)
 			} else {
