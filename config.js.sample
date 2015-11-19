@@ -1,0 +1,12 @@
+import Client from './src/ContextBrokerClient'
+
+export default {
+    debug: true,
+    port: 3000,
+    client: new Client({
+        url: 'http://concava:9001/v1',
+        timeout: 5000,
+        cacheExpireTime: 15 * 60 * 1000, // 15 minutes
+    }),
+    payloadMaxSize: '512kb',
+}

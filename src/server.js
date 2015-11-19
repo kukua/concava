@@ -2,7 +2,6 @@ import connect from 'connect'
 import http from 'http'
 import getRawBody from 'raw-body'
 import SensorData from './SensorData'
-import ContextBrokerClient from './ContextBrokerClient'
 import Converter from './Converter'
 import Calibrator from './Calibrator'
 import Validator from './Validator'
@@ -11,17 +10,7 @@ import validateTypes from './types/validate'
 var app = connect()
 
 // Configuration
-var debug = true
-var port = 3000
-var contextBroker = {
-	url: 'http://concava:9001/v1',
-	timeout: 5000,
-	cacheExpireTime: 15 * 60 * 1000, // 15 minutes
-}
-var payloadMaxSize = '512kb'
-
-// Setup Context Broker client
-var client = new ContextBrokerClient(contextBroker)
+import config from '../config.js'
 
 // Add timestamp to request
 app.use(function (req, res, next) {
@@ -72,7 +61,7 @@ app.use(function (req, res, next) {
 app.use(function (req, res, next) {
 	getRawBody(req, {
 		length: req.headers['content-length'],
-		limit: payloadMaxSize,
+		limit: config.payloadMaxSize,
 	}, function (err, buffer) {
 		if (err) return next(err)
 
@@ -109,7 +98,7 @@ app.use(function (req, res, next) {
 
 // Retrieve sensor metadata
 app.use(function (req, res, next) {
-	client.getSensorMetadata(
+	config.client.getSensorMetadata(
 		req.authToken,
 		req.data.getDeviceId(),
 		function (err, metadata) {
@@ -146,7 +135,7 @@ app.use(function (req, res, next) {
 })
 
 // Debug: dump sensor data
-if (debug) {
+if (config.debug) {
 	app.use(function (req, res, next) {
 		console.log(
 			req.data.getDeviceId(),
@@ -158,7 +147,7 @@ if (debug) {
 
 // Store sensor data
 app.use(function (req, res, next) {
-	client.insertSensorData(req.authToken, req.data, req.start, next)
+	config.client.insertSensorData(req.authToken, req.data, req.start, next)
 })
 
 // Return response
@@ -185,5 +174,5 @@ app.use(function (err, req, res, next) {
 })
 
 // Start server
-http.createServer(app).listen(port)
-console.log('Listening on', port)
+http.createServer(app).listen(config.port)
+console.log('Listening on', config.port)

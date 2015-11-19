@@ -14,6 +14,10 @@
 ## How to use
 
 ```bash
+# Configuration
+cp config.js.sample config.js
+# > Edit config.js
+
 # Mac OSX example (on Linux you can skip the docker-machine steps):
 docker-machine create -d virtualbox concava
 eval $(docker-machine env concava) # Must be run in every terminal tab
