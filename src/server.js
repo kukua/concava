@@ -19,9 +19,11 @@ app.use(function (req, res, next) {
 })
 
 // Verify request
+var allowedMethods = ['HEAD', 'POST', 'PUT']
+
 app.use(function (req, res, next) {
-	if (req.url === '/v1/sensorData' && (req.method === 'HEAD' || req.method === 'POST')) {
-		res.setHeader('Allow', 'HEAD, POST')
+	if (req.url.indexOf('/v1/sensorData') === 0 && allowedMethods.indexOf(req.method) !== -1) {
+		res.setHeader('Allow', 'HEAD, POST, PUT')
 		res.setHeader('Accept', 'application/octet-stream')
 
 		if (req.method === 'HEAD') return res.end('')
@@ -30,7 +32,7 @@ app.use(function (req, res, next) {
 			res.end('Invalid content type.')
 			return
 		}
-		if (req.method === 'POST') return next()
+		return next()
 	}
 
 	res.writeHead(404)
@@ -79,12 +81,24 @@ app.use(function (req, res, next) {
 })
 
 // Create SensorData instance
+var validURL = /^\/v1\/sensorData\/([a-f0-9]{16})$/
+
 app.use(function (req, res, next) {
 	try {
-		var buffer = req.buffer
-		var deviceId = buffer.toString('hex', 0, 8)
+		var deviceId, buffer = req.buffer
 
-		req.data = new SensorData(deviceId, buffer.slice(8))
+		if (req.method === 'POST') {
+			// Extract device ID from buffer
+			deviceId = buffer.toString('hex', 0, 8)
+			buffer = buffer.slice(8)
+		} else if (req.method === 'PUT') {
+			// Get device ID from URL
+			try {
+				deviceId = req.url.match(validURL)[1]
+			} catch (err) {}
+		}
+
+		req.data = new SensorData(deviceId, buffer)
 		next()
 	} catch (err) {
 		next(err)

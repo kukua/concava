@@ -36,7 +36,10 @@ npm start
 # Test with:
 http POST 'http://concava:3000/v1/sensorData' \
 	'Authorization: Token <token from keyrock-auth>' 'Content-Type: application/octet-stream' \
-	< tools/payload.data
+	< tools/post-payload.data
+http PUT 'http://concava:3000/v1/sensorData/0000000000000001' \
+	'Authorization: Token <token from keyrock-auth>' 'Content-Type: application/octet-stream' \
+	< tools/put-payload.data
 docker-compose logs server
 ```
 
@@ -49,5 +52,5 @@ npm test
 ## Notes
 
 - In this setup the Context Broker is __externally accessible via port 1026__!
-- Create example payload: `node tools/createExamplePayload.js > tools/payload.data`
+- Create example payload: `./tools/createExamplePayload.sh '<hex>' > tools/payload.data`
 - Access to underlying MongoDB: `docker exec -it concava_context_broker mongo orion`
