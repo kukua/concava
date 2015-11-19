@@ -84,9 +84,6 @@ describe('Converter', () => {
 		data.setValue('val', (config.value !== undefined ? config.value : 100))
 		return data
 	}
-	function createBuffer (hex) {
-		return new Buffer('0000000000000001' + hex, 'hex')
-	}
 	it('should apply converter', () => {
 		var data = createData({
 			attributes: [
@@ -97,7 +94,7 @@ describe('Converter', () => {
 				},
 			],
 		})
-		data.setBuffer(createBuffer('00000539'))
+		data.setBuffer(new Buffer('00000539', 'hex'))
 		instance.setTypes(types)
 		instance.convert(data)
 		expect(data.getValue('test1')).toBe(1337)
@@ -112,7 +109,7 @@ describe('Converter', () => {
 				},
 			],
 		})
-		data.setBuffer(createBuffer('00000539'))
+		data.setBuffer(new Buffer('00000539', 'hex'))
 		instance.setTypes({
 			contextTester (name, value) {
 				this.data.setValue(name, this)
@@ -127,7 +124,7 @@ describe('Converter', () => {
 		expect(typeof context.pointer).toBe('number')
 		expect(typeof context.getType).toBe('function')
 	})
-	it('should have pointer that starts at ninth byte', () => {
+	it('should have pointer that starts at first byte', () => {
 		var data = createData({
 			attributes: [
 				{
@@ -137,14 +134,14 @@ describe('Converter', () => {
 				},
 			],
 		})
-		data.setBuffer(createBuffer('00000539'))
+		data.setBuffer(new Buffer('00000539', 'hex'))
 		instance.setTypes({
 			pointerTester (name, value) {
 				this.data.setValue(name, this.pointer)
 			}
 		})
 		instance.convert(data)
-		expect(data.getValue('test1')).toBe(8)
+		expect(data.getValue('test1')).toBe(0)
 	})
 	it('should pass name and value into converter function', () => {
 		var data = createData({
@@ -156,7 +153,7 @@ describe('Converter', () => {
 				},
 			],
 		})
-		data.setBuffer(createBuffer('00000539'))
+		data.setBuffer(new Buffer('00000539', 'hex'))
 		instance.setTypes({
 			fnTester (...args) {
 				this.data.setValue(args[0], args)
@@ -179,7 +176,7 @@ describe('Converter', () => {
 				},
 			],
 		})
-		data.setBuffer(createBuffer('32332e3134'))
+		data.setBuffer(new Buffer('32332e3134', 'hex'))
 		instance.setTypes(types)
 		instance.convert(data)
 		expect(data.getValue('test1')).toBe(23.14)
@@ -224,7 +221,7 @@ describe('Converter', () => {
 				},
 			],
 		})
-		data.setBuffer(createBuffer('32332e31332c2032332e32302c20313031342c2035352e3439'))
+		data.setBuffer(new Buffer('32332e31332c2032332e32302c20313031342c2035352e3439', 'hex'))
 		instance.setTypes(types)
 		instance.convert(data)
 		expect(data.getValue('temp1')).toBe(23.13)

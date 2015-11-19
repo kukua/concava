@@ -81,7 +81,10 @@ app.use(function (req, res, next) {
 // Create SensorData instance
 app.use(function (req, res, next) {
 	try {
-		req.data = new SensorData(req.buffer)
+		var buffer = req.buffer
+		var deviceId = buffer.toString('hex', 0, 8)
+
+		req.data = new SensorData(deviceId, buffer.slice(8))
 		next()
 	} catch (err) {
 		next(err)
@@ -89,8 +92,10 @@ app.use(function (req, res, next) {
 })
 
 // Validate device ID
+var validDeviceId = /^[a-f0-9]{16}$/
+
 app.use(function (req, res, next) {
-	if (req.data.getDeviceId()) return next()
+	if (req.data.getDeviceId().match(validDeviceId)) return next()
 
 	res.writeHead(400)
 	res.end('Could not determine payload ID.')

@@ -24,7 +24,7 @@ export default class Converter {
 		var context = {
 			data: data,
 			buffer: data.getBuffer(),
-			pointer: 8,
+			pointer: 0,
 			getType: this.getType.bind(this),
 		}
 

@@ -1,22 +1,24 @@
 import SensorMetadata from './SensorMetadata'
 
 export default class SensorData {
-	constructor (buffer) {
+	constructor (id, buffer) {
+		if (id) this.setDeviceId(id)
 		if (buffer) this.setBuffer(buffer)
 		this.setData({})
 	}
+	setDeviceId (id) {
+		this._id = id.toLowerCase()
+	}
+	getDeviceId () {
+		return this._id
+	}
 	setBuffer (buffer) {
 		if ( ! Buffer.isBuffer(buffer)) throw new Error('Invalid Buffer given.')
-		if (buffer.length < 8) throw new Error('Buffer contains less than 8 bytes.')
+		if ( ! buffer.length) throw new Error('Empty Buffer given.')
 		this._buffer = buffer
 	}
 	getBuffer () {
 		return this._buffer
-	}
-	getDeviceId () {
-		var buffer = this.getBuffer()
-		if ( ! buffer) return
-		return buffer.toString('hex', 0, 8).toLowerCase()
 	}
 	setData (data) {
 		this._data = data

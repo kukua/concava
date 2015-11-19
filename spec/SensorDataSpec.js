@@ -5,7 +5,7 @@ describe('SensorData', () => {
 	var errors = {
 		buffer: {
 			invalid: 'Invalid Buffer given.',
-			tooSmall: 'Buffer contains less than 8 bytes.',
+			empty: 'Empty Buffer given.',
 		},
 		metadata: {
 			invalid: 'Invalid SensorMetadata given.',
@@ -23,6 +23,15 @@ describe('SensorData', () => {
 	})
 
 	// Setters/getters
+	it('can set/get the device id', () => {
+		expect(typeof data.setDeviceId).toBe('function')
+		expect(typeof data.getDeviceId).toBe('function')
+		var id = 'ABCDEF0123456789'
+		expect(data.getDeviceId()).toBe(undefined)
+		data.setDeviceId(id)
+		expect(data.getDeviceId()).not.toBe(id)
+		expect(data.getDeviceId()).toBe(id.toLowerCase())
+	})
 	it('can set/get a buffer', () => {
 		expect(typeof data.setBuffer).toBe('function')
 		expect(typeof data.getBuffer).toBe('function')
@@ -30,15 +39,6 @@ describe('SensorData', () => {
 		expect(data.getBuffer()).toBe(undefined)
 		data.setBuffer(buffer)
 		expect(data.getBuffer()).toBe(buffer)
-	})
-	it('can extract the device id from the buffer', () => {
-		expect(typeof data.getDeviceId).toBe('function')
-		var id = 'ABCDEF0123456789'
-		var buffer = new Buffer(id, 'hex')
-		expect(data.getDeviceId()).toBe(undefined)
-		data.setBuffer(buffer)
-		expect(data.getDeviceId()).not.toBe(id)
-		expect(data.getDeviceId()).toBe(id.toLowerCase())
 	})
 	it('can set/get a data object', () => {
 		expect(typeof data.setData).toBe('function')
@@ -76,16 +76,6 @@ describe('SensorData', () => {
 	})
 
 	// Errors
-	var errors = {
-		buffer: {
-			invalid: 'Invalid Buffer given.',
-			tooSmall: 'Buffer contains less than 8 bytes.',
-		},
-		metadata: {
-			invalid: 'Invalid SensorMetadata given.',
-		},
-	}
-
 	it('errors on invalid buffer', () => {
 		expect(() => { data.setBuffer(undefined) }).toThrowError(errors.buffer.invalid)
 		expect(data.getBuffer()).toBe(undefined)
@@ -96,9 +86,7 @@ describe('SensorData', () => {
 		expect(() => { data.setBuffer({}) }).toThrowError(errors.buffer.invalid)
 		expect(data.getBuffer()).toBe(undefined)
 
-		expect(() => { data.setBuffer(new Buffer('')) }).toThrowError(errors.buffer.tooSmall)
-		expect(data.getBuffer()).toBe(undefined)
-		expect(() => { data.setBuffer(new Buffer('ABCDEF', 'hex')) }).toThrowError(errors.buffer.tooSmall)
+		expect(() => { data.setBuffer(new Buffer('', 'hex')) }).toThrowError(errors.buffer.empty)
 		expect(data.getBuffer()).toBe(undefined)
 	})
 	it('errors on invalid metadata', () => {
@@ -112,9 +100,14 @@ describe('SensorData', () => {
 	})
 
 	// Constructors
-	it('should use first constructor param as buffer', () => {
+	it('should use first constructor param as device ID', () => {
+		var id = 'abcdef0123456789'
+		var data = new SensorData(id)
+		expect(data.getDeviceId()).toBe(id)
+	})
+	it('should use second constructor param as buffer', () => {
 		var buffer = new Buffer('ABCDEF0123456789')
-		var data = new SensorData(buffer)
+		var data = new SensorData(undefined, buffer)
 		expect(data.getBuffer()).toBe(buffer)
 	})
 	it('should set data to empty object', () => {
