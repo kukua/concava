@@ -1,4 +1,5 @@
 import SensorMetadata from './SensorMetadata'
+import {inspect} from 'util'
 
 var validDeviceId = /^[a-f0-9]{16}$/
 
@@ -44,5 +45,8 @@ export default class SensorData {
 	}
 	getMetadata () {
 		return this._metadata
+	}
+	toString () {
+		return this.getDeviceId() + ' ' + inspect(this.getData())
 	}
 }

@@ -154,10 +154,7 @@ app.use(function (req, res, next) {
 // Debug: dump sensor data
 if (config.debug) {
 	app.use(function (req, res, next) {
-		console.log(
-			req.data.getDeviceId(),
-			req.data.getData()
-		)
+		console.log(req.data.toString())
 		next()
 	})
 }
