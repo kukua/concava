@@ -107,7 +107,7 @@ export default class ContextBrokerClient {
 						item.metadatas.forEach(function (meta) {
 							if (meta.name === 'index') return
 							if (meta.name === 'calibrate') {
-								attr.addCalibrator(decodeURI(meta.value))
+								attr.addCalibrator(new Function('value', decodeURI(meta.value)))
 							} else {
 								attr.addValidator(meta.name, meta.value)
 							}
