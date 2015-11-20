@@ -1,5 +1,6 @@
 # ConCaVa Binary Payload Processor
 
+[![Dependency Status](https://david-dm.org/kukua/concava.svg)](https://david-dm.org/kukua)
 [![Build Status](https://travis-ci.org/kukua/concava.svg?branch=master)](https://travis-ci.org/kukua/concava)
 
 > Convert, calibrate, and validate weather data before sending it to the Orion Context Broker.
