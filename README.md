@@ -9,56 +9,32 @@ Gathering and processing sensor data is cumbersome and has done many times alrea
 
 ![Dataflow](https://raw.githubusercontent.com/kukua/concava/master/doc/dataflow.png)
 
-## Requirements
-
-- [Docker](http://docs.docker.com/)
-- [Docker Machine](https://docs.docker.com/machine/)
-- [Docker Compose](http://docs.docker.com/compose/)
-- [HTTPie](https://github.com/jkbrzt/httpie) (optional)
-
 ## How to use
+
+```bash
+docker run -d -p 3000 -v /path/to/config.js:/data/config.js kukuadev/concava
+```
+
+## Example
+
+```bash
+http POST 'http://<container IP>:3000/v1/sensorData' \
+	'Authorization: Token <token>' 'Content-Type: application/octet-stream' \
+	< deviceID-and-payload.bin
+http PUT 'http://<container IP>:3000/v1/sensorData/0000000000000001' \
+	'Authorization: Token <token>' 'Content-Type: application/octet-stream' \
+	< bare-payload.bin
+```
+
+In these examples [HTTPie](https://github.com/jkbrzt/httpie) is used.
+
+## Contribute
+
+Your help and feedback is highly welcome! Please make sure the test pass before submitting a pull request.
 
 ```bash
 git clone https://github.com/kukua/concava
 cd concava
-
-# Configuration
-cp config.js.sample config.js
-# > Edit config.js
-
-# Mac OSX example (on Linux you can skip the docker-machine steps):
-docker-machine create -d virtualbox concava
-eval $(docker-machine env concava) # Must be run in every terminal tab
-
-docker-compose up -d
-
-# A local ConCaVa server instance can be started with:
-npm install -g babel-cli
 npm install
-npm start
-
-# Prepare
-# > Add '<container ip> concava' to your hosts file
-./tools/appendSensorMetadata.sh
-
-# Test with:
-http POST 'http://concava:3000/v1/sensorData' \
-	'Authorization: Token <token from keyrock-auth>' 'Content-Type: application/octet-stream' \
-	< tools/post-payload.data
-http PUT 'http://concava:3000/v1/sensorData/0000000000000001' \
-	'Authorization: Token <token from keyrock-auth>' 'Content-Type: application/octet-stream' \
-	< tools/put-payload.data
-docker-compose logs server
-```
-
-## Tests
-
-```bash
 npm test
 ```
-
-## Notes
-
-- Create example payload: `./tools/createPayload.sh '<hex>' > tools/payload.data`
-- In this setup the Context Broker is __externally accessible via port 1026__!
-- Access to underlying MongoDB: `docker exec -it concava_context_broker mongo orion`
