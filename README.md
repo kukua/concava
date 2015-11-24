@@ -1,11 +1,15 @@
-# ConCaVa Binary Payload Processor
+# ConCaVa
 
 [![Dependency Status](https://david-dm.org/kukua/concava.svg)](https://david-dm.org/kukua)
 [![Build Status](https://travis-ci.org/kukua/concava.svg?branch=master)](https://travis-ci.org/kukua/concava)
 
-> Convert, calibrate, and validate weather data before sending it to the Orion Context Broker.
+> Binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.
 
-## Dependencies
+Gathering and processing sensor data is cumbersome and has done many times already. By using dynamic metadata, ConCaVa provides a simply and robust way to convert, calibrate, and validate sensor data. By using Docker, you can have the infrastructure set up within a day, after which you can focus on the important part: working with the data. ConCaVa also provides flexible authentication and storage. For more information, see the [functional & technical introduction](https://rawgit.com/kukua/concava-intro/master/index.html).
+
+![Dataflow](https://raw.githubusercontent.com/kukua/concava/master/doc/dataflow.png)
+
+## Requirements
 
 - [Docker](http://docs.docker.com/)
 - [Docker Machine](https://docs.docker.com/machine/)
@@ -15,6 +19,9 @@
 ## How to use
 
 ```bash
+git clone https://github.com/kukua/concava
+cd concava
+
 # Configuration
 cp config.js.sample config.js
 # > Edit config.js
@@ -52,6 +59,6 @@ npm test
 
 ## Notes
 
+- Create example payload: `./tools/createPayload.sh '<hex>' > tools/payload.data`
 - In this setup the Context Broker is __externally accessible via port 1026__!
-- Create example payload: `./tools/createExamplePayload.sh '<hex>' > tools/payload.data`
 - Access to underlying MongoDB: `docker exec -it concava_context_broker mongo orion`
