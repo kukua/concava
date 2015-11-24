@@ -5,12 +5,17 @@ import SensorData from './SensorData'
 import Converter from './Converter'
 import Calibrator from './Calibrator'
 import Validator from './Validator'
+import StorageAdapter from './storage/Adapter'
 import convertTypes from './types/convert'
 import validateTypes from './types/validate'
 var app = connect()
 
 // Configuration
 import config from '../config.js'
+
+if ( ! (config.client instanceof StorageAdapter)) {
+	console.warn('Client not a storage Adapter, ConCaVa might not function properly.')
+}
 
 // Add timestamp to request
 app.use(function (req, res, next) {

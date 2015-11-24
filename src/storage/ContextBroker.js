@@ -1,53 +1,12 @@
 import request from 'request'
-import SensorData from './SensorData'
-import SensorAttribute from './SensorAttribute'
+import Adapter from './Adapter'
+import SensorData from '../SensorData'
+import SensorAttribute from '../SensorAttribute'
 
-export default class ContextBrokerClient {
+export default class ContextBroker extends Adapter {
 	constructor (config) {
-		this.setConfig(config || {})
+		super(config)
 		this._cache = {}
-	}
-	setConfig (config) {
-		this._config = config
-	}
-	getConfig () {
-		return this._config
-	}
-	_request (authToken, url, data, cb) {
-		data = JSON.stringify(data)
-
-		var codeResponses = {
-			401: 'Invalid token.',
-			503: 'Context Broker unavailable.',
-		}
-
-		request.post(this.getConfig().url + '/' + url, {
-			timeout: this.getConfig().timeout || 3000,
-			headers: {
-				'X-Auth-Token': authToken,
-				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-			},
-			body: data,
-		}, function (err, httpResponse, data) {
-			if (err) return cb(err)
-
-			var code = httpResponse.statusCode
-			if (codeResponses[code]) {
-				err = new Error(codeResponses[code])
-				err.statusCode = code
-				return cb(err)
-			}
-
-			data = JSON.parse(data)
-
-			if (data.errorCode) {
-				err = data.errorCode
-				return cb(err.reasonPhrase + ' (' + err.code + '): ' + err.details)
-			}
-
-			cb(null, data)
-		})
 	}
 	setSensorMetadata (authToken, data, cb) {
 		if ( ! (data instanceof SensorData)) return cb('Invalid SensorData given.')
@@ -163,6 +122,42 @@ export default class ContextBrokerClient {
 		}, function (err, data) {
 			if (err) return cb(err)
 			cb(null, data.contextResponses[0].contextElement.id)
+		})
+	}
+	_request (authToken, url, data, cb) {
+		data = JSON.stringify(data)
+
+		var codeResponses = {
+			401: 'Invalid token.',
+			503: 'Context Broker unavailable.',
+		}
+
+		request.post(this.getConfig().url + '/' + url, {
+			timeout: this.getConfig().timeout || 3000,
+			headers: {
+				'X-Auth-Token': authToken,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+			},
+			body: data,
+		}, function (err, httpResponse, data) {
+			if (err) return cb(err)
+
+			var code = httpResponse.statusCode
+			if (codeResponses[code]) {
+				err = new Error(codeResponses[code])
+				err.statusCode = code
+				return cb(err)
+			}
+
+			data = JSON.parse(data)
+
+			if (data.errorCode) {
+				err = data.errorCode
+				return cb(err.reasonPhrase + ' (' + err.code + '): ' + err.details)
+			}
+
+			cb(null, data)
 		})
 	}
 }

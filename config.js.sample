@@ -1,4 +1,4 @@
-import Client from './src/ContextBrokerClient'
+import Client from './src/storage/ContextBroker'
 
 export default {
     debug: true,
