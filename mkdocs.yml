@@ -1,0 +1,4 @@
+docs_dir: doc
+site_dir: latest
+site_name: ConCaVa
+theme: readthedocs
