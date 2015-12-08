@@ -1,6 +1,6 @@
 {
   "name": "concava",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Convert, calibrate, and validate weather data before sending it to the Orion Context Broker.",
   "private": true,
   "scripts": {
