@@ -2,3 +2,14 @@ docs_dir: doc
 site_dir: latest
 site_name: ConCaVa
 theme: readthedocs
+pages:
+    - Home: index.md
+    - Introduction: introduction.md
+    - Getting started: getting-started.md
+    - Use cases: use-cases.md
+    - Install: install.md
+    - Configure: configure.md
+    - API: api.md
+    - Connectors: connectors.md
+    - Test: test.md
+    - Contribute: contribute.md
