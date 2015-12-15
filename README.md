@@ -5,33 +5,9 @@
 
 > Binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.
 
-## Why
+## Documentation
 
-As developers of IoT hardware we were often confronted with the high cost of data through mobile networks. As a result we started sending data as pure binary over TCP sockets. But with a vast array of different stations and protocols, you easily lose track of what this binary data represents. By creating a tool that handles sensor data in a generic, dynamic, and scalable way, this problem can be solved. Not only for us, but also for you.
-
-## How
-
-![Dataflow](https://raw.githubusercontent.com/kukua/concava/master/doc/dataflow.jpg)
-
-The dataflow is as follows:
-
-1. Sensors gather measurements and send it to a connector (independent of the protocol).
-2. The connector forwards the data in a standardized packet ([HTTP request](#user-content-http-requests)). Containing the device ID and payload in binary format.
-3. ConCaVa then Converts, Calibrates, and Validates the data before forwarding it to the storage component.
-4. The storage component stores the data (usually in the cloud).
-
-The use of connectors allow sensor data, that is coming from various protocols (like TCP, LoRa, JSON, XML, MQTT, SigFox, SPUL), to be send to a central server in a standardized way. Next, ConCaVa will process the data in three steps:
-
-1. Convert: use dynamic metadata to parse the binary payload in to usable data.  
-	This metadata is determined by given device ID.
-2. Calibrate: transform data to a desired format using sandboxed JavaScript function body.
-
-	- Simple example: e.g. convert Fahrenheit to Celcius (`return (value - 32) / 1.8`)
-	- Advanced example: transform non-linear measurements to linear data
-
-3. Validate: correct invalid data (e.g. temperatures below zero Kelvin).
-
-See the [functional & technical introduction](https://rawgit.com/kukua/concava-intro/master/index.html) for more information.
+The project documentation is hosted on [http://kukua.github.io/concava/](http://kukua.github.io/concava/).
 
 ## Installation
 
