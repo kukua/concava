@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "ConCaVa\n\n\nBinary payload processor for Converting, Calibrating, and Validating dynamic sensor data.\n\n\nFor contributing, providing feedback, or support go to the \nGithub repository\n.\n\nAlso see the \nfunctional and technical introduction (slides)\n.\n\nA demo page is \ncoming soon\n.", 
+            "text": "ConCaVa\n\n\n\n\n\nBinary payload processor for Converting, Calibrating, and Validating dynamic sensor data.\n\n\nFor contributing, providing feedback, or support go to the \nGithub repository\n.\n\nAlso see the \nfunctional and technical introduction (slides)\n.\n\nA demo page is \ncoming soon\n.", 
             "title": "Home"
         }, 
         {
@@ -52,7 +52,7 @@
         }, 
         {
             "location": "/use-cases/", 
-            "text": "Use cases\n\n\nThis chapter provides various use cases for ConCaVa.\n\n\nLoRa weather stations\n\n\nThe LoRa KPN server provides bloated XML, containing the payload hex and unique device ID. By using binary data, the payload size can be reduced from ~400 bytes of XML to ~40 bytes of binary data. ConCaVa helps processing this data.\n\n\nMore information can be found in the \nintroduction slides\n.", 
+            "text": "Use cases\n\n\nThis chapter provides various use cases for ConCaVa.\n\n\nLoRa weather stations\n\n\nLoRa provides bloated XML, containing the payload hex and unique device ID. By using binary data, the payload size can be reduced from ~400 bytes of XML to ~40 bytes of binary data. ConCaVa helps processing this data.\n\n\nMore information can be found in the \nintroduction slides\n.", 
             "title": "Use cases"
         }, 
         {
@@ -62,7 +62,7 @@
         }, 
         {
             "location": "/use-cases/#lora-weather-stations", 
-            "text": "The LoRa KPN server provides bloated XML, containing the payload hex and unique device ID. By using binary data, the payload size can be reduced from ~400 bytes of XML to ~40 bytes of binary data. ConCaVa helps processing this data.  More information can be found in the  introduction slides .", 
+            "text": "LoRa provides bloated XML, containing the payload hex and unique device ID. By using binary data, the payload size can be reduced from ~400 bytes of XML to ~40 bytes of binary data. ConCaVa helps processing this data.  More information can be found in the  introduction slides .", 
             "title": "LoRa weather stations"
         }, 
         {
@@ -122,12 +122,12 @@
         }, 
         {
             "location": "/connectors/", 
-            "text": "Connectors\n\n\nSearch on 'ConCaVa' in the Docker Hub\n for all connectors.\n\n\nThe following connectors are available:\n\n\n\n\nLoRa Connector\n. Handles the XML from LoRa KPN webhook.\n\n\nMQTT Connector\n.\n\n\nSPUL Connector\n. SPUL stands for \nSensor Protocol Ultra Light\n. A protocol developed by \nSodaq\n. Documentation will be available soon.\n\n\n\n\n\n\n\nContributing other connectors is highly appreciated. Go to the contributing page for more info.", 
+            "text": "Connectors\n\n\nSearch on 'ConCaVa' in the Docker Hub\n for all connectors.\n\n\nThe following connectors are available:\n\n\n\n\nLoRa Connector\n. Handles LoRa XML (from a KPN server webhook for example).\n\n\nMQTT Connector\n.\n\n\nSPUL Connector\n. SPUL stands for \nSensor Protocol Ultra Light\n. A protocol developed by \nSodaq\n. Documentation will be available soon.\n\n\n\n\n\n\n\nContributing other connectors is highly appreciated. Go to the contributing page for more info.", 
             "title": "Connectors"
         }, 
         {
             "location": "/connectors/#connectors", 
-            "text": "Search on 'ConCaVa' in the Docker Hub  for all connectors.  The following connectors are available:   LoRa Connector . Handles the XML from LoRa KPN webhook.  MQTT Connector .  SPUL Connector . SPUL stands for  Sensor Protocol Ultra Light . A protocol developed by  Sodaq . Documentation will be available soon.    Contributing other connectors is highly appreciated. Go to the contributing page for more info.", 
+            "text": "Search on 'ConCaVa' in the Docker Hub  for all connectors.  The following connectors are available:   LoRa Connector . Handles LoRa XML (from a KPN server webhook for example).  MQTT Connector .  SPUL Connector . SPUL stands for  Sensor Protocol Ultra Light . A protocol developed by  Sodaq . Documentation will be available soon.    Contributing other connectors is highly appreciated. Go to the contributing page for more info.", 
             "title": "Connectors"
         }, 
         {
