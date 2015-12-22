@@ -3,7 +3,7 @@ export default (debug = true) => {
 		if ( ! debug) return next()
 
 		// Log sensor data
-		console.log(Date.now(), req.data.toString())
+		console.log(new Date(), req.data.toString())
 		next()
 	}
 }
