@@ -34,7 +34,7 @@ First, [install Docker](http://docs.docker.com/engine/installation/). Then run:
 ```bash
 curl https://raw.githubusercontent.com/kukua/concava/master/config.js.sample > config.js
 # > Edit config.js
-docker run -d -p 3000 -v $(pwd)/config.js:/data/config.js --name concava kukuadev/concava
+docker run -d -p 3000:3000 -v $(pwd)/config.js:/data/config.js --name concava kukuadev/concava
 docker logs concava
 # Should output "Listening on port 3000"
 ```
