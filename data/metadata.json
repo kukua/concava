@@ -1,0 +1,19 @@
+{
+	"0000000000000001": [
+		{
+			"name": "attr1",
+			"converters": ["uint32be"],
+			"calibrators": [],
+			"validators": [
+				["min", 100],
+				["max", 1300]
+			]
+		},
+		{
+			"name": "attr2",
+			"converters": ["int16le"],
+			"calibrators": ["return val + 7"],
+			"validators": []
+		}
+	]
+}

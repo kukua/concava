@@ -1,4 +1,5 @@
 import Store from 'jfs'
+import SensorAttribute from '../SensorAttribute'
 
 var tokens, meta, stores = {}
 
@@ -16,8 +17,29 @@ export let metadata = (req, config, data, cb) => {
 
 	meta.get(data.getDeviceId(), (err, meta) => {
 		if (err || ! meta) return cb(`No metadata for ${data.getDeviceId()}.`)
-		console.log(meta)
-		cb('Metadata retrieval not implemented.')
+
+		var attributes = meta.map((info) => {
+			var attr = new SensorAttribute(info.name)
+
+			info.converters.forEach((conv) => {
+				var type = conv, value
+				if (Array.isArray(conv)) [ type, value ] = conv
+				attr.addConverter(type, value)
+			})
+
+			info.calibrators.forEach((fn) => attr.addCalibrator(new Function('val', fn)))
+
+			info.validators.forEach((val) => {
+				var type = val, value
+				if (Array.isArray(val)) [ type, value ] = val
+				attr.addValidator(type, value)
+			})
+
+			return attr
+		})
+
+		data.setAttributes(attributes)
+		cb()
 	})
 }
 
@@ -28,7 +50,7 @@ export let storage = (req, config, data, cb) => {
 	if ( ! store) store = stores[deviceId] = new Store(config.path + `/store.${deviceId}.json`)
 
 	var point = data.getData()
-	var timestamp = (new Date(point.timestamp).getTime() || req.start.getTime())
+	point.timestamp = (new Date(point.timestamp).getTime() || req.start.getTime())
 
-	store.save(timestamp, point, cb)
+	store.save(point, cb)
 }
