@@ -69,6 +69,14 @@ describe('SensorData', () => {
 		data.setValue('c', instance)
 		expect(data.getValue('c')).toBe(instance)
 	})
+	it('should set the raw buffer as hex value', () => {
+		var buffer = new Buffer([ 0, 1, 2, 3, 4, 5, 6, 7 ])
+		data.setBuffer(buffer)
+		expect(data.getValue('_raw')).toBe('0001020304050607')
+		buffer = new Buffer('000005391234', 'hex')
+		data.setBuffer(buffer)
+		expect(data.getValue('_raw')).toBe('000005391234')
+	})
 
 	// Errors
 	var errors = {
