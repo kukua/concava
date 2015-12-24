@@ -1,6 +1,5 @@
 import connect from 'connect'
 import http from 'http'
-
 import verifyRequest from './middleware/verifyRequest'
 import parsePayload from './middleware/parsePayload'
 import createSensorData from './middleware/createSensorData'
