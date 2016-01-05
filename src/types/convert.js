@@ -1,3 +1,5 @@
+import int24 from 'int24'
+
 function nativeConverter (method, length) {
 	return function (name) {
 		this.data.setValue(name, this.buffer[method](this.pointer))
@@ -5,11 +7,19 @@ function nativeConverter (method, length) {
 	}
 }
 
+function native24BitConverter (littleEndian, unsigned) {
+	var method = 'read' + (unsigned ? 'U' : '') + 'Int24' + (littleEndian ? 'LE' : 'BE')
+	return function (name) {
+		this.data.setValue(name, int24[method](this.buffer, this.pointer))
+		this.pointer += 3
+	}
+}
+
 function native64BitConverter (littleEndian, unsigned) {
 	return function (name) {
 		var sign  = (unsigned || this.buffer[this.pointer] & 0x80 === 0x80 ? 1 : -1)
 		var value = (Math.pow(2, 32) * this.buffer.readInt32BE (this.pointer + (littleEndian ? 4 : 0))) +
-					(sign            * this.buffer.readUInt32BE(this.pointer + (littleEndian ? 0 : 4)))
+			(sign * this.buffer.readUInt32BE(this.pointer + (littleEndian ? 0 : 4)))
 		this.data.setValue(name, value)
 		this.pointer += 8
 	}
@@ -22,6 +32,10 @@ export default {
 	int16be: nativeConverter('readInt16BE', 2),
 	uint16le: nativeConverter('readUInt16LE', 2),
 	uint16be: nativeConverter('readUInt16BE', 2),
+	int24le: native24BitConverter(true, false),
+	int24be: native24BitConverter(false, false),
+	uint24le: native24BitConverter(true, true),
+	uint24be: native24BitConverter(false, true),
 	int32le: nativeConverter('readInt32LE', 4),
 	int32be: nativeConverter('readInt32BE', 4),
 	uint32le: nativeConverter('readUInt32LE', 4),
