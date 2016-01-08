@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 app.use(verifyRequest())
 app.use(parsePayload())
 app.use(createSensorData())
-app.use(authenticate(config.auth))
+app.use(authenticate(config.auth || {}))
 app.use(setMetadata(config.metadata))
 app.use(convert())
 app.use(calibrate())

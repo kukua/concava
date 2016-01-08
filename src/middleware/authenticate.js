@@ -2,7 +2,7 @@ export default (config) => {
 	if ( ! config.enabled) return (req, res, next) => { next() }
 
 	var verifyHeader = ( !! config.header)
-	var header = (config.header || '').toLowerCase()
+	var header = (config.header || 'Authorization').toLowerCase()
 	var tokenLength = 32
 	var tokenRegExp = new RegExp(`^Token ([a-zA-Z0-9]{${tokenLength}})$`)
 
@@ -20,7 +20,7 @@ export default (config) => {
 				return next(err)
 			}
 
-			if (config.byToken) {
+			if (config.byToken !== false) {
 				var token = value.replace(tokenRegExp, '$1')
 
 				if (token.length !== tokenLength) {
