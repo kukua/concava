@@ -37,5 +37,6 @@ app.use(errorHandler(config.auth.byToken))
 app.use((req, res, next) => { res.end() })
 
 // Start server
-http.createServer(app).listen(config.port)
-console.log('Listening on', config.port)
+var port = (config.port || 3000)
+http.createServer(app).listen(port)
+console.log('Listening on', port)
