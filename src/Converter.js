@@ -19,7 +19,6 @@ export default class Converter {
 	convert (data) {
 		if ( ! (data instanceof SensorData)) throw new Error('Invalid SensorData given.')
 
-		var types = this.getTypes()
 		var attributes = data.getAttributes()
 		var context = {
 			data: data,

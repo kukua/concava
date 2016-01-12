@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "babel-node src/server.js",
-    "lint": "eslint src/**/*.js",
+    "lint": "eslint src/",
     "test": "babel-node spec/run.js"
   },
   "pre-commit": "lint, test",

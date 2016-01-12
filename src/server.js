@@ -34,7 +34,10 @@ app.use(store(config.storage))
 app.use(errorHandler(config.auth.byToken))
 
 // End request
-app.use((req, res, next) => { res.end() })
+app.use((req, res, next) => {
+	res.end()
+	next()
+})
 
 // Start server
 var port = (config.port || 3000)
