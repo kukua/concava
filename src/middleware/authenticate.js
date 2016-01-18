@@ -1,3 +1,5 @@
+import handleAdapter from '../handleAdapter'
+
 export default (config) => {
 	if ( ! config.enabled) return (req, res, next) => { next() }
 
@@ -33,9 +35,7 @@ export default (config) => {
 			}
 		}
 
-		if ( ! config.method) return next()
-
-		config.method(req, config, req.data, (err, user) => {
+		handleAdapter(req, config, next, (err, user) => {
 			if (err) {
 				err = new Error(err)
 				err.statusCode = 401
