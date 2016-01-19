@@ -1,153 +1,153 @@
 {
     "docs": [
         {
-            "location": "/", 
-            "text": "ConCaVa\n\n\n\n\n\nBinary payload processor for Converting, Calibrating, and Validating dynamic sensor data.\n\n\nFor contributing, providing feedback, or support go to the \nGithub repository\n.\n\nAlso see the \nfunctional and technical introduction (slides)\n.\n\nA demo page is \ncoming soon\n.", 
+            "location": "/",
+            "text": "ConCaVa\n\n\n\n\n\nBinary payload processor for Converting, Calibrating, and Validating dynamic sensor data.\n\n\nFor contributing, providing feedback, or support go to the \nGithub repository\n.\n\nAlso see the \nfunctional and technical introduction (slides)\n.\n\nA demo page is \ncoming soon\n.",
             "title": "Home"
-        }, 
+        },
         {
-            "location": "/#concava", 
-            "text": "Binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.  For contributing, providing feedback, or support go to the  Github repository . \nAlso see the  functional and technical introduction (slides) . \nA demo page is  coming soon .", 
+            "location": "/#concava",
+            "text": "Binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.  For contributing, providing feedback, or support go to the  Github repository . \nAlso see the  functional and technical introduction (slides) . \nA demo page is  coming soon .",
             "title": "ConCaVa"
-        }, 
+        },
         {
-            "location": "/introduction/", 
-            "text": "Introduction\n\n\nThis chapter introduces the problem ConCaVa is trying to solve.\n\n\nProblem\n\n\nEfficiently processing sensor data is hard. As developers of IoT hardware we had the following problems:\n\n\n\n\nLimited bandwidth.\n Sending data over the internet or 3G must be done in binary, since other formats (XML, JSON) include the data format, and therefore unnecessarily consume bandwidth.\n\n\nDifferent protocols.\n Sensors provide different types of data and often via a different protocol (LoRa, MQTT, SigFox, etc.).\n\n\nCalibrating and vaidating data.\n Measurement require different types of calibration/validation. Each of them has to be implemented seperately.\n\n\n\n\nSolution\n\n\nA generic approach.\n A server that processes binary payloads in a dynamic and standardized way. ConCaVa, which stands for \nCo\nnvert, \nCa\nlibrate, and \nVa\nlidate, provides an HTTP API that processes a binary payload in three steps, before sending it to (cloud) storage. The dataflow is as follow:\n\n\n\n\n\n\n\n\n\nSensors gather measurements and send it to a connector (independent of the protocol).\n\n\nThe connector forwards the data in a standardized packet (HTTP request). Containing the device ID and payload in binary format.\n\n\nConCaVa then Converts, Calibrates, and Validates the data before forwarding it to the storage component.\n\n\nThe storage component stores the data (usually in the cloud).\n\n\n\n\nThe use of connectors allow sensor data, that is coming from various protocols (like TCP, LoRa, JSON, XML, MQTT, SigFox, SPUL), to be send to a central server in a standardized way. This central server, ConCaVa, will process the data in three steps:\n\n\n\n\n\n\nConvert: use dynamic metadata to parse the binary payload in to usable data.\n\n    This metadata is determined by given device ID.\n\n\n\n\n\n\nCalibrate: transform data to a desired format using sandboxed JavaScript function body.\n\n\n\n\nSimple example: e.g. convert Fahrenheit to Celcius (\nreturn (value - 32) / 1.8\n)\n\n\nAdvanced example: transform non-linear measurements to linear data\n\n\n\n\n\n\n\n\nValidate: correct invalid data (e.g. values that are out of sensor range).", 
+            "location": "/introduction/",
+            "text": "Introduction\n\n\nThis chapter introduces the problem ConCaVa is trying to solve.\n\n\nProblem\n\n\nEfficiently processing sensor data is hard. As developers of IoT hardware we had the following problems:\n\n\n\n\nLimited bandwidth.\n Sending data over the internet or 3G must be done in binary, since other formats (XML, JSON) include the data format, and therefore unnecessarily consume bandwidth.\n\n\nDifferent protocols.\n Sensors provide different types of data and often via a different protocol (LoRa, MQTT, SigFox, etc.).\n\n\nCalibrating and vaidating data.\n Measurement require different types of calibration/validation. Each of them has to be implemented seperately.\n\n\n\n\nSolution\n\n\nA generic approach.\n A server that processes binary payloads in a dynamic and standardized way. ConCaVa, which stands for \nCo\nnvert, \nCa\nlibrate, and \nVa\nlidate, provides an HTTP API that processes a binary payload in three steps, before sending it to (cloud) storage. The dataflow is as follow:\n\n\n\n\n\n\n\n\n\nSensors gather measurements and send it to a connector (independent of the protocol).\n\n\nThe connector forwards the data in a standardized packet (HTTP request). Containing the device ID and payload in binary format.\n\n\nConCaVa then Converts, Calibrates, and Validates the data before forwarding it to the storage component.\n\n\nThe storage component stores the data (usually in the cloud).\n\n\n\n\nThe use of connectors allow sensor data, that is coming from various protocols (like TCP, LoRa, JSON, XML, MQTT, SigFox, SPUL), to be send to a central server in a standardized way. This central server, ConCaVa, will process the data in three steps:\n\n\n\n\n\n\nConvert: use dynamic metadata to parse the binary payload in to usable data.\n\n    This metadata is determined by given device ID.\n\n\n\n\n\n\nCalibrate: transform data to a desired format using sandboxed JavaScript function body.\n\n\n\n\nSimple example: e.g. convert Fahrenheit to Celcius (\nreturn (value - 32) / 1.8\n)\n\n\nAdvanced example: transform non-linear measurements to linear data\n\n\n\n\n\n\n\n\nValidate: correct invalid data (e.g. values that are out of sensor range).",
             "title": "Introduction"
-        }, 
+        },
         {
-            "location": "/introduction/#introduction", 
-            "text": "This chapter introduces the problem ConCaVa is trying to solve.", 
+            "location": "/introduction/#introduction",
+            "text": "This chapter introduces the problem ConCaVa is trying to solve.",
             "title": "Introduction"
-        }, 
+        },
         {
-            "location": "/introduction/#problem", 
-            "text": "Efficiently processing sensor data is hard. As developers of IoT hardware we had the following problems:   Limited bandwidth.  Sending data over the internet or 3G must be done in binary, since other formats (XML, JSON) include the data format, and therefore unnecessarily consume bandwidth.  Different protocols.  Sensors provide different types of data and often via a different protocol (LoRa, MQTT, SigFox, etc.).  Calibrating and vaidating data.  Measurement require different types of calibration/validation. Each of them has to be implemented seperately.", 
+            "location": "/introduction/#problem",
+            "text": "Efficiently processing sensor data is hard. As developers of IoT hardware we had the following problems:   Limited bandwidth.  Sending data over the internet or 3G must be done in binary, since other formats (XML, JSON) include the data format, and therefore unnecessarily consume bandwidth.  Different protocols.  Sensors provide different types of data and often via a different protocol (LoRa, MQTT, SigFox, etc.).  Calibrating and vaidating data.  Measurement require different types of calibration/validation. Each of them has to be implemented seperately.",
             "title": "Problem"
-        }, 
+        },
         {
-            "location": "/introduction/#solution", 
-            "text": "A generic approach.  A server that processes binary payloads in a dynamic and standardized way. ConCaVa, which stands for  Co nvert,  Ca librate, and  Va lidate, provides an HTTP API that processes a binary payload in three steps, before sending it to (cloud) storage. The dataflow is as follow:     Sensors gather measurements and send it to a connector (independent of the protocol).  The connector forwards the data in a standardized packet (HTTP request). Containing the device ID and payload in binary format.  ConCaVa then Converts, Calibrates, and Validates the data before forwarding it to the storage component.  The storage component stores the data (usually in the cloud).   The use of connectors allow sensor data, that is coming from various protocols (like TCP, LoRa, JSON, XML, MQTT, SigFox, SPUL), to be send to a central server in a standardized way. This central server, ConCaVa, will process the data in three steps:    Convert: use dynamic metadata to parse the binary payload in to usable data. \n    This metadata is determined by given device ID.    Calibrate: transform data to a desired format using sandboxed JavaScript function body.   Simple example: e.g. convert Fahrenheit to Celcius ( return (value - 32) / 1.8 )  Advanced example: transform non-linear measurements to linear data     Validate: correct invalid data (e.g. values that are out of sensor range).", 
+            "location": "/introduction/#solution",
+            "text": "A generic approach.  A server that processes binary payloads in a dynamic and standardized way. ConCaVa, which stands for  Co nvert,  Ca librate, and  Va lidate, provides an HTTP API that processes a binary payload in three steps, before sending it to (cloud) storage. The dataflow is as follow:     Sensors gather measurements and send it to a connector (independent of the protocol).  The connector forwards the data in a standardized packet (HTTP request). Containing the device ID and payload in binary format.  ConCaVa then Converts, Calibrates, and Validates the data before forwarding it to the storage component.  The storage component stores the data (usually in the cloud).   The use of connectors allow sensor data, that is coming from various protocols (like TCP, LoRa, JSON, XML, MQTT, SigFox, SPUL), to be send to a central server in a standardized way. This central server, ConCaVa, will process the data in three steps:    Convert: use dynamic metadata to parse the binary payload in to usable data. \n    This metadata is determined by given device ID.    Calibrate: transform data to a desired format using sandboxed JavaScript function body.   Simple example: e.g. convert Fahrenheit to Celcius ( return (value - 32) / 1.8 )  Advanced example: transform non-linear measurements to linear data     Validate: correct invalid data (e.g. values that are out of sensor range).",
             "title": "Solution"
-        }, 
+        },
         {
-            "location": "/getting-started/", 
-            "text": "Getting started\n\n\nThis chapter helps you to get started with ConCaVa.\n\n\nDemo\n\n\nA demo page will be coming soon. There you can fiddle with the sensor data, connectors, ConCaVa configuration, and metadata.\n\n\nQuick start\n\n\nThe quickest way to setup your own ConCaVa instance is by using Docker.\n\nYou can have the \nConCaVa + MySQL + InfluxDB setup\n running within minutes.\n\nFollow \nthis README\n to get started right away.", 
+            "location": "/getting-started/",
+            "text": "Getting started\n\n\nThis chapter helps you to get started with ConCaVa.\n\n\nDemo\n\n\nA demo page will be coming soon. There you can fiddle with the sensor data, connectors, ConCaVa configuration, and metadata.\n\n\nQuick start\n\n\nThe quickest way to setup your own ConCaVa instance is by using Docker.\n\nYou can have the \nConCaVa + MySQL + InfluxDB setup\n running within minutes.\n\nFollow \nthis README\n to get started right away.",
             "title": "Getting started"
-        }, 
+        },
         {
-            "location": "/getting-started/#getting-started", 
-            "text": "This chapter helps you to get started with ConCaVa.", 
+            "location": "/getting-started/#getting-started",
+            "text": "This chapter helps you to get started with ConCaVa.",
             "title": "Getting started"
-        }, 
+        },
         {
-            "location": "/getting-started/#demo", 
-            "text": "A demo page will be coming soon. There you can fiddle with the sensor data, connectors, ConCaVa configuration, and metadata.", 
+            "location": "/getting-started/#demo",
+            "text": "A demo page will be coming soon. There you can fiddle with the sensor data, connectors, ConCaVa configuration, and metadata.",
             "title": "Demo"
-        }, 
+        },
         {
-            "location": "/getting-started/#quick-start", 
-            "text": "The quickest way to setup your own ConCaVa instance is by using Docker. \nYou can have the  ConCaVa + MySQL + InfluxDB setup  running within minutes. \nFollow  this README  to get started right away.", 
+            "location": "/getting-started/#quick-start",
+            "text": "The quickest way to setup your own ConCaVa instance is by using Docker. \nYou can have the  ConCaVa + MySQL + InfluxDB setup  running within minutes. \nFollow  this README  to get started right away.",
             "title": "Quick start"
-        }, 
+        },
         {
-            "location": "/use-cases/", 
-            "text": "Use cases\n\n\nThis chapter provides various use cases for ConCaVa.\n\n\nLoRa weather stations\n\n\nLoRa provides bloated XML, containing the payload hex and unique device ID. By using binary data, the payload size can be reduced from ~400 bytes of XML to ~40 bytes of binary data. ConCaVa helps processing this data.\n\n\nMore information can be found in the \nintroduction slides\n.", 
+            "location": "/use-cases/",
+            "text": "Use cases\n\n\nThis chapter provides various use cases for ConCaVa.\n\n\nLoRa weather stations\n\n\nLoRa provides bloated XML, containing the payload hex and unique device ID. By using binary data, the payload size can be reduced from ~400 bytes of XML to ~40 bytes of binary data. ConCaVa helps processing this data.\n\n\nMore information can be found in the \nintroduction slides\n.",
             "title": "Use cases"
-        }, 
+        },
         {
-            "location": "/use-cases/#use-cases", 
-            "text": "This chapter provides various use cases for ConCaVa.", 
+            "location": "/use-cases/#use-cases",
+            "text": "This chapter provides various use cases for ConCaVa.",
             "title": "Use cases"
-        }, 
+        },
         {
-            "location": "/use-cases/#lora-weather-stations", 
-            "text": "LoRa provides bloated XML, containing the payload hex and unique device ID. By using binary data, the payload size can be reduced from ~400 bytes of XML to ~40 bytes of binary data. ConCaVa helps processing this data.  More information can be found in the  introduction slides .", 
+            "location": "/use-cases/#lora-weather-stations",
+            "text": "LoRa provides bloated XML, containing the payload hex and unique device ID. By using binary data, the payload size can be reduced from ~400 bytes of XML to ~40 bytes of binary data. ConCaVa helps processing this data.  More information can be found in the  introduction slides .",
             "title": "LoRa weather stations"
-        }, 
+        },
         {
-            "location": "/install/", 
-            "text": "Installation\n\n\nConCaVa can be run as a NodeJS program or in a Docker container.\n\n\nNodeJS\n\n\ngit clone https://github.com/kukua/concava\ncd concava\nnpm install\ncp config.js.sample config.js\n# \n Edit config.js\nnpm start\n# Should output \nListening on port X\n\n\n\n\n\nTested with NodeJS v5.0 and NPM v3.3.\n\n\nDocker\n\n\nFirst, \ninstall Docker\n. Then run:\n\n\ncurl https://raw.githubusercontent.com/kukua/concava/master/config.js.sample \n config.js\n# \n Edit config.js\ndocker run -d -p 3000 -v $(pwd)/config.js:/data/config.js --name concava kukuadev/concava\ndocker logs concava\n# Should output \nListening on port 3000\n\n\n\n\n\nThe Docker container can be found \nhere\n.\n\n\nTested with Docker v1.8.", 
+            "location": "/install/",
+            "text": "Installation\n\n\nConCaVa can be run as a NodeJS program or in a Docker container.\n\n\nNodeJS\n\n\ngit clone https://github.com/kukua/concava\ncd concava\nnpm install\ncp config.js.sample config.js\n# \n Edit config.js\nnpm start\n# Should output \nListening on port X\n\n\n\n\n\nTested with NodeJS v5.0 and NPM v3.3.\n\n\nDocker\n\n\nFirst, \ninstall Docker\n. Then run:\n\n\ncurl https://raw.githubusercontent.com/kukua/concava/master/config.js.sample \n config.js\n# \n Edit config.js\ndocker run -d -p 3000 -v $(pwd)/config.js:/data/config.js --name concava kukuadev/concava\ndocker logs concava\n# Should output \nListening on port 3000\n\n\n\n\n\nThe Docker container can be found \nhere\n.\n\n\nTested with Docker v1.8.",
             "title": "Install"
-        }, 
+        },
         {
-            "location": "/install/#installation", 
-            "text": "ConCaVa can be run as a NodeJS program or in a Docker container.", 
+            "location": "/install/#installation",
+            "text": "ConCaVa can be run as a NodeJS program or in a Docker container.",
             "title": "Installation"
-        }, 
+        },
         {
-            "location": "/install/#nodejs", 
-            "text": "git clone https://github.com/kukua/concava\ncd concava\nnpm install\ncp config.js.sample config.js\n#   Edit config.js\nnpm start\n# Should output  Listening on port X   Tested with NodeJS v5.0 and NPM v3.3.", 
+            "location": "/install/#nodejs",
+            "text": "git clone https://github.com/kukua/concava\ncd concava\nnpm install\ncp config.js.sample config.js\n#   Edit config.js\nnpm start\n# Should output  Listening on port X   Tested with NodeJS v5.0 and NPM v3.3.",
             "title": "NodeJS"
-        }, 
+        },
         {
-            "location": "/install/#docker", 
-            "text": "First,  install Docker . Then run:  curl https://raw.githubusercontent.com/kukua/concava/master/config.js.sample   config.js\n#   Edit config.js\ndocker run -d -p 3000 -v $(pwd)/config.js:/data/config.js --name concava kukuadev/concava\ndocker logs concava\n# Should output  Listening on port 3000   The Docker container can be found  here .  Tested with Docker v1.8.", 
+            "location": "/install/#docker",
+            "text": "First,  install Docker . Then run:  curl https://raw.githubusercontent.com/kukua/concava/master/config.js.sample   config.js\n#   Edit config.js\ndocker run -d -p 3000 -v $(pwd)/config.js:/data/config.js --name concava kukuadev/concava\ndocker logs concava\n# Should output  Listening on port 3000   The Docker container can be found  here .  Tested with Docker v1.8.",
             "title": "Docker"
-        }, 
+        },
         {
-            "location": "/configure/", 
-            "text": "Configuration\n\n\nThe ConCaVa repository contains a \nconfig.js.sample file\n, containing all the configuration options.\n\n\n\n    \nNote\n\n    \nWe're currently working on making it easier to replace the authenticator, metadata provider, and storage client.\n\n\n\n\n\nAuthentication\n\n\nComing soon.\n\n\nProviding metadata\n\n\nComing soon.\n\n\nStoring sensor data\n\n\nComing soon.", 
+            "location": "/configure/",
+            "text": "Configuration\n\n\nThe ConCaVa repository contains a \nconfig.js.sample file\n, containing all the configuration options.\n\n\n\n    \nNote\n\n    \nWe're currently working on making it easier to replace the authenticator, metadata provider, and storage client.\n\n\n\n\n\nAuthentication\n\n\nComing soon.\n\n\nProviding metadata\n\n\nComing soon.\n\n\nStoring sensor data\n\n\nComing soon.",
             "title": "Configure"
-        }, 
+        },
         {
-            "location": "/configure/#configuration", 
-            "text": "The ConCaVa repository contains a  config.js.sample file , containing all the configuration options.  \n     Note \n     We're currently working on making it easier to replace the authenticator, metadata provider, and storage client.", 
+            "location": "/configure/#configuration",
+            "text": "The ConCaVa repository contains a  config.js.sample file , containing all the configuration options.  \n     Note \n     We're currently working on making it easier to replace the authenticator, metadata provider, and storage client.",
             "title": "Configuration"
-        }, 
+        },
         {
-            "location": "/configure/#authentication", 
-            "text": "Coming soon.", 
+            "location": "/configure/#authentication",
+            "text": "Coming soon.",
             "title": "Authentication"
-        }, 
+        },
         {
-            "location": "/configure/#providing-metadata", 
-            "text": "Coming soon.", 
+            "location": "/configure/#providing-metadata",
+            "text": "Coming soon.",
             "title": "Providing metadata"
-        }, 
+        },
         {
-            "location": "/configure/#storing-sensor-data", 
-            "text": "Coming soon.", 
+            "location": "/configure/#storing-sensor-data",
+            "text": "Coming soon.",
             "title": "Storing sensor data"
-        }, 
+        },
         {
-            "location": "/api/", 
-            "text": "API\n\n\nConCaVa accepts the following HTTP requests:\n\n\n\n\nPOST /v1/sensorData\n\n\nPUT /v1/sensorData/\ndeviceID\n (where \ndeviceID\n is a lowercase 16 character hex string)\n\n\n\n\nThe requests are identical, except for the device ID which using a \nPOST\n request is prepended to the binary payload.\n\n\nThe following headers are required:\n\n\n\n\nContent-Type: application/octet-stream\n\n\nAuthorization: \nauth\n (e.g. \nToken abcdef0123456789abcdef0123456789\n)\n\n\n\n\nYou can use one of these commands for testing:\n\n\necho '\ndeviceID\nhex\n' | xxd -r -p | \\\n    curl -i -XPOST 'http://\nhost\n:3000/v1/sensorData' \\\n    -H 'Authorization: Token \ntoken\n' \\\n    -H 'Content-Type: application/octet-stream' --data-binary @-\n\necho '\nhex\n' | xxd -r -p | \\\n    curl -i -XPUT 'http://\nhost\n:3000/v1/sensorData/\ndeviceID\n' \\\n    -H 'Authorization: Token \ntoken\n' \\\n    -H 'Content-Type: application/octet-stream' --data-binary @-", 
+            "location": "/api/",
+            "text": "API\n\n\nConCaVa accepts the following HTTP requests:\n\n\n\n\nPOST /v1/sensorData\n\n\nPUT /v1/sensorData/\ndeviceID\n (where \ndeviceID\n is a lowercase 16 character hex string)\n\n\n\n\nThe requests are identical, except for the device ID which using a \nPOST\n request is prepended to the binary payload.\n\n\nThe following headers are required:\n\n\n\n\nContent-Type: application/octet-stream\n\n\nAuthorization: \nauth\n (e.g. \nToken abcdef0123456789abcdef0123456789\n)\n\n\n\n\nYou can use one of these commands for testing:\n\n\necho '\ndeviceID\nhex\n' | xxd -r -p | \\\n    curl -i -XPOST 'http://\nhost\n:3000/v1/sensorData' \\\n    -H 'Authorization: Token \ntoken\n' \\\n    -H 'Content-Type: application/octet-stream' --data-binary @-\n\necho '\nhex\n' | xxd -r -p | \\\n    curl -i -XPUT 'http://\nhost\n:3000/v1/sensorData/\ndeviceID\n' \\\n    -H 'Authorization: Token \ntoken\n' \\\n    -H 'Content-Type: application/octet-stream' --data-binary @-",
             "title": "API"
-        }, 
+        },
         {
-            "location": "/api/#api", 
-            "text": "ConCaVa accepts the following HTTP requests:   POST /v1/sensorData  PUT /v1/sensorData/ deviceID  (where  deviceID  is a lowercase 16 character hex string)   The requests are identical, except for the device ID which using a  POST  request is prepended to the binary payload.  The following headers are required:   Content-Type: application/octet-stream  Authorization:  auth  (e.g.  Token abcdef0123456789abcdef0123456789 )   You can use one of these commands for testing:  echo ' deviceID hex ' | xxd -r -p | \\\n    curl -i -XPOST 'http:// host :3000/v1/sensorData' \\\n    -H 'Authorization: Token  token ' \\\n    -H 'Content-Type: application/octet-stream' --data-binary @-\n\necho ' hex ' | xxd -r -p | \\\n    curl -i -XPUT 'http:// host :3000/v1/sensorData/ deviceID ' \\\n    -H 'Authorization: Token  token ' \\\n    -H 'Content-Type: application/octet-stream' --data-binary @-", 
+            "location": "/api/#api",
+            "text": "ConCaVa accepts the following HTTP requests:   POST /v1/sensorData  PUT /v1/sensorData/ deviceID  (where  deviceID  is a lowercase 16 character hex string)   The requests are identical, except for the device ID which using a  POST  request is prepended to the binary payload.  The following headers are required:   Content-Type: application/octet-stream  Authorization:  auth  (e.g.  Token abcdef0123456789abcdef0123456789 )   You can use one of these commands for testing:  echo ' deviceID hex ' | xxd -r -p | \\\n    curl -i -XPOST 'http:// host :3000/v1/sensorData' \\\n    -H 'Authorization: Token  token ' \\\n    -H 'Content-Type: application/octet-stream' --data-binary @-\n\necho ' hex ' | xxd -r -p | \\\n    curl -i -XPUT 'http:// host :3000/v1/sensorData/ deviceID ' \\\n    -H 'Authorization: Token  token ' \\\n    -H 'Content-Type: application/octet-stream' --data-binary @-",
             "title": "API"
-        }, 
+        },
         {
-            "location": "/connectors/", 
-            "text": "Connectors\n\n\nSearch on 'ConCaVa' in the Docker Hub\n for all connectors.\n\n\nThe following connectors are available:\n\n\n\n\nLoRa Connector\n. Handles LoRa XML (from a KPN server webhook for example).\n\n\nMQTT Connector\n.\n\n\nSPUL Connector\n. SPUL stands for \nSensor Protocol Ultra Light\n. A protocol developed by \nSodaq\n. Documentation will be available soon.\n\n\n\n\n\n\n\nContributing other connectors is highly appreciated. Go to the contributing page for more info.", 
+            "location": "/connectors/",
+            "text": "Connectors\n\n\nSearch on 'ConCaVa' in the Docker Hub\n for all connectors.\n\n\nThe following connectors are available:\n\n\n\n\nLoRa Connector\n. Handles LoRa XML (from a KPN server webhook for example).\n\n\nMQTT Connector\n.\n\n\nSPUL Connector\n. SPUL stands for \nSensor Protocol Ultra Light\n. A protocol developed by \nSodaq\n. Documentation will be available soon.\n\n\n\n\n\n\n\nContributing other connectors is highly appreciated. Go to the contributing page for more info.",
             "title": "Connectors"
-        }, 
+        },
         {
-            "location": "/connectors/#connectors", 
-            "text": "Search on 'ConCaVa' in the Docker Hub  for all connectors.  The following connectors are available:   LoRa Connector . Handles LoRa XML (from a KPN server webhook for example).  MQTT Connector .  SPUL Connector . SPUL stands for  Sensor Protocol Ultra Light . A protocol developed by  Sodaq . Documentation will be available soon.    Contributing other connectors is highly appreciated. Go to the contributing page for more info.", 
+            "location": "/connectors/#connectors",
+            "text": "Search on 'ConCaVa' in the Docker Hub  for all connectors.  The following connectors are available:   LoRa Connector . Handles LoRa XML (from a KPN server webhook for example).  MQTT Connector .  SPUL Connector . SPUL stands for  Sensor Protocol Ultra Light . A protocol developed by  Sodaq . Documentation will be available soon.    Contributing other connectors is highly appreciated. Go to the contributing page for more info.",
             "title": "Connectors"
-        }, 
+        },
         {
-            "location": "/test/", 
-            "text": "Testing\n\n\nFirst, start the ConCaVa server. Then run:\n\n\necho '000005391234' | xxd -r -p | \\\n    curl -i -XPOST 'http://localhost:3000/v1/sensorData/0000000000000001' \\\n    -H 'Authorization: Token abcdef0123456789abcdef0123456789' \\\n    -H 'Content-Type: application/octet-stream' --data-binary @-\n# Note: if you're using Docker, change localhost to the IP address of the container", 
+            "location": "/test/",
+            "text": "Testing\n\n\nFirst, start the ConCaVa server. Then run:\n\n\necho '000005391234' | xxd -r -p | \\\n    curl -i -XPOST 'http://localhost:3000/v1/sensorData/0000000000000001' \\\n    -H 'Authorization: Token abcdef0123456789abcdef0123456789' \\\n    -H 'Content-Type: application/octet-stream' --data-binary @-\n# Note: if you're using Docker, change localhost to the IP address of the container",
             "title": "Test"
-        }, 
+        },
         {
-            "location": "/test/#testing", 
-            "text": "First, start the ConCaVa server. Then run:  echo '000005391234' | xxd -r -p | \\\n    curl -i -XPOST 'http://localhost:3000/v1/sensorData/0000000000000001' \\\n    -H 'Authorization: Token abcdef0123456789abcdef0123456789' \\\n    -H 'Content-Type: application/octet-stream' --data-binary @-\n# Note: if you're using Docker, change localhost to the IP address of the container", 
+            "location": "/test/#testing",
+            "text": "First, start the ConCaVa server. Then run:  echo '000005391234' | xxd -r -p | \\\n    curl -i -XPOST 'http://localhost:3000/v1/sensorData/0000000000000001' \\\n    -H 'Authorization: Token abcdef0123456789abcdef0123456789' \\\n    -H 'Content-Type: application/octet-stream' --data-binary @-\n# Note: if you're using Docker, change localhost to the IP address of the container",
             "title": "Testing"
-        }, 
+        },
         {
-            "location": "/contribute/", 
-            "text": "Contributing\n\n\nYour help is highly appreciated! Please provide feedback by creating an issue in the Github repository.\n\n\nWhen contributing code, please make sure the tests pass:\n\n\ngit clone https://github.com/kukua/concava\ncd concava\nnpm install\nnpm test\n\n\n\n\nYou can also contact use via email at \ninfo@kukua.cc\n.", 
+            "location": "/contribute/",
+            "text": "Contributing\n\n\nYour help is highly appreciated! Please provide feedback by creating an issue in the Github repository.\n\n\nWhen contributing code, please make sure the tests pass:\n\n\ngit clone https://github.com/kukua/concava\ncd concava\nnpm install\nnpm test\n\n\n\n\nYou can also contact use via email at \ninfo@kukua.cc\n.",
             "title": "Contribute"
-        }, 
+        },
         {
-            "location": "/contribute/#contributing", 
-            "text": "Your help is highly appreciated! Please provide feedback by creating an issue in the Github repository.  When contributing code, please make sure the tests pass:  git clone https://github.com/kukua/concava\ncd concava\nnpm install\nnpm test  You can also contact use via email at  info@kukua.cc .", 
+            "location": "/contribute/#contributing",
+            "text": "Your help is highly appreciated! Please provide feedback by creating an issue in the Github repository.  When contributing code, please make sure the tests pass:  git clone https://github.com/kukua/concava\ncd concava\nnpm install\nnpm test  You can also contact use via email at  info@kukua.cc .",
             "title": "Contributing"
         }
     ]
