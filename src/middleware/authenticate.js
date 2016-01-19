@@ -3,7 +3,6 @@ import handleAdapter from '../handleAdapter'
 export default (config) => {
 	if ( ! config.enabled) return (req, res, next) => { next() }
 
-	var verifyHeader = ( !! config.header)
 	var header = (config.header || 'Authorization').toLowerCase()
 	var tokenLength = 32
 	var tokenRegExp = new RegExp(`^Token ([a-zA-Z0-9]{${tokenLength}})$`)
@@ -13,7 +12,7 @@ export default (config) => {
 
 		req.auth = {}
 
-		if (verifyHeader) {
+		if (header) {
 			var value = req.auth.header = req.headers[header]
 
 			if ( ! value) {
