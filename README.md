@@ -19,5 +19,5 @@ mkdocs serve
 ### Publish
 
 ```bash
-mkdocs build
+make
 ```
