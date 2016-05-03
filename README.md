@@ -18,9 +18,10 @@ ConCaVa can be run as a NodeJS program or in a Docker container.
 ```bash
 git clone https://github.com/kukua/concava
 cd concava
-npm install
 cp config.js.sample config.js
 # > Edit config.js
+
+npm install
 npm start
 # Should output "Listening on port X"
 ```
@@ -33,13 +34,16 @@ First, [install Docker](http://docs.docker.com/engine/installation/). Then run:
 
 ```bash
 curl https://raw.githubusercontent.com/kukua/concava/master/config.js.sample > config.js
+chmod 600 config.js
 # > Edit config.js
-docker run -d -p 3000:3000 -v $(pwd)/config.js:/data/config.js --name concava kukuadev/concava
+
+docker run -d -p 3000:3000 -v $PWD/config.js:/data/config.js --name concava kukuadev/concava
+
 docker logs concava
 # Should output "Listening on port 3000"
 ```
 
-Tested with Docker v1.8.
+Tested with Docker v1.9.
 
 ## Testing
 
@@ -83,11 +87,15 @@ echo '<hex>' | xxd -r -p | \
 
 ## Contribute
 
-Your help and feedback is highly welcome! Please make sure the test pass before submitting a pull request.
+Your help and feedback is highly appreciated! Please make sure the tests pass before submitting a pull request.
 
 ```bash
 git clone https://github.com/kukua/concava
 cd concava
+cp config.js.sample config.js
+chmod 600 config.js
+# > Edit config.js
+
 npm install
 npm test
 ```
