@@ -27,7 +27,7 @@ export let metadata = (req, config, data, cb) => {
 				attr.addConverter(type, value)
 			})
 
-			info.calibrators.forEach((fn) => attr.addCalibrator(new Function('val', fn)))
+			info.calibrators.forEach((fn) => attr.addCalibrator(new Function('value', fn)))
 
 			info.validators.forEach((val) => {
 				var type = val, value

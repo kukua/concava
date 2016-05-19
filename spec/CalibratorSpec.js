@@ -30,7 +30,7 @@ describe('Calibrator', () => {
 	})
 	it('should parse function strings', () => {
 		var [data, attr] = createData()
-		attr.addCalibrator('function (val) { return val + 9000 }')
+		attr.addCalibrator('function (value) { return value + 9000 }')
 		instance.calibrate(data)
 		expect(data.getValue('val')).toBe(9100) // This should be over 9000
 	})

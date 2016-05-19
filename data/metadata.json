@@ -12,7 +12,7 @@
 		{
 			"name": "attr2",
 			"converters": ["int16le"],
-			"calibrators": ["return val + 7"],
+			"calibrators": ["return value + 7"],
 			"validators": []
 		}
 	]
