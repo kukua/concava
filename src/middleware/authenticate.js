@@ -10,7 +10,9 @@ export default (config) => {
 	return (req, res, next) => {
 		var err
 
-		req.auth = {}
+		req.auth = {
+			udid: req.data.getDeviceId()
+		}
 
 		if (header) {
 			var value = req.auth.header = req.headers[header]
