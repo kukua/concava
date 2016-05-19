@@ -44,8 +44,8 @@ export default {
 	int64be: native64BitConverter(false, false),
 	uint64le: native64BitConverter(true, true),
 	uint64be: native64BitConverter(false, true),
-	floatle: nativeConverter('readFloatLE', 8),
-	floatbe: nativeConverter('readFloatBE', 8),
+	floatle: nativeConverter('readFloatLE', 4),
+	floatbe: nativeConverter('readFloatBE', 4),
 	doublele: nativeConverter('readDoubleLE', 8),
 	doublebe: nativeConverter('readDoubleBE', 8),
 
