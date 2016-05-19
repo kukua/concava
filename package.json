@@ -1,7 +1,7 @@
 {
   "name": "concava",
-  "version": "0.3.0",
-  "description": "Convert, calibrate, and validate weather data before sending it to the Orion Context Broker.",
+  "version": "0.5.0",
+  "description": "Binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.",
   "private": true,
   "scripts": {
     "start": "babel-node src/server.js",
