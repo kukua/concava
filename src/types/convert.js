@@ -71,7 +71,7 @@ export default {
 		if (err) return err
 		this.data.setValue(name, parseInt(this.data.getValue(name), 10))
 	},
-	skip (name, bits) {
-		this.pointer += parseInt(bits)
+	skip (name, length) {
+		this.pointer += parseInt(length)
 	},
 }
