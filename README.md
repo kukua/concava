@@ -18,7 +18,8 @@ ConCaVa can be run as a NodeJS program or in a Docker container.
 ```bash
 git clone https://github.com/kukua/concava
 cd concava
-cp config.js.sample config.js
+cp config.js.example config.js
+chmod 600 config.js
 # > Edit config.js
 
 npm install
@@ -33,7 +34,7 @@ Tested with NodeJS v5.0 and NPM v3.3.
 First, [install Docker](http://docs.docker.com/engine/installation/). Then run:
 
 ```bash
-curl https://raw.githubusercontent.com/kukua/concava/master/config.js.sample > config.js
+curl https://raw.githubusercontent.com/kukua/concava/master/config.js.example > config.js
 chmod 600 config.js
 # > Edit config.js
 
@@ -92,7 +93,7 @@ Your help and feedback is highly appreciated! Please make sure the tests pass be
 ```bash
 git clone https://github.com/kukua/concava
 cd concava
-cp config.js.sample config.js
+cp config.js.example config.js
 chmod 600 config.js
 # > Edit config.js
 
@@ -104,4 +105,4 @@ npm test
 
 This software is licensed under the [MIT license](https://github.com/kukua/concava/blob/master/LICENSE).
 
-© 2015 Kukua BV
+© 2016 Kukua BV
