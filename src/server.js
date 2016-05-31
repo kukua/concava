@@ -1,5 +1,6 @@
-import connect from 'connect'
 import http from 'http'
+import connect from 'connect'
+import bunyan from 'bunyan'
 import verifyRequest from './middleware/verifyRequest'
 import parsePayload from './middleware/parsePayload'
 import createSensorData from './middleware/createSensorData'
@@ -10,14 +11,30 @@ import debug from './middleware/debug'
 import store from './middleware/store'
 import errorHandler from './middleware/errorHandler'
 
-var app = connect()
+const app = connect()
 
 // Configuration
 import config from '../config.js'
 
-// Add timestamp to request
+// Logger
+const logFile = (config.logFile || '/tmp/output.log')
+const log = bunyan.createLogger({
+	name: (config.logName || 'concava'),
+	streams: [
+		{ level: 'warn', stream: process.stdout },
+		{ level: (config.debug ? 'debug' : 'info'), path: logFile }
+	]
+})
+
+// Exception handling
+process.on('uncaughtException', (err) => {
+	log.error({ type: 'uncaught-exception', stack: err.stack }, '' + err)
+})
+
+// Add timestamp and logger to request
 app.use((req, res, next) => {
 	req.start = new Date()
+	req.log = log
 	next()
 })
 
