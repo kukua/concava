@@ -3,7 +3,10 @@ export default (debug = true) => {
 		if ( ! debug) return next()
 
 		// Log sensor data
-		console.log(new Date(), req.data.toString())
+		req.log.debug({
+			deviceId: req.data.getDeviceId(),
+			data: req.data.getData()
+		})
 		next()
 	}
 }

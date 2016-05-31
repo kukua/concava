@@ -1,7 +1,6 @@
 export default (byToken) => {
 	return (err, req, res, next) => {
-		console.error(err)
-		if (err.stack) console.error(err.stack)
+		req.log.error({ stack: err.stack }, '' + err)
 
 		var statusCode = (err.statusCode || 500)
 		if (statusCode === 401 && byToken) res.setHeader('WWW-Authenticate', 'Token')

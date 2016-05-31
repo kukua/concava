@@ -60,4 +60,4 @@ app.use((req, res, next) => {
 
 // Start server
 http.createServer(app).listen(port)
-console.log('Listening on', port)
+log.info(`Listening on port ${port}.`)
