@@ -3,7 +3,9 @@ import { auth, metadata, storage } from './src/adapter/json'
 
 export default {
 	debug: true,
-	port: 3000,
+	// logFile: '/tmp/output.log',
+	// logName: 'concava',
+	// port: 3000,
 	payloadMaxSize: '512kb',
 	auth: {
 		enabled: true,

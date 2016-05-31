@@ -16,6 +16,8 @@ const app = connect()
 // Configuration
 import config from '../config.js'
 
+const port = (parseInt(config.port) || 3000)
+
 // Logger
 const logFile = (config.logFile || '/tmp/output.log')
 const log = bunyan.createLogger({
@@ -57,6 +59,5 @@ app.use((req, res, next) => {
 })
 
 // Start server
-var port = (config.port || 3000)
 http.createServer(app).listen(port)
 console.log('Listening on', port)
