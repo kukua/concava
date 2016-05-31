@@ -1,7 +1,7 @@
-import path from 'path'
-import { auth, metadata, storage } from './src/adapter/json'
+var path = require('path')
+var adapter = require('./lib/adapter/json')
 
-export default {
+module.exports = {
 	debug: true,
 	// logFile: '/tmp/output.log',
 	// logName: 'concava',
@@ -13,15 +13,15 @@ export default {
 		header: 'Authorization',
 		// [optional] If set to true, the header ('<header>: Token <token>') will be parsed/verified for you
 		byToken: true,
-		method: auth,
+		method: adapter.auth,
 		file: path.resolve('./data/tokens.json'),
 	},
 	metadata: {
-		method: metadata,
+		method: adapter.metadata,
 		file: path.resolve('./data/metadata.json'),
 	},
 	storage: {
-		method: storage,
+		method: adapter.storage,
 		path: path.resolve('./data/'),
 	},
 }

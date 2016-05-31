@@ -4,6 +4,7 @@ MAINTAINER Maurits van Mastrigt <maurits@kukua.cc>
 WORKDIR /data
 COPY ./ /data/
 RUN npm install
+RUN npm run compile
 
 EXPOSE 3000
 

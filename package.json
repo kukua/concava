@@ -3,8 +3,10 @@
   "version": "0.5.0",
   "description": "Binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.",
   "private": true,
+  "main": "lib/server.js",
   "scripts": {
-    "start": "babel-node src/server.js",
+    "compile": "babel -d lib/ src/",
+    "start": "node lib/server.js",
     "lint": "eslint src/",
     "test": "babel-node spec/run.js"
   },
