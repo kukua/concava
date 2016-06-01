@@ -1,45 +1,10 @@
 import Converter from '../src/Converter'
 import SensorData from '../src/SensorData'
 import SensorAttribute from '../src/SensorAttribute'
+import types from '../src/types/convert'
 
 describe('Converter', () => {
 	var instance
-
-	var types = {
-		integer (name, length) {
-			length = parseInt(length)
-			var value = parseInt(this.buffer.toString('hex', this.pointer, this.pointer + length), 16)
-
-			this.pointer += length
-			this.data.setValue(name, value)
-		},
-		ascii (name, length) {
-			length = parseInt(length)
-			var value = this.buffer.toString('ascii', this.pointer, this.pointer + length)
-
-			this.pointer += length
-			this.data.setValue(name, value)
-		},
-		asciiFloat (name, length) {
-			var err = this.getType('ascii').call(this, name, length)
-			if (err) return err
-
-			var value = parseFloat(this.data.getValue(name))
-
-			this.data.setValue(name, value)
-		},
-		asciiInteger (name, length) {
-			var err = this.getType('ascii').call(this, name, length)
-			if (err) return err
-
-			var value = parseInt(this.data.getValue(name), 10)
-
-			this.data.setValue(name, value)
-		},
-		skip (name, bits) {
-			this.pointer += parseInt(bits)
-		},
-	}
 
 	beforeEach(() => {
 		instance = new Converter
@@ -178,6 +143,19 @@ describe('Converter', () => {
 		expect(data.getValue('humidity')).toBe(1014)
 		expect(data.getValue('skip3')).toBe(undefined)
 		expect(data.getValue('pressure')).toBe(55.49)
+	})
+	it('should error on a too small buffer', () => {
+		var data = new SensorData
+		var attr = new SensorAttribute('attr1')
+		attr.addConverter('uint32le')
+		data.setAttributes([attr])
+
+		data.setBuffer(new Buffer('abcd', 'hex'))
+
+		instance.setTypes(types)
+		expect(() => {
+			instance.convert(data)
+		}).toThrowError("Cannot convert 'attr1' (uint32le): Payload too small.")
 	})
 
 	// Constructors
