@@ -1,5 +1,5 @@
 FROM node:5.11
-MAINTAINER Maurits van Mastrigt <maurits@kukua.cc>
+MAINTAINER Kukua Team <dev@kukua.cc>
 
 WORKDIR /data
 COPY ./ /data/
