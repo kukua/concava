@@ -1,5 +1,5 @@
-var path = require('path')
-var adapter = require('./lib/adapter/json')
+const path = require('path')
+const adapter = require('./lib/adapter/json')
 
 module.exports = {
 	debug: true,
