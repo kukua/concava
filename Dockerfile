@@ -1,4 +1,4 @@
-FROM node:5.1
+FROM node:5.11
 MAINTAINER Maurits van Mastrigt <maurits@kukua.cc>
 
 WORKDIR /data
