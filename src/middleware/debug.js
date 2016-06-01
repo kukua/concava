@@ -4,6 +4,7 @@ export default (debug = true) => {
 
 		// Log sensor data
 		req.log.debug({
+			type: 'data',
 			deviceId: req.data.getDeviceId(),
 			data: req.data.getData()
 		})

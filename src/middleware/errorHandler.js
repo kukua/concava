@@ -1,7 +1,7 @@
 export default (byToken) => {
 	return (err, req, res, next) => {
 		// Log
-		var info = { stack: err.stack }
+		var info = { type: 'error', stack: err.stack }
 		if (req.data) {
 			info.deviceId = req.data.getDeviceId()
 			info.data = req.data.getData()
