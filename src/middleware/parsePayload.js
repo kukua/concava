@@ -16,7 +16,7 @@ export default (limit) => {
 				return next()
 			}
 
-			res.writeHead(204)
+			res.writeHead(400)
 			res.end('No binary payload provided.')
 		})
 	}
