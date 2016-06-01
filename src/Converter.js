@@ -30,12 +30,23 @@ export default class Converter {
 		attributes.forEach((attr) => {
 			attr.getConverters().forEach((converter) => {
 				var fn = this.getType(converter.type)
+				var err
 
 				if (typeof fn !== 'function') throw new Error('Unsuported converter type: ' + converter.type)
 
-				var err = fn.call(context, attr.getName(), converter.value)
+				try {
+					err = fn.call(context, attr.getName(), converter.value)
 
-				if (err) throw new Error(err)
+					if (err) throw new Error(err)
+				} catch (e) {
+					err = e
+					if (err instanceof RangeError) {
+						err = new Error(`Cannot convert '${attr.getName()}' (${converter.type}): ` +
+							'Payload too small.')
+						err.statusCode = 400
+					}
+					throw err
+				}
 			})
 		})
 	}
