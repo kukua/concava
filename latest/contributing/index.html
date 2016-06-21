@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Install - ConCaVa</title>
+  <title>Contributing - ConCaVa</title>
   
 
   <link rel="shortcut icon" href="../img/favicon.ico">
@@ -20,7 +20,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Install";
+    var mkdocs_page_name = "Contributing";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -78,26 +78,15 @@
 <li>
           
             <li>
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Install</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#installation">Installation</a></li>
-                
-                    <li><a class="toctree-l4" href="#nodejs">NodeJS</a></li>
-                
-                    <li><a class="toctree-l4" href="#docker">Docker</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../installation/">Installation</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../configure/">Configure</a>
+        <a class="" href="../configuration/">Configuration</a>
         
     </li>
 <li>
@@ -118,14 +107,21 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../test/">Test</a>
+        <a class="" href="../testing/">Testing</a>
         
     </li>
 <li>
           
             <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../contribute/">Contribute</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Contributing</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#contributing">Contributing</a></li>
+                
+            
+            </ul>
         
     </li>
 <li>
@@ -152,7 +148,7 @@
     
       
     
-    <li>Install</li>
+    <li>Contributing</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -162,30 +158,16 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="installation">Installation</h1>
-<p>ConCaVa can be run as a NodeJS program or in a Docker container.</p>
-<h2 id="nodejs">NodeJS</h2>
-<pre><code class="bash">git clone https://github.com/kukua/concava
+                <h1 id="contributing">Contributing</h1>
+<p>Your help is highly appreciated! Please provide feedback by creating an issue in the Github repository.</p>
+<p>When contributing code, please make sure the tests pass:</p>
+<pre><code>git clone https://github.com/kukua/concava
 cd concava
 npm install
-cp config.js.sample config.js
-# &gt; Edit config.js
-npm start
-# Should output &quot;Listening on port X&quot;
+npm test
 </code></pre>
 
-<p>Tested with NodeJS v5.0 and NPM v3.3.</p>
-<h2 id="docker">Docker</h2>
-<p>First, <a href="http://docs.docker.com/engine/installation/">install Docker</a>. Then run:</p>
-<pre><code class="bash">curl https://raw.githubusercontent.com/kukua/concava/master/config.js.sample &gt; config.js
-# &gt; Edit config.js
-docker run -d -p 3000 -v $(pwd)/config.js:/data/config.js --name concava kukuadev/concava
-docker logs concava
-# Should output &quot;Listening on port 3000&quot;
-</code></pre>
-
-<p>The Docker container can be found <a href="https://hub.docker.com/r/kukuadev/concava/">here</a>.</p>
-<p>Tested with Docker v1.8.</p>
+<p>You can also contact use via email at <a href="mailto:dev@kukua.cc">dev@kukua.cc</a>.</p>
               
             </div>
           </div>
@@ -193,10 +175,8 @@ docker logs concava
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../configure/" class="btn btn-neutral float-right" title="Configure"/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
-      
-        <a href="../use-cases/" class="btn btn-neutral" title="Use cases"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../testing/" class="btn btn-neutral" title="Testing"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -222,10 +202,8 @@ docker logs concava
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../use-cases/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../testing/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
-      
-        <span style="margin-left: 15px"><a href="../configure/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

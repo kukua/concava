@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Contribute - ConCaVa</title>
+  <title>Testing - ConCaVa</title>
   
 
   <link rel="shortcut icon" href="../img/favicon.ico">
@@ -20,7 +20,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Contribute";
+    var mkdocs_page_name = "Testing";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -79,14 +79,14 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../install/">Install</a>
+        <a class="" href="../installation/">Installation</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../configure/">Configure</a>
+        <a class="" href="../configuration/">Configuration</a>
         
     </li>
 <li>
@@ -106,22 +106,22 @@
 <li>
           
             <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../test/">Test</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Testing</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#testing">Testing</a></li>
+                
+            
+            </ul>
         
     </li>
 <li>
           
             <li>
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Contribute</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#contributing">Contributing</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../contributing/">Contributing</a>
         
     </li>
 <li>
@@ -148,7 +148,7 @@
     
       
     
-    <li>Contribute</li>
+    <li>Testing</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -158,16 +158,14 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="contributing">Contributing</h1>
-<p>Your help is highly appreciated! Please provide feedback by creating an issue in the Github repository.</p>
-<p>When contributing code, please make sure the tests pass:</p>
-<pre><code>git clone https://github.com/kukua/concava
-cd concava
-npm install
-npm test
+                <h1 id="testing">Testing</h1>
+<p>First, start the ConCaVa server. Then run:</p>
+<pre><code class="bash">echo '000005391234' | xxd -r -p | \
+    curl -i -XPOST 'http://localhost:3000/v1/sensorData/0000000000000001' \
+    -H 'Authorization: Token abcdef0123456789abcdef0123456789' \
+    -H 'Content-Type: application/octet-stream' --data-binary @-
+# Note: if you're using Docker, change localhost to the IP address of the container
 </code></pre>
-
-<p>You can also contact use via email at <a href="mailto:dev@kukua.cc">dev@kukua.cc</a>.</p>
               
             </div>
           </div>
@@ -175,8 +173,10 @@ npm test
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="../contributing/" class="btn btn-neutral float-right" title="Contributing"/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
-        <a href="../test/" class="btn btn-neutral" title="Test"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+        <a href="../connectors/" class="btn btn-neutral" title="Connectors"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -202,8 +202,10 @@ npm test
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../test/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../connectors/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
+      
+        <span style="margin-left: 15px"><a href="../contributing/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

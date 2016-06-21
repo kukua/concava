@@ -90,14 +90,14 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../install/">Install</a>
+        <a class="" href="../installation/">Installation</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../configure/">Configure</a>
+        <a class="" href="../configuration/">Configuration</a>
         
     </li>
 <li>
@@ -118,14 +118,14 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../test/">Test</a>
+        <a class="" href="../testing/">Testing</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../contribute/">Contribute</a>
+        <a class="" href="../contributing/">Contributing</a>
         
     </li>
 <li>
@@ -185,13 +185,13 @@
 <p>The use of connectors allow sensor data, that is coming from various protocols (like TCP, LoRa, JSON, XML, MQTT, SigFox, SPUL), to be send to a central server in a standardized way. This central server, ConCaVa, will process the data in three steps:</p>
 <ol>
 <li>
-<p>Convert: use dynamic metadata to parse the binary payload in to usable data.<br />
+<p>Convert: use dynamic metadata to parse the binary payload in to usable data.
     This metadata is determined by given device ID.</p>
 </li>
 <li>
 <p>Calibrate: transform data to a desired format using sandboxed JavaScript function body.</p>
 <ul>
-<li>Simple example: e.g. convert Fahrenheit to Celcius (<code>return (value - 32) / 1.8</code>)</li>
+<li>Simple example: e.g. convert Fahrenheit to Celcius (<code>return (val - 32) / 1.8</code>)</li>
 <li>Advanced example: transform non-linear measurements to linear data</li>
 </ul>
 </li>

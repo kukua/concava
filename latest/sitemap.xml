@@ -35,7 +35,7 @@
 
     
     <url>
-     <loc>None/install/</loc>
+     <loc>None/installation/</loc>
      <lastmod>2016-06-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -43,7 +43,7 @@
 
     
     <url>
-     <loc>None/configure/</loc>
+     <loc>None/configuration/</loc>
      <lastmod>2016-06-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -67,7 +67,7 @@
 
     
     <url>
-     <loc>None/test/</loc>
+     <loc>None/testing/</loc>
      <lastmod>2016-06-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -75,7 +75,7 @@
 
     
     <url>
-     <loc>None/contribute/</loc>
+     <loc>None/contributing/</loc>
      <lastmod>2016-06-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
