@@ -2,12 +2,12 @@
     "docs": [
         {
             "location": "/",
-            "text": "ConCaVa\n\n\n\n\n\nBinary payload processor for Converting, Calibrating, and Validating dynamic sensor data.\n\n\nFor contributing, providing feedback, or support go to the \nGithub repository\n.\n\nAlso see the \nfunctional and technical introduction (slides)\n.\n\nA demo page is \ncoming soon\n.",
+            "text": "ConCaVa\n\n\n\n\n\nBinary payload processor for Converting, Calibrating, and Validating dynamic sensor data.\n\n\nFor contributing, providing feedback, or support go to the \nGithub repository\n.\nAlso see the \nfunctional and technical introduction (slides)\n.",
             "title": "Home"
         },
         {
             "location": "/#concava",
-            "text": "Binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.  For contributing, providing feedback, or support go to the  Github repository . \nAlso see the  functional and technical introduction (slides) . \nA demo page is  coming soon .",
+            "text": "Binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.  For contributing, providing feedback, or support go to the  Github repository .\nAlso see the  functional and technical introduction (slides) .",
             "title": "ConCaVa"
         },
         {
@@ -142,12 +142,12 @@
         },
         {
             "location": "/contribute/",
-            "text": "Contributing\n\n\nYour help is highly appreciated! Please provide feedback by creating an issue in the Github repository.\n\n\nWhen contributing code, please make sure the tests pass:\n\n\ngit clone https://github.com/kukua/concava\ncd concava\nnpm install\nnpm test\n\n\n\n\nYou can also contact use via email at \ninfo@kukua.cc\n.",
+            "text": "Contributing\n\n\nYour help is highly appreciated! Please provide feedback by creating an issue in the Github repository.\n\n\nWhen contributing code, please make sure the tests pass:\n\n\ngit clone https://github.com/kukua/concava\ncd concava\nnpm install\nnpm test\n\n\n\n\nYou can also contact use via email at \ndev@kukua.cc\n.",
             "title": "Contribute"
         },
         {
             "location": "/contribute/#contributing",
-            "text": "Your help is highly appreciated! Please provide feedback by creating an issue in the Github repository.  When contributing code, please make sure the tests pass:  git clone https://github.com/kukua/concava\ncd concava\nnpm install\nnpm test  You can also contact use via email at  info@kukua.cc .",
+            "text": "Your help is highly appreciated! Please provide feedback by creating an issue in the Github repository.  When contributing code, please make sure the tests pass:  git clone https://github.com/kukua/concava\ncd concava\nnpm install\nnpm test  You can also contact use via email at  dev@kukua.cc .",
             "title": "Contributing"
         }
     ]

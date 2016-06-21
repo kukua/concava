@@ -11,4 +11,4 @@ npm install
 npm test
 ```
 
-You can also contact use via email at [info@kukua.cc](mailto:info@kukua.cc).
+You can also contact use via email at [dev@kukua.cc](mailto:dev@kukua.cc).
