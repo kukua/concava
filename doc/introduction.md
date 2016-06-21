@@ -25,12 +25,12 @@ __A generic approach.__ A server that processes binary payloads in a dynamic and
 
 The use of connectors allow sensor data, that is coming from various protocols (like TCP, LoRa, JSON, XML, MQTT, SigFox, SPUL), to be send to a central server in a standardized way. This central server, ConCaVa, will process the data in three steps:
 
-1. Convert: use dynamic metadata to parse the binary payload in to usable data.  
+1. Convert: use dynamic metadata to parse the binary payload in to usable data.
 	This metadata is determined by given device ID.
 
 1. Calibrate: transform data to a desired format using sandboxed JavaScript function body.
 
-	- Simple example: e.g. convert Fahrenheit to Celcius (`return (value - 32) / 1.8`)
+	- Simple example: e.g. convert Fahrenheit to Celcius (`return (val - 32) / 1.8`)
 	- Advanced example: transform non-linear measurements to linear data
 
 1. Validate: correct invalid data (e.g. values that are out of sensor range).
