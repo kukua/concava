@@ -21,19 +21,27 @@ export let metadata = (req, config, data, cb) => {
 		var attributes = meta.map((info) => {
 			var attr = new SensorAttribute(info.name)
 
+			if ( ! Array.isArray(info.converters)) {
+				return cb(`No converters for ${data.getDeviceId()}.`)
+			}
+
 			info.converters.forEach((conv) => {
 				var type = conv, value
 				if (Array.isArray(conv)) [ type, value ] = conv
 				attr.addConverter(type, value)
 			})
 
-			info.calibrators.forEach((fn) => attr.addCalibrator(new Function('value', fn)))
+			if (Array.isArray(info.calibrators)) {
+				info.calibrators.forEach((fn) => attr.addCalibrator(new Function('value', fn)))
+			}
 
-			info.validators.forEach((val) => {
-				var type = val, value
-				if (Array.isArray(val)) [ type, value ] = val
-				attr.addValidator(type, value)
-			})
+			if (Array.isArray(info.validators)) {
+				info.validators.forEach((val) => {
+					var type = val, value
+					if (Array.isArray(val)) [ type, value ] = val
+					attr.addValidator(type, value)
+				})
+			}
 
 			return attr
 		})
@@ -49,8 +57,5 @@ export let storage = (req, config, data, cb) => {
 
 	if ( ! store) store = stores[deviceId] = new Store(config.path + `/store.${deviceId}.json`)
 
-	var point = data.getData()
-	point.timestamp = (new Date(point.timestamp).getTime() || req.start.getTime())
-
-	store.save(point, cb)
+	store.save(data.getData(), cb)
 }
