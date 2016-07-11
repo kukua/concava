@@ -25,9 +25,16 @@ function native64BitConverter (littleEndian, unsigned) {
 	}
 }
 
+const int8 = nativeConverter('readInt8', 1)
+const uint8 = nativeConverter('readUInt8', 1)
+
 export default {
-	int8: nativeConverter('readInt8', 1),
-	uint8: nativeConverter('readUInt8', 1),
+	int8: int8,
+	int8le: int8,
+	int8be: int8,
+	uint8: uint8,
+	uint8le: uint8,
+	uint8be: uint8,
 	int16le: nativeConverter('readInt16LE', 2),
 	int16be: nativeConverter('readInt16BE', 2),
 	uint16le: nativeConverter('readUInt16LE', 2),
