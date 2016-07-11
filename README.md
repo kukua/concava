@@ -24,7 +24,7 @@ chmod 600 config.js
 
 npm install
 npm start
-# Should output "Listening on port X"
+# Should show "Listening on port 3000" in log file
 ```
 
 Tested with NodeJS v5.0 and NPM v3.3.
@@ -38,10 +38,11 @@ curl https://raw.githubusercontent.com/kukua/concava/master/config.js.example > 
 chmod 600 config.js
 # > Edit config.js
 
-docker run -d -p 3000:3000 -v $PWD/config.js:/data/config.js --name concava kukuadev/concava
+touch /tmp/output.log
 
-docker logs concava
-# Should output "Listening on port 3000"
+docker run -d -p 3000:3000 -v $PWD/config.js:/data/config.js \
+	-v /tmp/output.log:/tmp/output.log --name concava kukuadev/concava
+# Should show "Listening on port 3000" in log file
 ```
 
 Tested with Docker v1.9.
@@ -58,7 +59,12 @@ echo '000005391234' | xxd -r -p | \
 # Note: if you're using Docker, change localhost to the IP address of the container
 ```
 
-## HTTP requests
+## Configuration
+
+Use [adapters](http://kukua.github.io/concava/latest/configuration/#adapters) to provide your own authentication, metadata (device configuration), and storage.
+ConCaVa uses [connectors](http://kukua.github.io/concava/latest/configuration/#connectors) to support communicating through other protocols (like MQTT, LoRa, etc.).
+
+## API
 
 ConCaVa accepts the following HTTP requests:
 
@@ -76,12 +82,12 @@ You can use one of these commands for testing:
 
 ```bash
 echo '<deviceID><hex>' | xxd -r -p | \
-	curl -i -XPOST 'http://<host>:3000/v1/sensorData' \
+	curl -i -XPOST 'http://localhost:3000/v1/sensorData' \
 	-H 'Authorization: Token <token>' \
 	-H 'Content-Type: application/octet-stream' --data-binary @-
 
 echo '<hex>' | xxd -r -p | \
-	curl -i -XPUT 'http://<host>:3000/v1/sensorData/<deviceID>' \
+	curl -i -XPUT 'http://localhost:3000/v1/sensorData/<deviceID>' \
 	-H 'Authorization: Token <token>' \
 	-H 'Content-Type: application/octet-stream' --data-binary @-
 ```
