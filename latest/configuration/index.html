@@ -83,6 +83,13 @@
           
             <li>
     <li class="toctree-l1 ">
+        <a class="" href="../quick-start/">Quick Start</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
         <a class="" href="../api/">API</a>
         
     </li>
@@ -142,7 +149,7 @@ function (req, config, data, cb) {}
 function (req, config, data, classes, cb) {}
 </code></pre>
 
-<p>The latter is used for providing metadata with the classes used by ConCaVa.</p>
+<p>The latter is used for providing metadata with the classes used by ConCaVa. If ConCaVa sees the function expects four arguments, it will ignore the <code>classes</code> variable.</p>
 <h3 id="authentication">Authentication</h3>
 <p>Example authentication adapter:</p>
 <pre><code class="js">function auth (req, config, data, cb) {
@@ -180,6 +187,12 @@ function (req, config, data, classes, cb) {}
 </code></pre>
 
 <h3 id="storage">Storage</h3>
+<p>The data object can be retrieved with <code>data.getData()</code>. This is a key/value object which uses the converter names (e.g. <code>attr1</code> and <code>attr2</code>) and their determined values. The following values are added by default:</p>
+<pre><code>timestamp      UNIX timestamp
+_raw           Hex string with raw payload
+</code></pre>
+
+<p>The approach here is to make the data time bound. Therefore a <code>timestamp</code> is added. Which can be overriden by providing your own timestamp attribute in the payload, to use the time of the measurement instead of the time the payload has been received.</p>
 <p>Example storage adapter:</p>
 <pre><code class="js">function storage (req, config, data, cb) {
     var udid = data.getDeviceId()
@@ -223,7 +236,7 @@ Contributing other connectors is highly appreciated. See <a href="../contributin
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../api/" class="btn btn-neutral float-right" title="API"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../quick-start/" class="btn btn-neutral float-right" title="Quick Start"/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../installation/" class="btn btn-neutral" title="Installation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -255,7 +268,7 @@ Contributing other connectors is highly appreciated. See <a href="../contributin
         <span><a href="../installation/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../api/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../quick-start/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

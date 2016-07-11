@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quick Start - ConCaVa</title>
+  
+
+  <link rel="shortcut icon" href="../img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Quick Start";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script>
+  <script src="../js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> ConCaVa</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="..">Introduction</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../installation/">Installation</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../configuration/">Configuration</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Quick Start</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#quick-start">Quick Start</a></li>
+                
+                    <li><a class="toctree-l4" href="#setup">Setup</a></li>
+                
+                    <li><a class="toctree-l4" href="#send-data">Send data</a></li>
+                
+                    <li><a class="toctree-l4" href="#add-tokens">Add tokens</a></li>
+                
+                    <li><a class="toctree-l4" href="#add-metadata">Add metadata</a></li>
+                
+                    <li><a class="toctree-l4" href="#stored-measurements">Stored measurements</a></li>
+                
+            
+            </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../api/">API</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../contributing/">Contributing</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">ConCaVa</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Quick Start</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="quick-start">Quick Start</h1>
+<p>By following these steps you will setup ConCaVa using the built in JSON adapter.
+This means the authentication, metadata, and storage will be loaded from JSON files. This tutorial assumes you know how to use Bash on a Unix or Linux environment.</p>
+<h2 id="setup">Setup</h2>
+<p><a href="http://docs.docker.com/engine/installation/">Install Docker</a> and <a href="https://docs.docker.com/compose/install/">Docker Compose</a>. Then run the following commands:</p>
+<pre><code class="bash">mkdir my-concava
+cd my-concava
+
+curl https://raw.githubusercontent.com/kukua/concava/master/config.js.example &gt; config.js
+chmod 600 config.js
+
+touch output.log docker-compose.yml
+mkdir data
+touch data/tokens.json data/metadata.json
+</code></pre>
+
+<p>Copy the following text into the <code>docker-compose.yml</code> file:</p>
+<pre><code class="yml">concava:
+    image: kukuadev/concava
+    ports:
+        - &quot;3000:3000&quot;
+    volumes:
+        - ./config.js:/data/config.js:ro
+        - ./output.log:/tmp/output.log
+        - ./data/:/data/data
+</code></pre>
+
+<p>With this configuration file we can easily create the container:</p>
+<pre><code class="bash">docker-compose up -d
+</code></pre>
+
+<p>That's it! We now have ConCaVa running on port 3000.</p>
+<h2 id="send-data">Send data</h2>
+<p>Next, we'll send device data to ConCaVa. For this we need the following:</p>
+<pre><code>UDID           The unique device ID (16 lowercase hex characters),
+               for example: 0000000000000001
+Auth header    The authentication header,
+               for example: Token abcdef0123456789abcdef0123456789
+Payload        The measured data, normally in binary,
+               but for this example as a hex string
+</code></pre>
+
+<p>We'll use the following sensor specification:</p>
+<table>
+    <thead>
+        <tr>
+            <th>Measurement</th>
+            <th>Value</th>
+            <th>Actual data</th>
+            <th>Converter</th>
+            <th>Calibrator</th>
+            <th>Validators</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Temperature</td>
+            <td>23.4 °C</td>
+            <td>234</td>
+            <td>int16le</td>
+            <td>return val / 10</td>
+            <td>min=-40 max=85</td>
+        </tr>
+        <tr>
+            <td>Pressure</td>
+            <td>1017.9 hPa</td>
+            <td>10179</td>
+            <td>uint16le</td>
+            <td>return val / 10</td>
+            <td>min=300 max=1100</td>
+        </tr>
+        <tr>
+            <td>Humidity</td>
+            <td>38.7 %</td>
+            <td>387</td>
+            <td>uint16le</td>
+            <td>return val / 10</td>
+            <td>min=0 max=100</td>
+        </tr>
+        <tr>
+            <td>Latitude</td>
+            <td>52.0842715</td>
+            <td>52.0842715</td>
+            <td>floatle</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Longitude</td>
+            <td>5.0124524</td>
+            <td>5.0124524</td>
+            <td>floatle</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<p>For temperature, pressure, and humidity using floats is inefficient (<code>3 x 4 bytes = 12 bytes</code>). Instead we fix the value to one decimal number and multiply it by 10 and later divide it by 10 again. This allows us to use 16 bit integers (2 bytes per value) or <code>3 x 2 = 6 bytes</code> in total. This cuts our number of bytes in half!</p>
+<p>In this tutorial we also send the device's GPS coordinates.a latitude and longitude.</p>
+<p>It is common to use the <a href="https://en.wikipedia.org/wiki/Endianness">Little Endian</a> byte order when sending data from devices. This means the little end (byte with smallest part of value) comes first.</p>
+<p>Translating these values to a hexadecimal payload looks like this:</p>
+<pre><code>Temperature    0xea00
+Pressure       0xc327
+Humidity       0x8301
+Latitude       0x4b565042
+Longitude      0x0366a040
+
+Final payload  0xea00c32783014b5650420366a040
+</code></pre>
+
+<p>Send this to ConCaVa by running:</p>
+<pre><code class="bash">echo 'ea00c32783014b5650420366a040' | xxd -r -p | \
+    curl -i -XPUT 'http://localhost:3000/v1/sensorData/0000000000000001' \
+    -H 'Authorization: Token abcdef0123456789abcdef0123456789' \
+    -H 'Content-Type: application/octet-stream' --data-binary @-
+</code></pre>
+
+<p>The response will look like this:</p>
+<pre><code>HTTP/1.1 401 Unauthorized
+Allow: HEAD, POST, PUT
+Accept: application/octet-stream
+WWW-Authenticate: Token
+Date: Mon, 11 Jul 2016 13:30:16 GMT
+Connection: keep-alive
+Transfer-Encoding: chunked
+
+Unauthorized token.
+</code></pre>
+
+<p>Success! Sort of. We need to configure ConCaVa to be able to handle the request.</p>
+<h2 id="add-tokens">Add tokens</h2>
+<p>Now we add our token to <code>data/tokens.json</code>:</p>
+<pre><code class="json">{
+    &quot;abcdef0123456789abcdef0123456789&quot;: {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;User 1&quot;
+    }
+}
+</code></pre>
+
+<p>Here you see the unique authentication token as the key and the user data object as the value. Run the <code>curl</code> request again, the response will look like this:</p>
+<pre><code>HTTP/1.1 400 Bad Request
+Allow: HEAD, POST, PUT
+Accept: application/octet-stream
+Date: Mon, 11 Jul 2016 13:34:40 GMT
+Connection: keep-alive
+Transfer-Encoding: chunked
+
+No metadata for 0000000000000001.
+</code></pre>
+
+<p>Again, success! But no data yet. We need to add the metadata for this specific device.</p>
+<h2 id="add-metadata">Add metadata</h2>
+<p>Add this metadata to <code>data/metadata.json</code>:</p>
+<pre><code class="json">{
+    &quot;0000000000000001&quot;: [
+        {
+            &quot;name&quot;: &quot;temperature&quot;,
+            &quot;converters&quot;: [&quot;int16le&quot;],
+            &quot;calibrators&quot;: [&quot;return val / 10&quot;],
+            &quot;validators&quot;: [
+                [&quot;min&quot;, -40],
+                [&quot;max&quot;, 85]
+            ]
+        },
+        {
+            &quot;name&quot;: &quot;pressure&quot;,
+            &quot;converters&quot;: [&quot;uint16le&quot;],
+            &quot;calibrators&quot;: [&quot;return val / 10&quot;],
+            &quot;validators&quot;: [
+                [&quot;min&quot;, 300],
+                [&quot;max&quot;, 1100]
+            ]
+        },
+        {
+            &quot;name&quot;: &quot;humidity&quot;,
+            &quot;converters&quot;: [&quot;uint16le&quot;],
+            &quot;calibrators&quot;: [&quot;return val / 10&quot;],
+            &quot;validators&quot;: [
+                [&quot;min&quot;, 0],
+                [&quot;max&quot;, 100]
+            ]
+        },
+        {
+            &quot;name&quot;: &quot;lat&quot;,
+            &quot;converters&quot;: [&quot;floatle&quot;],
+            &quot;calibrators&quot;: [],
+            &quot;validators&quot;: []
+        },
+        {
+            &quot;name&quot;: &quot;lng&quot;,
+            &quot;converters&quot;: [&quot;floatle&quot;],
+            &quot;calibrators&quot;: [],
+            &quot;validators&quot;: []
+        }
+    ]
+}
+</code></pre>
+
+<p>This is the JSON adapter format for the metadata in the table you saw earlier. Compare them to see that we used the exact same configuration.</p>
+<p>Third time's the charm: run the <code>curl</code> request again. The response should be:</p>
+<pre><code>HTTP/1.1 200 OK
+Allow: HEAD, POST, PUT
+Accept: application/octet-stream
+Date: Mon, 11 Jul 2016 13:49:03 GMT
+Connection: keep-alive
+Content-Length: 0
+</code></pre>
+
+<p>Success! But how do we view the data?</p>
+<h2 id="stored-measurements">Stored measurements</h2>
+<p>Open <code>data/store.0000000000000001.json</code> to show the data, which looks like this:</p>
+<pre><code class="json">{
+  &quot;b6a84c4e-8014-4681-b78b-89a7c1c97a86&quot;: {
+    &quot;_raw&quot;: &quot;ea00c32783014b5650420366a040&quot;,
+    &quot;temperature&quot;: 23.4,
+    &quot;pressure&quot;: 1017.9,
+    &quot;humidity&quot;: 38.7,
+    &quot;lat&quot;: 52.08427047729492,
+    &quot;lng&quot;: 5.012452602386475,
+    &quot;timestamp&quot;: 1468244943
+  }
+}
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../api/" class="btn btn-neutral float-right" title="API"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../configuration/" class="btn btn-neutral" title="Configuration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../configuration/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../api/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>

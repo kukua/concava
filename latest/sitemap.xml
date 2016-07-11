@@ -27,6 +27,14 @@
 
     
     <url>
+     <loc>None/quick-start/</loc>
+     <lastmod>2016-07-11</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
      <loc>None/api/</loc>
      <lastmod>2016-07-11</lastmod>
      <changefreq>daily</changefreq>

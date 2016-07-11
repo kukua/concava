@@ -18,7 +18,7 @@ function (req, config, data, cb) {}
 function (req, config, data, classes, cb) {}
 ```
 
-The latter is used for providing metadata with the classes used by ConCaVa.
+The latter is used for providing metadata with the classes used by ConCaVa. If ConCaVa sees the function expects four arguments, it will ignore the `classes` variable.
 
 ### Authentication
 
@@ -64,6 +64,15 @@ function metadata (req, config, data, classes, cb) {
 ```
 
 ### Storage
+
+The data object can be retrieved with `data.getData()`. This is a key/value object which uses the converter names (e.g. `attr1` and `attr2`) and their determined values. The following values are added by default:
+
+```
+timestamp      UNIX timestamp
+_raw           Hex string with raw payload
+```
+
+The approach here is to make the data time bound. Therefore a `timestamp` is added. Which can be overriden by providing your own timestamp attribute in the payload, to use the time of the measurement instead of the time the payload has been received.
 
 Example storage adapter:
 
