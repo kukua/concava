@@ -51,35 +51,18 @@
           
             <li>
     <li class="toctree-l1 current">
-        <a class="current" href=".">Home</a>
+        <a class="current" href=".">Introduction</a>
         
             <ul>
             
                 <li class="toctree-l3"><a href="#concava">ConCaVa</a></li>
                 
+                    <li><a class="toctree-l4" href="#challenges">Challenges</a></li>
+                
+                    <li><a class="toctree-l4" href="#dataflow">Dataflow</a></li>
+                
             
             </ul>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="introduction/">Introduction</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="getting-started/">Getting started</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="use-cases/">Use cases</a>
         
     </li>
 <li>
@@ -101,20 +84,6 @@
             <li>
     <li class="toctree-l1 ">
         <a class="" href="api/">API</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="connectors/">Connectors</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="testing/">Testing</a>
         
     </li>
 <li>
@@ -148,7 +117,7 @@
     
       
     
-    <li>Home</li>
+    <li>Introduction</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -159,18 +128,35 @@
             <div class="section">
               
                 <h1 id="concava">ConCaVa</h1>
-<!-- TODO:
-- Write it for developers
-- Ask Auke or Jan Willem for an example non-linear to linear calibrator
-    http://www.mstarlabs.com/sensors/thermocouple-calibration.html
--->
+<h3>Configuration driven binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.</h3>
 
-<p><strong>Binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.</strong></p>
-<p>For contributing, providing feedback, or support go to the <a href="https://github.com/kukua/concava">Github repository</a>.
-Also see the <a href="https://rawgit.com/kukua/concava-intro/master/index.html">functional and technical introduction (slides)</a>.</p>
-<!--
-A demo page is [coming soon](https://github.com/kukua/concava-demo).
--->
+<p>This description is a mouthful, so let's break it down:</p>
+<ol>
+<li><strong>Configuration driven:</strong> instead of writing custom software to handle sensor data, ConCaVa allows you to configure how the data of each device should be processed.</li>
+<li><strong>Binary payload processor:</strong> Sensing sensor data in binary is efficient and cheap, but requires a conversion step (how to make sense of all the ones and zeros).</li>
+<li><strong>Converting data:</strong> Converting bits into numbers.</li>
+<li><strong>Calibrating data:</strong> Custom functionality to alter the data.</li>
+<li><strong>Validating data:</strong> Making sure the data is correct, e.g. lies within the range in which the sensor can measure.</li>
+<li><strong>Dynamic sensor data:</strong> Allowing different sensors to send their data to a single endpoint, no matter what the data format is.</li>
+</ol>
+<h2 id="challenges">Challenges</h2>
+<p>Efficiently processing sensor data of a big variety of devices is hard. But there is plenty of room of doing it in a generic way. That's where ConCaVa comes into play. These are the common challenges:</p>
+<ol>
+<li><strong>Limited bandwidth.</strong> When sensors are sending over 3G or LoRa, bandwidth is limited. In these situations the amount of data must be brought to a minimum. Using formats like XML or JSON includes the data format, which costs extra bytes. Binary is the most efficient way of sending sensor data, however introduces other challenges like data conversion.</li>
+<li><strong>Converting data.</strong> Sensors provide different types of data and often via different protocols (LoRa, MQTT, SigFox, etc.). This data needs to be converted. Usually done by software that is specifically developed for that use case.</li>
+<li><strong>Calibrating data.</strong> Measurements require different types of calibration. E.g. sending a temperature as 16bit integer and dividing it by 100 to get a two decimal precision.</li>
+<li><strong>Validating data.</strong> Each type of sensor is validated differently. E.g. checking if the measurement of a temperature sensor lies between its maximum bounds of -40°C and +85°C. If below or above, correct or discard the data. Each of these rules are implemented seperately.</li>
+<li><strong>Scalability.</strong> Adding new devices with different protocols requires changing the software that handles the incoming data.</li>
+</ol>
+<p>The first point is solved by using binary data, points 2, 3, and 4 are solved by ConCaVa, and point 5 is solved by using a configuration driven approach.</p>
+<h2 id="dataflow">Dataflow</h2>
+<p>Before going into detail, it is important to know how the data flows through a system that's using ConCaVa:</p>
+<p><img alt="Dataflow" src="https://raw.githubusercontent.com/kukua/concava/master/doc/dataflow.jpg" /></p>
+<p>Sensors send their binary payload to the ConCaVa <a href="api/">HTTP API endpoint</a>. If a sensor communicates via a different protocol (LoRa, SPUL, MQTT, etc.) a <a href="configuration/#connectors">connector</a> can be used to forward the data to ConCaVa, so the convert, calibrate, and validate steps can still be utilized. The image above shows usage of the <a href="http://kukua.github.io/concava-connector-spul/">SPUL protocol and connector</a>.</p>
+<p>In the next chapters the installation and configuration will be handled.</p>
+<hr />
+<p>For contributing, providing feedback, or support please go to the <a href="https://github.com/kukua/concava">Github repository</a>.<br/>
+See the <a href="https://rawgit.com/kukua/concava-intro/master/index.html">introduction slides</a> for a quick overview of ConCaVa.</p>
               
             </div>
           </div>
@@ -178,7 +164,7 @@ A demo page is [coming soon](https://github.com/kukua/concava-demo).
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="introduction/" class="btn btn-neutral float-right" title="Introduction"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="installation/" class="btn btn-neutral float-right" title="Installation"/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
     </div>
@@ -206,7 +192,7 @@ A demo page is [coming soon](https://github.com/kukua/concava-demo).
       
       
       
-        <span style="margin-left: 15px"><a href="introduction/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="installation/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
@@ -216,5 +202,5 @@ A demo page is [coming soon](https://github.com/kukua/concava-demo).
 
 <!--
 MkDocs version : 0.14.0
-Build Date UTC : 2016-06-21 07:23:51.863877
+Build Date UTC : 2016-07-11 09:47:00.740654
 -->

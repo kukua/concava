@@ -51,28 +51,7 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="..">Home</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../introduction/">Introduction</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../getting-started/">Getting started</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../use-cases/">Use cases</a>
+        <a class="" href="..">Introduction</a>
         
     </li>
 <li>
@@ -97,24 +76,10 @@
         
             <ul>
             
-                <li class="toctree-l3"><a href="#api">API</a></li>
+                <li class="toctree-l3"><a href="#http-api-endpoint">HTTP API endpoint</a></li>
                 
             
             </ul>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../connectors/">Connectors</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../testing/">Testing</a>
         
     </li>
 <li>
@@ -158,7 +123,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="api">API</h1>
+                <h1 id="http-api-endpoint">HTTP API endpoint</h1>
 <p>ConCaVa accepts the following HTTP requests:</p>
 <ul>
 <li><code>POST /v1/sensorData</code></li>
@@ -172,12 +137,12 @@
 </ul>
 <p>You can use one of these commands for testing:</p>
 <pre><code class="bash">echo '&lt;deviceID&gt;&lt;hex&gt;' | xxd -r -p | \
-    curl -i -XPOST 'http://&lt;host&gt;:3000/v1/sensorData' \
+    curl -i -XPOST 'http://localhost:3000/v1/sensorData' \
     -H 'Authorization: Token &lt;token&gt;' \
     -H 'Content-Type: application/octet-stream' --data-binary @-
 
 echo '&lt;hex&gt;' | xxd -r -p | \
-    curl -i -XPUT 'http://&lt;host&gt;:3000/v1/sensorData/&lt;deviceID&gt;' \
+    curl -i -XPUT 'http://localhost:3000/v1/sensorData/&lt;deviceID&gt;' \
     -H 'Authorization: Token &lt;token&gt;' \
     -H 'Content-Type: application/octet-stream' --data-binary @-
 </code></pre>
@@ -188,7 +153,7 @@ echo '&lt;hex&gt;' | xxd -r -p | \
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../connectors/" class="btn btn-neutral float-right" title="Connectors"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../contributing/" class="btn btn-neutral float-right" title="Contributing"/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../configuration/" class="btn btn-neutral" title="Configuration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -220,7 +185,7 @@ echo '&lt;hex&gt;' | xxd -r -p | \
         <span><a href="../configuration/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../connectors/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../contributing/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

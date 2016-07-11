@@ -51,28 +51,7 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="..">Home</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../introduction/">Introduction</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../getting-started/">Getting started</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../use-cases/">Use cases</a>
+        <a class="" href="..">Introduction</a>
         
     </li>
 <li>
@@ -99,26 +78,16 @@
 <li>
           
             <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../connectors/">Connectors</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../testing/">Testing</a>
-        
-    </li>
-<li>
-          
-            <li>
     <li class="toctree-l1 current">
         <a class="current" href="./">Contributing</a>
         
             <ul>
             
                 <li class="toctree-l3"><a href="#contributing">Contributing</a></li>
+                
+                    <li><a class="toctree-l4" href="#adapters">Adapters</a></li>
+                
+                    <li><a class="toctree-l4" href="#connectors">Connectors</a></li>
                 
             
             </ul>
@@ -159,7 +128,7 @@
             <div class="section">
               
                 <h1 id="contributing">Contributing</h1>
-<p>Your help is highly appreciated! Please provide feedback by creating an issue in the Github repository.</p>
+<p>Your help or feedback is highly appreciated! Please do so by creating an issue in the <a href="https://github.com/kukua/concava/issues">Github repository</a>.</p>
 <p>When contributing code, please make sure the tests pass:</p>
 <pre><code>git clone https://github.com/kukua/concava
 cd concava
@@ -168,6 +137,19 @@ npm test
 </code></pre>
 
 <p>You can also contact use via email at <a href="mailto:dev@kukua.cc">dev@kukua.cc</a>.</p>
+<h2 id="adapters">Adapters</h2>
+<p>To write your own adapter, use the function templates from the <a href="../configuration/#adapters">configuration page</a>. The official adapters are published as <a href="https://www.npmjs.com/search?q=concava-adapter">modules on NPM</a>. The module name should be prefixed with <code>concava-adapter-</code>.</p>
+<p>You can use the <a href="https://github.com/kukua/node-concava-adapter-mysql">MySQL adapter code</a> as a starting point to write your own.</p>
+<h2 id="connectors">Connectors</h2>
+<p>Follow these steps to create a connector for the protocol you wish to use:</p>
+<ol>
+<li>Make sure the connector <a href="../configuration/#connectors">isn't already available</a>.</li>
+<li>Create a listener service for your protocol</li>
+<li>When receiving new data collect the UDID, binary payload, and optionally the authorization header/token</li>
+<li>Do a HTTP request to ConCaVa. See the <a href="../api/">API documentation</a> for details.</li>
+<li>Publish on Docker Hub. The image name should be prefixed with <code>concava-connector-</code>.</li>
+</ol>
+<p>You can use the <a href="https://github.com/kukua/concava-connector-ttn">LoRa for The Things Network connector code</a> as a starting point to write your own.</p>
               
             </div>
           </div>
@@ -176,7 +158,7 @@ npm test
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="../testing/" class="btn btn-neutral" title="Testing"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../api/" class="btn btn-neutral" title="API"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -202,7 +184,7 @@ npm test
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../testing/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../api/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
     </span>

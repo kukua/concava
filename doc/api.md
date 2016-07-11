@@ -1,4 +1,4 @@
-# API
+# HTTP API endpoint
 
 ConCaVa accepts the following HTTP requests:
 
@@ -16,12 +16,12 @@ You can use one of these commands for testing:
 
 ```bash
 echo '<deviceID><hex>' | xxd -r -p | \
-	curl -i -XPOST 'http://<host>:3000/v1/sensorData' \
+	curl -i -XPOST 'http://localhost:3000/v1/sensorData' \
 	-H 'Authorization: Token <token>' \
 	-H 'Content-Type: application/octet-stream' --data-binary @-
 
 echo '<hex>' | xxd -r -p | \
-	curl -i -XPUT 'http://<host>:3000/v1/sensorData/<deviceID>' \
+	curl -i -XPUT 'http://localhost:3000/v1/sensorData/<deviceID>' \
 	-H 'Authorization: Token <token>' \
 	-H 'Content-Type: application/octet-stream' --data-binary @-
 ```

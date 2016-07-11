@@ -4,13 +4,8 @@ site_name: ConCaVa
 theme_dir: theme
 dev_addr: 0.0.0.0:8000
 pages:
-    - Home: index.md
-    - Introduction: introduction.md
-    - Getting started: getting-started.md
-    - Use cases: use-cases.md
+    - Introduction: index.md
     - Installation: installation.md
     - Configuration: configuration.md
     - API: api.md
-    - Connectors: connectors.md
-    - Testing: testing.md
     - Contributing: contributing.md

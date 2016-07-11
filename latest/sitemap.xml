@@ -4,31 +4,7 @@
     
     <url>
      <loc>None/</loc>
-     <lastmod>2016-06-21</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>None/introduction/</loc>
-     <lastmod>2016-06-21</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>None/getting-started/</loc>
-     <lastmod>2016-06-21</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>None/use-cases/</loc>
-     <lastmod>2016-06-21</lastmod>
+     <lastmod>2016-07-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -36,7 +12,7 @@
     
     <url>
      <loc>None/installation/</loc>
-     <lastmod>2016-06-21</lastmod>
+     <lastmod>2016-07-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -44,7 +20,7 @@
     
     <url>
      <loc>None/configuration/</loc>
-     <lastmod>2016-06-21</lastmod>
+     <lastmod>2016-07-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -52,23 +28,7 @@
     
     <url>
      <loc>None/api/</loc>
-     <lastmod>2016-06-21</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>None/connectors/</loc>
-     <lastmod>2016-06-21</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>None/testing/</loc>
-     <lastmod>2016-06-21</lastmod>
+     <lastmod>2016-07-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -76,7 +36,7 @@
     
     <url>
      <loc>None/contributing/</loc>
-     <lastmod>2016-06-21</lastmod>
+     <lastmod>2016-07-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
