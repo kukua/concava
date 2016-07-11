@@ -4,7 +4,7 @@ var validDeviceId = /^[a-f0-9]{16}$/
 
 export default class SensorData {
 	constructor (id, buffer) {
-		this.setData({})
+		this.setData(this.getDefaultData())
 		if (id) this.setDeviceId(id)
 		if (buffer) this.setBuffer(buffer)
 		this.setAttributes([])
@@ -29,6 +29,11 @@ export default class SensorData {
 	}
 	setData (data) {
 		this._data = data
+	}
+	getDefaultData () {
+		return {
+			timestamp: Math.floor(Date.now() / 1000)
+		}
 	}
 	getData () {
 		return this._data

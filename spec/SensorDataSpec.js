@@ -34,10 +34,14 @@ describe('SensorData', () => {
 		data.setBuffer(buffer)
 		expect(data.getBuffer()).toBe(buffer)
 	})
+	it('can set/get a default data object', () => {
+		expect(typeof data.getDefaultData).toBe('function')
+		expect(Object.keys(data.getDefaultData())).toEqual(['timestamp'])
+	})
 	it('can set/get a data object', () => {
 		expect(typeof data.setData).toBe('function')
 		expect(typeof data.getData).toBe('function')
-		expect(data.getData()).toEqual({})
+		expect(Object.keys(data.getData())).toEqual(['timestamp'])
 		var values = { a: 1, b: 2 }
 		data.setData(values)
 		expect(data.getData()).toBe(values)
