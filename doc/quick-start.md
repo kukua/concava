@@ -263,3 +263,8 @@ Open `data/store.0000000000000001.json` to show the data, which looks like this:
   }
 }
 ```
+
+<div class="admonition note">
+	<p class="first admonition-title">Tip</p>
+	<p class="last">Use <a href="https://stedolan.github.io/jq/tutorial/" target="_blank">jq</a> for displaying JSON data.</p>
+</div>
