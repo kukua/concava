@@ -132,6 +132,40 @@ p {
 code {
 	font-size: 100%;
 }
+.wy-nav-content a,
+.wy-nav-content a:link,
+.wy-nav-content a:active,
+.wy-nav-content a:visited,
+.wy-nav-content a:hover,
+.rst-content a tt,
+dt {
+	color: #38b24a;
+}
+.wy-nav-content a,
+.wy-nav-content a:link,
+.wy-nav-content a:active,
+.wy-nav-content a:visited {
+	text-decoration: none;
+}
+.wy-nav-content a:hover {
+	text-decoration: underline;
+}
+h3, h4, h5, h6 {
+	color: #404040;
+	border-left: 6px solid #404040;
+	padding-left: 16px;
+	margin: 24px 0;
+}
+footer a,
+footer a:link,
+footer a:active,
+footer a:visited,
+footer a:hover {
+	color: #333;
+}
+pre {
+	margin: 24px 0;
+}
 
 .wy-side-nav-search {
 	background-color: #38b24a; /* green */
