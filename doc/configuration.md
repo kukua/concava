@@ -56,7 +56,7 @@ function metadata (req, config, data, classes, cb) {
 
 	var attr2 = new classes.SensorAttribute('attr2')
 	attr2.addConverter('int16le')
-	attr2.addCalibrator('return value + 7')
+	attr2.addCalibrator('return val + 7')
 
 	data.setAttributes([attr1, attr2])
 	cb()
