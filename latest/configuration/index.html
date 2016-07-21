@@ -179,7 +179,7 @@ function (req, config, data, classes, cb) {}
 
     var attr2 = new classes.SensorAttribute('attr2')
     attr2.addConverter('int16le')
-    attr2.addCalibrator('return value + 7')
+    attr2.addCalibrator('return val + 7')
 
     data.setAttributes([attr1, attr2])
     cb()
@@ -229,6 +229,12 @@ Contributing other adapters is highly appreciated. See <a href="../contributing/
 </ul>
 <p><a href="https://hub.docker.com/search/?isAutomated=0&amp;isOfficial=0&amp;page=1&amp;pullCount=0&amp;q=concava&amp;starCount=0">Search for 'ConCaVa' on the Docker Hub</a> to see all connectors.
 Contributing other connectors is highly appreciated. See <a href="../contributing/#connectors">the contributing page</a> for more information.</p>
+<h3 id="other-tooling">Other Tooling</h3>
+<p>We've developed a standardized API and GUI for managing the MySQL metadata:</p>
+<ul>
+<li>https://github.com/kukua/concava-api</li>
+<li>https://github.com/kukua/concava-gui</li>
+</ul>
               
             </div>
           </div>

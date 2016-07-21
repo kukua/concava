@@ -117,3 +117,10 @@ The following connectors are available:
 
 [Search for 'ConCaVa' on the Docker Hub](https://hub.docker.com/search/?isAutomated=0&isOfficial=0&page=1&pullCount=0&q=concava&starCount=0) to see all connectors.
 Contributing other connectors is highly appreciated. See [the contributing page](contributing.md#connectors) for more information.
+
+### Other Tooling
+
+We've developed a standardized API and GUI for managing the MySQL metadata:
+
+- https://github.com/kukua/concava-api
+- https://github.com/kukua/concava-gui
