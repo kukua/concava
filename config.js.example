@@ -3,9 +3,9 @@ const adapter = require('./lib/adapter/json')
 
 module.exports = {
 	debug: true,
-	// logFile: '/tmp/output.log',
-	// logName: 'concava',
-	// port: 3000,
+	logFile: '/tmp/output.log',
+	logName: 'concava',
+	port: 3000,
 	payloadMaxSize: '512kb',
 	auth: {
 		enabled: true,
