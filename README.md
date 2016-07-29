@@ -53,7 +53,7 @@ First, start the ConCaVa server. Then run:
 
 ```bash
 echo '000005391234' | xxd -r -p | \
-	curl -i -XPUT 'http://localhost:3000/v1/sensorData/0000000000000001' \
+	curl -i -XPUT 'http://localhost:3000/sensorData/0000000000000001' \
 	-H 'Authorization: Token abcdef0123456789abcdef0123456789' \
 	-H 'Content-Type: application/octet-stream' --data-binary @-
 # Note: if you're using Docker, change localhost to the IP address of the container
@@ -68,8 +68,8 @@ ConCaVa uses [connectors](http://kukua.github.io/concava/latest/configuration/#c
 
 ConCaVa accepts the following HTTP requests:
 
-- `POST /v1/sensorData`
-- `PUT /v1/sensorData/<deviceID>` (where `deviceID` is a lowercase 16 character hex string)
+- `POST /sensorData`
+- `PUT /sensorData/<deviceID>` (where `deviceID` is a lowercase 16 character hex string)
 
 The requests are identical, except for the device ID which using a `POST` request is prepended to the binary payload.
 
@@ -82,12 +82,12 @@ You can use one of these commands for testing:
 
 ```bash
 echo '<deviceID><hex>' | xxd -r -p | \
-	curl -i -XPOST 'http://localhost:3000/v1/sensorData' \
+	curl -i -XPOST 'http://localhost:3000/sensorData' \
 	-H 'Authorization: Token <token>' \
 	-H 'Content-Type: application/octet-stream' --data-binary @-
 
 echo '<hex>' | xxd -r -p | \
-	curl -i -XPUT 'http://localhost:3000/v1/sensorData/<deviceID>' \
+	curl -i -XPUT 'http://localhost:3000/sensorData/<deviceID>' \
 	-H 'Authorization: Token <token>' \
 	-H 'Content-Type: application/octet-stream' --data-binary @-
 ```

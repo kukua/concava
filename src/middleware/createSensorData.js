@@ -1,7 +1,7 @@
 import SensorData from '../SensorData'
 
 export default () => {
-	var validURL = /^\/v1\/sensorData\/([a-f0-9]{16})$/
+	var validURL = /^\/sensorData\/([a-f0-9]{16})$/
 
 	return (req, res, next) => {
 		try {
