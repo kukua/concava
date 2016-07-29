@@ -25,13 +25,13 @@ describe('Converter', () => {
 	it('can set/get type', () => {
 		expect(typeof instance.setType).toBe('function')
 		expect(typeof instance.getType).toBe('function')
-		expect(instance.getType('integer')).toBe(undefined)
+		expect(instance.getType('uint16le')).toBe(undefined)
 		instance.setTypes(types)
-		expect(instance.getType('integer')).toBe(types.integer)
+		expect(instance.getType('uint16le')).toBe(types.uint16le)
 		instance.setTypes({})
-		expect(instance.getType('ascii')).toBe(undefined)
-		instance.setType('ascii', types.ascii)
-		expect(instance.getType('ascii')).toBe(types.ascii)
+		expect(instance.getType('int8')).toBe(undefined)
+		instance.setType('int8', types.int8)
+		expect(instance.getType('int8')).toBe(types.int8)
 	})
 
 	// Convert method
@@ -45,7 +45,7 @@ describe('Converter', () => {
 
 	it('should apply converter', () => {
 		var [data, attr] = createData()
-		attr.addConverter('integer', 4)
+		attr.addConverter('uint32be')
 		data.setBuffer(new Buffer('00000539', 'hex'))
 		instance.setTypes(types)
 		instance.convert(data)
@@ -93,11 +93,24 @@ describe('Converter', () => {
 	})
 	it('should allow chaining converters', () => {
 		var [data, attr] = createData()
-		attr.addConverter('asciiFloat', 5)
-		data.setBuffer(new Buffer('32332e3134', 'hex'))
-		instance.setTypes(types)
+		attr.addConverter('foo')
+		data.setBuffer(new Buffer('41b91eb8', 'hex'))
+		instance.setTypes({
+			foo (name) {
+				var fn = this.getType('bar')
+				expect(typeof fn).toBe('function')
+				var err = fn.call(this, name)
+				if (err) return err
+				var val = this.data.getValue(name)
+				expect(Math.round(val * 100) / 100).toBe(23.14)
+				this.data.setValue(name, val * 2)
+			},
+			bar (name) {
+				this.data.setValue(name, this.buffer.readFloatBE(0))
+			},
+		})
 		instance.convert(data)
-		expect(data.getValue('val')).toBe(23.14)
+		expect(Math.round(data.getValue('val') * 100) / 100).toBe(46.28)
 	})
 	it('should convert buffer into multiple values', () => {
 		var data = new SensorData
@@ -105,7 +118,7 @@ describe('Converter', () => {
 		var attr
 
 		attr = new SensorAttribute('temp1')
-		attr.addConverter('asciiFloat', 5)
+		attr.addConverter('uint8')
 		attributes.push(attr)
 
 		attr = new SensorAttribute('skip1')
@@ -113,7 +126,7 @@ describe('Converter', () => {
 		attributes.push(attr)
 
 		attr = new SensorAttribute('temp2')
-		attr.addConverter('asciiFloat', 5)
+		attr.addConverter('int8le')
 		attributes.push(attr)
 
 		attr = new SensorAttribute('skip2')
@@ -121,28 +134,18 @@ describe('Converter', () => {
 		attributes.push(attr)
 
 		attr = new SensorAttribute('humidity')
-		attr.addConverter('asciiInteger', 4)
+		attr.addConverter('uint16be')
 		attributes.push(attr)
 
-		attr = new SensorAttribute('skip3')
-		attr.addConverter('skip', 2)
-		attributes.push(attr)
-
-		attr = new SensorAttribute('pressure')
-		attr.addConverter('asciiFloat', 5)
-		attributes.push(attr)
-
-		data.setBuffer(new Buffer('32332e31332c2032332e32302c20313031342c2035352e3439', 'hex'))
+		data.setBuffer(new Buffer('151234e9000003f6', 'hex'))
 		data.setAttributes(attributes)
 		instance.setTypes(types)
 		instance.convert(data)
-		expect(data.getValue('temp1')).toBe(23.13)
+		expect(data.getValue('temp1')).toBe(21)
 		expect(data.getValue('skip1')).toBe(undefined)
-		expect(data.getValue('temp2')).toBe(23.2)
+		expect(data.getValue('temp2')).toBe(-23)
 		expect(data.getValue('skip2')).toBe(undefined)
 		expect(data.getValue('humidity')).toBe(1014)
-		expect(data.getValue('skip3')).toBe(undefined)
-		expect(data.getValue('pressure')).toBe(55.49)
 	})
 	it('should error on a too small buffer', () => {
 		var data = new SensorData

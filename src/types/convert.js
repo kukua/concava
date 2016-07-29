@@ -56,28 +56,6 @@ export default {
 	doublele: nativeConverter('readDoubleLE', 8),
 	doublebe: nativeConverter('readDoubleBE', 8),
 
-	integer (name, length) {
-		length = parseInt(length)
-		var value = parseInt(this.buffer.toString('hex', this.pointer, this.pointer + length), 16)
-		this.data.setValue(name, value)
-		this.pointer += length
-	},
-	ascii (name, length) {
-		length = parseInt(length)
-		var value = this.buffer.toString('ascii', this.pointer, this.pointer + length)
-		this.data.setValue(name, value)
-		this.pointer += length
-	},
-	asciiFloat (name, length) {
-		var err = this.getType('ascii').call(this, name, length)
-		if (err) return err
-		this.data.setValue(name, parseFloat(this.data.getValue(name)))
-	},
-	asciiInteger (name, length) {
-		var err = this.getType('ascii').call(this, name, length)
-		if (err) return err
-		this.data.setValue(name, parseInt(this.data.getValue(name), 10))
-	},
 	skip (name, length) {
 		this.pointer += parseInt(length)
 	},
