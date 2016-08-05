@@ -1,4 +1,4 @@
 export default {
-	min: (current, value) => Math.max(current, value),
-	max: (current, value) => Math.min(current, value),
+	min: (val, limit) => (val < parseFloat(limit) ? null : val),
+	max: (val, limit) => (val > parseFloat(limit) ? null : val),
 }
