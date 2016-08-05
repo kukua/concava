@@ -32,7 +32,7 @@ export let metadata = (req, config, data, cb) => {
 			})
 
 			if (Array.isArray(info.calibrators)) {
-				info.calibrators.forEach((fn) => attr.addCalibrator(new Function('value', fn)))
+				info.calibrators.forEach((fn) => attr.addCalibrator(new Function(fn)))
 			}
 
 			if (Array.isArray(info.validators)) {
