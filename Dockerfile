@@ -6,7 +6,6 @@ COPY ./ /data/
 RUN npm install
 RUN npm run compile
 RUN npm prune --production
-RUN touch /tmp/output.log
 
 EXPOSE 3000
 
