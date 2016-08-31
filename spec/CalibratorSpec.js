@@ -55,7 +55,7 @@ describe('Calibrator', () => {
 		expect(typeof vars.Math.random).toBe('function')
 		expect(typeof vars.Math.pow).toBe('function')
 		expect(vars.val).toBe(100)
-		expect(vars.info).toBe(undefined)
+		expect(vars.info).toEqual({})
 		expect(Object.keys(vars).length).toBe(7)
 	})
 	it('should allow use of Math library', () => {

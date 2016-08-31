@@ -55,7 +55,7 @@ export default class SensorData {
 		this._info = info
 	}
 	getInfo () {
-		return this._info
+		return this._info || {}
 	}
 	toString () {
 		return this.getDeviceId() + ' ' + inspect(this.getData())

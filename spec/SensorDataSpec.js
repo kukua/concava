@@ -85,7 +85,7 @@ describe('SensorData', () => {
 		expect(typeof data.setInfo).toBe('function')
 		expect(typeof data.getInfo).toBe('function')
 		var info = { foo: 'bar', over: 9000 }
-		expect(data.getInfo()).toBe(undefined)
+		expect(data.getInfo()).toEqual({})
 		data.setInfo(info)
 		expect(data.getInfo()).toBe(info)
 	})
