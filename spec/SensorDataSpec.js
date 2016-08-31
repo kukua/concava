@@ -81,6 +81,14 @@ describe('SensorData', () => {
 		data.setBuffer(buffer)
 		expect(data.getValue('_raw')).toBe('000005391234')
 	})
+	it('can set/get device specific info', () => {
+		expect(typeof data.setInfo).toBe('function')
+		expect(typeof data.getInfo).toBe('function')
+		var info = { foo: 'bar', over: 9000 }
+		expect(data.getInfo()).toBe(undefined)
+		data.setInfo(info)
+		expect(data.getInfo()).toBe(info)
+	})
 
 	// Errors
 	var errors = {

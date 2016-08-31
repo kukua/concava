@@ -11,11 +11,12 @@ export default class Calibrator {
 					timeout: 1000,
 					sandbox: {
 						Math: Math,
-						val: data.getValue(attr.getName())
+						val: data.getValue(attr.getName()),
+						info: data.getInfo(),
 					},
 				})
 
-				var value = vm.run('(' + calibrator.toString() + ')(val)')
+				var value = vm.run('(' + calibrator.toString() + ')(val, info)')
 
 				data.setValue(attr.getName(), value)
 			})

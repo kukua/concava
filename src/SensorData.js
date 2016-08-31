@@ -51,6 +51,12 @@ export default class SensorData {
 	getValue (name) {
 		return this.getData()[name]
 	}
+	setInfo (info) {
+		this._info = info
+	}
+	getInfo () {
+		return this._info
+	}
 	toString () {
 		return this.getDeviceId() + ' ' + inspect(this.getData())
 	}
