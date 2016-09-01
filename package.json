@@ -9,9 +9,9 @@
   },
   "scripts": {
     "compile": "babel -d lib/ src/",
-    "start": "node lib/bin/server.js",
+    "start": "babel-node src/bin/cli.js",
+    "prepublish": "npm run compile",
     "lint": "eslint src/",
-    "cli": "babel-node src/bin/concava.js",
     "test": "babel-node spec/run.js"
   },
   "pre-commit": "lint, test",
