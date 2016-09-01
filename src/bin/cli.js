@@ -4,6 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import optimist from 'optimist'
 import Server from '../Server'
+import configureServer from '../configureServer'
 
 // CLI
 const pkg = require(path.resolve(__dirname, '../../package.json'))
@@ -47,16 +48,6 @@ try {
 }
 
 // Boostrap server
-var server = new Server()
-
-server
-	.setDebugMode(config.debug)
-	.setLogFile(config.logFile)
-	.setLogName(config.logName)
-	.setPort(config.port)
-	.setPayloadMaxSize(config.payloadMaxSize)
-	.setAuth(config.auth)
-	.setMetadata(config.metadata)
-	.setStorage(config.storage)
+var server = configureServer(Server, config)
 
 server.start()

@@ -4,6 +4,7 @@ import Converter from './Converter'
 import Calibrator from './Calibrator'
 import Validator from './Validator'
 import Server from './Server'
+import configureServer from './configureServer'
 import converter from './types/convert'
 import validator from './types/validate'
 
@@ -14,5 +15,6 @@ export default {
 	Calibrator,
 	Validator,
 	Server,
+	configureServer,
 	types: { converter, validator },
 }
