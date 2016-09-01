@@ -3,7 +3,7 @@
 [![Dependency Status](https://david-dm.org/kukua/concava.svg)](https://david-dm.org/kukua)
 [![Build Status](https://travis-ci.org/kukua/concava.svg?branch=master)](https://travis-ci.org/kukua/concava)
 
-> Binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.
+> Configuration driven binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.
 
 ## Documentation
 
@@ -27,8 +27,6 @@ npm start -- -c config.js
 # Outputs "Listening on port 3000"
 ```
 
-Tested with NodeJS v5.0 and NPM v3.3.
-
 ### Docker
 
 First, [install Docker](http://docs.docker.com/engine/installation/). Then run:
@@ -44,8 +42,6 @@ docker run -d -p 3000:3000 -v $PWD/config.js:/data/config.js \
 	-v /tmp/output.log:/tmp/output.log --name concava kukuadev/concava
 # Outputs "Listening on port 3000"
 ```
-
-Tested with Docker v1.9.
 
 ## Testing
 
