@@ -2,7 +2,14 @@ export default () => {
 	var allowedMethods = ['HEAD', 'POST', 'PUT']
 
 	return (req, res, next) => {
-		if (req.url.indexOf('/sensorData') === 0 && allowedMethods.indexOf(req.method) !== -1) {
+		if ((req.url === '/measurements'
+			|| req.url.indexOf('/measurements/') === 0
+			|| req.url === '/data'
+			|| req.url.indexOf('/data/') === 0
+			|| req.url === '/sensorData' // Deprecated
+			|| req.url.indexOf('/sensorData/') === 0 // Deprecated
+			)
+			&& allowedMethods.indexOf(req.method) !== -1) {
 			res.setHeader('Allow', 'HEAD, POST, PUT')
 			res.setHeader('Accept', 'application/octet-stream')
 
