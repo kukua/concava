@@ -23,8 +23,8 @@ chmod 600 config.js
 # > Edit config.js
 
 npm install
-npm start
-# Should show "Listening on port 3000" in log file
+npm start -- -c config.js
+# Outputs "Listening on port 3000"
 ```
 
 Tested with NodeJS v5.0 and NPM v3.3.
@@ -42,7 +42,7 @@ touch /tmp/output.log
 
 docker run -d -p 3000:3000 -v $PWD/config.js:/data/config.js \
 	-v /tmp/output.log:/tmp/output.log --name concava kukuadev/concava
-# Should show "Listening on port 3000" in log file
+# Outputs "Listening on port 3000"
 ```
 
 Tested with Docker v1.9.
