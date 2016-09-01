@@ -1,12 +1,15 @@
 {
   "name": "concava",
-  "version": "0.6.0",
+  "version": "0.7.1",
   "description": "Binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.",
-  "private": true,
-  "main": "lib/server.js",
+  "main": "lib/index.js",
+  "bin": {
+    "concava": "lib/bin/cli.js"
+  },
   "scripts": {
     "compile": "babel -d lib/ src/",
-    "start": "node lib/server.js",
+    "start": "babel-node src/bin/cli.js",
+    "prepublish": "npm run compile",
     "lint": "eslint src/",
     "test": "babel-node spec/run.js"
   },
@@ -17,11 +20,15 @@
     "url": "https://github.com/kukua/concava.git"
   },
   "license": "MIT",
+  "engines": {
+    "node": ">=4.0"
+  },
   "dependencies": {
     "bunyan": "^1.8.1",
+    "concava-adapter-json": "^0.1.0",
     "connect": "^3.4.1",
     "int24": "~0.0.1",
-    "jfs": "^0.2.6",
+    "optimist": "^0.6.1",
     "raw-body": "^2.1.6",
     "request": "^2.72.0",
     "vm2": "^2.0.2"
