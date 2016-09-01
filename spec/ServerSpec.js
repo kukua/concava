@@ -86,6 +86,28 @@ describe('Server', () => {
 		instance.setStorage(testValue)
 		expect(instance.getStorage()).toEqual(testValue)
 	})
+	it('can set/get the converters', () => {
+		expect(typeof instance.setConverters).toBe('function')
+		expect(typeof instance.getConverters).toBe('function')
+		var defaultValue = undefined
+		var testValue = { foo: () => {}, bar: () => {} }
+		expect(instance.getConverters()).toEqual(defaultValue)
+		instance.setConverters(testValue)
+		expect(instance.getConverters()).toEqual(testValue)
+		instance.setConverters(false)
+		expect(instance.getConverters()).toEqual(undefined)
+	})
+	it('can set/get the validators', () => {
+		expect(typeof instance.setValidators).toBe('function')
+		expect(typeof instance.getValidators).toBe('function')
+		var defaultValue = undefined
+		var testValue = { foo: () => {}, bar: () => {} }
+		expect(instance.getValidators()).toEqual(defaultValue)
+		instance.setValidators(testValue)
+		expect(instance.getValidators()).toEqual(testValue)
+		instance.setValidators(false)
+		expect(instance.getValidators()).toEqual(undefined)
+	})
 	it('can set/get the logger', () => {
 		expect(typeof instance.setLogger).toBe('function')
 		expect(typeof instance.getLogger).toBe('function')
@@ -131,6 +153,8 @@ describe('Server', () => {
 		invalidAuth: 'Invalid auth config object.',
 		invalidMetadata: 'Invalid metadata config object.',
 		invalidStorage: 'Invalid storage config object.',
+		invalidConverters: 'Invalid converters object.',
+		invalidValidators: 'Invalid validators object.',
 		invalidLogger: 'Invalid logger (not a Bunyan instance).',
 	}
 	it('errors on invalid port', () => {
@@ -147,9 +171,17 @@ describe('Server', () => {
 		expect(() => { instance.setMetadata('test') }).toThrowError(errors.invalidMetadata)
 		expect(() => { instance.setMetadata({}) }).toThrowError(errors.invalidMetadata)
 	})
-	it('errors on invalid auth config', () => {
+	it('errors on invalid storage config', () => {
 		expect(() => { instance.setStorage('test') }).toThrowError(errors.invalidStorage)
 		expect(() => { instance.setStorage({}) }).toThrowError(errors.invalidStorage)
+	})
+	it('errors on invalid converters config', () => {
+		expect(() => { instance.setConverters('test') }).toThrowError(errors.invalidConverters)
+		expect(() => { instance.setConverters(3) }).toThrowError(errors.invalidConverters)
+	})
+	it('errors on invalid validators config', () => {
+		expect(() => { instance.setValidators('test') }).toThrowError(errors.invalidValidators)
+		expect(() => { instance.setValidators(3) }).toThrowError(errors.invalidValidators)
 	})
 	it('errors on invalid logger', () => {
 		expect(() => { instance.setLogger('test') }).toThrowError(errors.invalidLogger)

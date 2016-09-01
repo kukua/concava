@@ -96,6 +96,32 @@ export default class Server {
 	getStorage () {
 		return this._storage || {}
 	}
+	setConverters (converters) {
+		if ( ! converters) {
+			converters = undefined
+		} else if (typeof converters !== 'object') {
+			throw new Error('Invalid converters object.')
+		}
+
+		this._converters = converters
+		return this
+	}
+	getConverters () {
+		return this._converters
+	}
+	setValidators (validators) {
+		if ( ! validators) {
+			validators = undefined
+		} else if (typeof validators !== 'object') {
+			throw new Error('Invalid validators object.')
+		}
+
+		this._validators = validators
+		return this
+	}
+	getValidators () {
+		return this._validators
+	}
 	setLogger (logger) {
 		if ( ! (logger instanceof bunyan)) {
 			throw new Error('Invalid logger (not a Bunyan instance).')
@@ -148,9 +174,9 @@ export default class Server {
 		app.use(createSensorData())
 		app.use(authenticate(this.getAuth()))
 		app.use(setMetadata(this.getMetadata()))
-		app.use(convert())
+		app.use(convert(this.getConverters()))
 		app.use(calibrate())
-		app.use(validate())
+		app.use(validate(this.getValidators()))
 		app.use(debug(this.getDebugMode()))
 		app.use(store(this.getStorage()))
 		app.use(errorHandler(this.getAuth().byToken))
