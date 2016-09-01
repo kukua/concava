@@ -167,8 +167,7 @@ export default class Server {
 		var log  = this.getLogger()
 
 		http.createServer(app).listen(port)
-		log.info(`Listening on port ${port}.`)
-		//log.warn({ type: 'start', port }, `Listening on port ${port}.`)
+		log.warn({ type: 'start', port }, `Listening on port ${port}.`)
 	}
 	start () {
 		this.setConnectApp(connect())
