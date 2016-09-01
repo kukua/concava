@@ -19,9 +19,9 @@
   "license": "MIT",
   "dependencies": {
     "bunyan": "^1.8.1",
+    "concava-adapter-json": "^0.1.0",
     "connect": "^3.4.1",
     "int24": "~0.0.1",
-    "jfs": "^0.2.6",
     "raw-body": "^2.1.6",
     "request": "^2.72.0",
     "vm2": "^2.0.2"
