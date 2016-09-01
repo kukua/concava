@@ -1,6 +1,6 @@
-*
+/*
 !config.js.example
-!lib
+!/lib
 !LICENSE
 !package.json
 !README.md
