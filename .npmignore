@@ -1,10 +1,6 @@
-.babelrc
-config.js
-data/
-doc/
-Dockerfile
-.dockerignore
-.eslintrc
-spec/
-src/
-.travis.yml
+*
+!config.js.example
+!lib/
+!LICENSE
+!package.json
+!README.md
