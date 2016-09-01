@@ -1,6 +1,6 @@
 {
   "name": "concava",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Configuration driven binary payload processor for Converting, Calibrating, and Validating dynamic sensor data.",
   "main": "lib/index.js",
   "bin": {
