@@ -11,6 +11,7 @@ const argv = optimist
 	.usage('ConCaVa v' + pkg.version + '\n\n' +
 		'Configuration driven binary payload processor for\n' +
 		'Converting, Calibrating, and Validating dynamic sensor data.\n\n' +
+		'For more info visit: http://kukua.github.io/concava/\n\n' +
 		'Usage: $0 --config=/path/to/config.js')
 	.boolean('version')
 	.alias('version', 'v')
